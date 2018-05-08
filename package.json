@@ -2,6 +2,7 @@
   "private": true,
   "name": "bitbrew-console",
   "version": "0.0.0",
+  "homepage": "https://github.com/BitBrew/console#readme",
   "description": "Console for BitBrew's second-generation connected vehicle platform.",
   "bugs": {
     "url": "https://github.com/BitBrew/console/issues"
@@ -21,6 +22,10 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0-beta.46",
+    "mobx": "^4.2.1",
+    "mobx-react": "^5.1.2",
+    "mobx-state-tree": "^2.0.4",
+    "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "styled-components": "^3.2.6"
@@ -52,9 +57,13 @@
     "husky": "^0.14.3",
     "ip": "^1.1.5",
     "jest": "^22.4.3",
+    "jest-diff": "^22.4.3",
+    "jest-localstorage-mock": "^2.2.0",
     "prettier": "^1.12.1",
     "pretty-quick": "^1.4.1",
     "react-test-renderer": "^16.3.2",
+    "react-testing-library": "^3.0.2",
+    "strip-ansi": "^4.0.0",
     "stylelint": "9.1.3",
     "stylelint-config-prettier": "^3.2.0",
     "stylelint-config-standard": "^18.2.0",
@@ -62,8 +71,9 @@
     "stylelint-no-unsupported-browser-features": "^3.0.0",
     "stylelint-order": "^0.8.1",
     "stylelint-processor-styled-components": "^1.3.1",
-    "webpack": "^4.6.0",
-    "webpack-cli": "^2.1.2",
+    "svgr": "^1.9.1",
+    "webpack": "^4.8.1",
+    "webpack-cli": "^2.1.3",
     "webpack-dev-server": "^3.1.4"
   },
   "browserslist": [
@@ -104,6 +114,15 @@
     },
     "rules": {
       "compat/compat": "error",
+      "no-param-reassign": [
+        "error",
+        {
+          "ignorePropertyModificationsFor": [
+            "self"
+          ],
+          "props": true
+        }
+      ],
       "react/jsx-filename-extension": [
         "error",
         {
@@ -133,6 +152,16 @@
         }
       }
     ]
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/config/jest/localStorage.js",
+    "snapshotSerializers": [
+       "<rootDir>/config/jest/componentDiffSerializer.js"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      "^.+\\.svg$": "<rootDir>/config/jest/svgTransformer.js"
+    }
   },
   "prettier": {
     "arrowParens": "always",

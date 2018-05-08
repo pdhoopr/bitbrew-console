@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders DOM for the header 1`] = `
+<styled.header>
+  <styled.div>
+    <styled.svg />
+  </styled.div>
+</styled.header>
+`;

@@ -21,14 +21,15 @@ We officially support the last 2 versions of each browser, meaning when a new ve
 This app uses a few pieces of tech worth highlighting:
 
 * [React](https://reactjs.org/) powers the app.
+* [mobx-state-tree](https://github.com/mobxjs/mobx-state-tree) is used for state management.
 * [styled-components](https://www.styled-components.com/) are used to write styles.
 
 Other noteable tooling includes:
 
 * [Browserslist](https://github.com/ai/browserslist) keeps a centralized list of supported browsers that can be accessed across tools.
 * [Babel](http://babeljs.io/) compiles future JavaScript to current, well-supported JavaScript.
-* [ESLint](https://eslint.org/) + [stylelint](https://stylelint.io/) check for errors and consistent code style.
-* [Jest](https://facebook.github.io/jest/) is used for testing.
+* [ESLint](https://eslint.org/) and [stylelint](https://stylelint.io/) check for errors and consistent code style.
+* [Jest](https://facebook.github.io/jest/), [react-testing-library](https://github.com/kentcdodds/react-testing-library), and [react-test-renderer](https://reactjs.org/docs/shallow-renderer.html) are used for testing.
 * [Prettier](https://prettier.io/) automatically formats a variety of file types, allowing for consistent code formatting throughout the project.
 * [webpack](https://webpack.js.org/) builds the app.
 

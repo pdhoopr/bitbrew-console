@@ -1,5 +1,7 @@
 module.exports = function configureBabel() {
-  const isTest = process.env.NODE_ENV === 'test';
+  const { NODE_ENV } = process.env;
+  const isDev = NODE_ENV === 'development';
+  const isTest = NODE_ENV === 'test';
   return {
     presets: [
       [
@@ -20,7 +22,12 @@ module.exports = function configureBabel() {
     ],
     plugins: [
       '@babel/plugin-proposal-class-properties',
-      'babel-plugin-styled-components',
+      [
+        'babel-plugin-styled-components',
+        {
+          displayName: isDev,
+        },
+      ],
     ],
   };
 };

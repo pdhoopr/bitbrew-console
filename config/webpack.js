@@ -32,6 +32,11 @@ module.exports = {
         use: ['babel-loader'],
         include: [folders.src],
       },
+      {
+        test: /\.svg$/,
+        use: ['svgr/webpack'],
+        include: [folders.src],
+      },
     ],
   },
   plugins: [

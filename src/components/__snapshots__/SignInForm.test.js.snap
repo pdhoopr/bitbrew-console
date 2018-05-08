@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders DOM for the sign in form 1`] = `
+<UNDEFINED>
+  <styled.form
+    data-testid="sign-in-form"
+    noValidate={true}
+    onSubmit={[MockFunction]}
+  >
+    <styled.h1>
+      Sign In
+    </styled.h1>
+    <styled.label
+      htmlFor="accessToken"
+    >
+      <span>
+        Access Token
+      </span>
+      <styled.input
+        id="accessToken"
+        onChange={[MockFunction]}
+        type="text"
+        value="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MjUxMTUzNTAsImV4cCI6MTU1NjY1MTM1MCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSJ9.4O-W8aeOOUFU8fkGTAFaAu9D9nK_l61yPomNG1Qkny8"
+      />
+    </styled.label>
+    <styled.div
+      justifyContent="flex-end"
+    >
+      <styled.button>
+        Sign in
+      </styled.button>
+    </styled.div>
+  </styled.form>
+  <styled.p>
+    Not a BitBrew customer yet? 
+    <styled.a
+      href="mailto:hello@bitbrew.com"
+    >
+      Contact us
+    </styled.a>
+    .
+  </styled.p>
+</UNDEFINED>
+`;

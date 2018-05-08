@@ -1,7 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<App /> renders DOM for app 1`] = `
-<h1>
-  BitBrew Console
-</h1>
+exports[`renders DOM for the app when signed out 1`] = `
+<UNDEFINED>
+  <Header />
+  <styled.main>
+    <SignInForm
+      data={
+        Object {
+          "accessToken": "",
+        }
+      }
+    />
+  </styled.main>
+  <Footer />
+</UNDEFINED>
+`;
+
+exports[`renders different DOM for the app when signed in 1`] = `
+Component Diff:
+- <BaseComponent />
++ <CompareComponent />
+
+  <UNDEFINED>
+    <Header />
+    <styled.main>
+-     <SignInForm
+-       data={
+-         Object {
+-           "accessToken": "",
+-         }
+-       }
+-     />
++     <styled.div>
++       <styled.button
++         onClick={[Function mockConstructor]}
++       >
++         Sign out
++       </styled.button>
++     </styled.div>
+    </styled.main>
+    <Footer />
+  </UNDEFINED>
 `;

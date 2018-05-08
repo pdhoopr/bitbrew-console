@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders DOM for the footer 1`] = `
+<styled.footer>
+  <styled.ul>
+    <styled.li>
+      © 2018 BitBrew, Inc.
+    </styled.li>
+    <styled.li>
+      <styled.a
+        href="http://docs.hub.bitbrew.com/v1.3/reference#authentication"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        API Documentation
+      </styled.a>
+    </styled.li>
+    <styled.li>
+      <styled.a
+        href="http://docs.hub.bitbrew.com/v1.3/reference"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Event Catalog
+      </styled.a>
+    </styled.li>
+    <styled.li>
+      <styled.a
+        href="https://help.bitbrew.com/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Help
+      </styled.a>
+    </styled.li>
+  </styled.ul>
+</styled.footer>
+`;
