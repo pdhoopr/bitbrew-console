@@ -17,7 +17,6 @@ injectGlobal`
       Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
       'Segoe UI Symbol';
     --size-8: 0.5rem;
-    --size-12: 0.75rem;
     --size-14: 0.875rem;
     --size-16: 1rem;
     --size-20: 1.25rem;
@@ -27,6 +26,7 @@ injectGlobal`
     --size-40: 2.5rem;
     --size-128: 8rem;
     --size-320: 20rem;
+    --size-960: 60rem;
     --weight-normal: 400;
     --weight-bold: 500;
   }

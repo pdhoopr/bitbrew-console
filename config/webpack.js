@@ -88,6 +88,14 @@ module.exports = {
       errors: true,
     },
     port,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:9000/v2',
+        pathRewrite: {
+          '^/api': '',
+        },
+      },
+    },
     publicPath: '/',
     quiet: true,
     watchContentBase: true,

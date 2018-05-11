@@ -1,6 +1,6 @@
+import { fixtures } from 'bitbrew-test-helpers';
 import { getSnapshot } from 'mobx-state-tree';
-import { fixtures } from '../../test';
-import SignIn from './SignIn';
+import SignIn from '../SignIn';
 
 test('initializes sign in with the default values', () => {
   const model = SignIn.create();
@@ -15,16 +15,17 @@ test('initializes sign in with the defined values', () => {
   expect(model).toMatchObject(data);
 });
 
-test('updates the value of an individual piece of sign in data', () => {
+test('updates the value of the access token', () => {
+  const token = fixtures.accessToken;
   const model = SignIn.create();
-  expect(model.accessToken).not.toBe(fixtures.accessToken);
+  expect(model.accessToken).not.toBe(token);
   model.update({
     currentTarget: {
       id: 'accessToken',
-      value: fixtures.accessToken,
+      value: token,
     },
   });
-  expect(model.accessToken).toBe(fixtures.accessToken);
+  expect(model.accessToken).toBe(token);
 });
 
 test('submits sign in data to the callback defined in the environment', () => {

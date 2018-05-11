@@ -2,11 +2,12 @@ import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import Button from '../styles/Button';
-import Flex from '../styles/Flex';
-import Link from '../styles/Link';
+import SignIn from '../models/SignIn';
+import { RaisedButton } from '../styles/Buttons';
+import { FlexEnd } from '../styles/Flexboxes';
+import { Input } from '../styles/Inputs';
 
-const Element = styled.form`
+const Wrapper = styled.form`
   background-color: var(--color-white);
   border-radius: var(--corner-radius);
   box-shadow: var(--elevation-low);
@@ -28,68 +29,42 @@ const Label = styled.label`
   display: block;
   font-weight: var(--weight-bold);
   margin-bottom: var(--size-16);
-`;
 
-const Input = styled.input`
-  border-radius: var(--corner-radius);
-  border: 1px solid var(--color-medium-grey);
-  color: var(--color-black);
-  display: block;
-  font-family: var(--font-roboto);
-  font-size: var(--size-14);
-  line-height: var(--size-20);
-  padding: calc(var(--size-8) - 1px) var(--size-16);
-  width: 100%;
-
-  ${/* sc-selector */ Label} & {
+  & ${/* sc-selector */ Input} {
     margin-top: var(--size-8);
   }
 `;
 
-const SignInButton = Button.extend`
-  background-color: var(--color-green);
-  color: var(--color-white);
-`;
+class SignInForm extends React.Component {
+  values = SignIn.create({}, { onSubmit: this.props.signIn });
 
-const ContactUs = styled.p`
-  color: var(--color-dark-grey);
-  margin-top: var(--size-32);
-  text-align: center;
-  width: 100%;
-`;
-
-function SignInForm({ data }) {
-  return (
-    <>
-      <Element onSubmit={data.submit} noValidate data-testid="sign-in-form">
+  render() {
+    return (
+      <Wrapper
+        onSubmit={this.values.submit}
+        noValidate
+        data-testid="sign-in-form"
+      >
         <Title>Sign In</Title>
         <Label htmlFor="accessToken">
           <span>Access Token</span>
           <Input
             id="accessToken"
-            value={data.accessToken}
-            onChange={data.update}
+            value={this.values.accessToken}
+            onChange={this.values.update}
             type="text"
           />
         </Label>
-        <Flex justifyContent="flex-end">
-          <SignInButton>Sign in</SignInButton>
-        </Flex>
-      </Element>
-      <ContactUs>
-        Not a BitBrew customer yet?&nbsp;
-        <Link href="mailto:hello@bitbrew.com">Contact us</Link>.
-      </ContactUs>
-    </>
-  );
+        <FlexEnd>
+          <RaisedButton>Sign in</RaisedButton>
+        </FlexEnd>
+      </Wrapper>
+    );
+  }
 }
 
 SignInForm.propTypes = {
-  data: PropTypes.shape({
-    accessToken: PropTypes.string.isRequired,
-    submit: PropTypes.func.isRequired,
-    update: PropTypes.func.isRequired,
-  }).isRequired,
+  signIn: PropTypes.func.isRequired,
 };
 
 export default observer(SignInForm);

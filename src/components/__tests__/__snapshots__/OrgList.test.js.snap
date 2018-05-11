@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders DOM for the org list without any orgs 1`] = `
+<UNDEFINED>
+  <styled.label
+    htmlFor="search"
+  >
+    <styled.svg />
+    <styled.input
+      id="search"
+      onChange={[Function]}
+      placeholder="Search by organization name"
+      type="search"
+      value=""
+    />
+  </styled.label>
+</UNDEFINED>
+`;
+
+exports[`renders different DOM for the org list with orgs 1`] = `
+Diff:
+- <BaseComponent />
++ <CompareComponent />
+
+@@ -11,4 +11,25 @@
+        value=""
+      />
+    </styled.label>
++   <styled.section>
++     <styled.h2
++       data-testid="org-name"
++     >
++       Danlaw
++     </styled.h2>
++   </styled.section>
++   <styled.section>
++     <styled.h2
++       data-testid="org-name"
++     >
++       Azuga
++     </styled.h2>
++   </styled.section>
++   <styled.section>
++     <styled.h2
++       data-testid="org-name"
++     >
++       BitBrew
++     </styled.h2>
++   </styled.section>
+  </UNDEFINED>
+`;

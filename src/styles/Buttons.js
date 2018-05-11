@@ -1,12 +1,9 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export default styled.button`
+const baseStyles = css`
   background: none;
-  background-color: var(--color-white);
   border: none;
   border-radius: var(--corner-radius);
-  box-shadow: var(--elevation-low);
-  color: var(--color-black);
   cursor: pointer;
   font-family: var(--font-roboto);
   font-size: var(--size-14);
@@ -19,4 +16,16 @@ export default styled.button`
   &:hover {
     opacity: 0.8;
   }
+`;
+
+export const RaisedButton = styled.button`
+  ${baseStyles};
+  color: var(--color-white);
+  background-color: var(--color-green);
+  box-shadow: var(--elevation-low);
+`;
+
+export const TextButton = styled.button`
+  ${baseStyles};
+  color: inherit;
 `;

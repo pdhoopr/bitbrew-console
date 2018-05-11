@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initializes search with the default values 1`] = `
+Object {
+  "query": "",
+}
+`;

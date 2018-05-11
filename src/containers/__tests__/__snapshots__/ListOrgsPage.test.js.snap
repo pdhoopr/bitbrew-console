@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders DOM for the list orgs page 1`] = `
+<UNDEFINED>
+  <styled.header>
+    <styled.div>
+      <styled.div>
+        <styled.svg />
+        <styled.button
+          onClick={[MockFunction]}
+        >
+          Sign out
+        </styled.button>
+      </styled.div>
+      <styled.h1>
+        Welcome!
+      </styled.h1>
+      <styled.p>
+        Use the Dashboard to manage your data pipeline.
+      </styled.p>
+    </styled.div>
+  </styled.header>
+  <styled.main>
+    <styled.div>
+      <OrgList
+        orgs={Array []}
+      />
+    </styled.div>
+  </styled.main>
+  <Footer />
+</UNDEFINED>
+`;

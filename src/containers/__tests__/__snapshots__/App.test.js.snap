@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders DOM for the app when signed out 1`] = `<inject-SignInPage />`;
+
+exports[`renders different DOM for the app when signed in 1`] = `
+Diff:
+- <BaseComponent />
++ <CompareComponent />
+
+- <inject-SignInPage />
++ <inject-ListOrgsPage />
+`;

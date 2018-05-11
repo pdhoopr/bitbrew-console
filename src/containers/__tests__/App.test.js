@@ -1,31 +1,36 @@
+import axios from 'axios';
+import { diffComponents, fixtures, shallow } from 'bitbrew-test-helpers';
 import { Provider } from 'mobx-react';
 import React from 'react';
 import { Simulate, render } from 'react-testing-library';
-import { fixtures, getComponentDiff, shallow } from '../../test';
-import Store from '../models/Store';
-import ConnectedApp from './App';
+import Store from '../../models/Store';
+import ConnectedApp from '../App';
 
 const App = ConnectedApp.wrappedComponent;
 
+beforeEach(() => {
+  localStorage.clear();
+  axios.reset();
+});
+
 test('renders DOM for the app when signed out', () => {
-  const dom = shallow(
-    <App isSignedIn={false} signIn={jest.fn()} signOut={jest.fn()} />,
-  );
+  const dom = shallow(<App isSignedIn={false} />);
   expect(dom).toMatchSnapshot();
 });
 
 test('renders different DOM for the app when signed in', () => {
-  const base = shallow(
-    <App isSignedIn={false} signIn={jest.fn()} signOut={jest.fn()} />,
-  );
-  const compare = shallow(
-    <App isSignedIn signIn={jest.fn()} signOut={jest.fn()} />,
-  );
-  const diff = getComponentDiff(base, compare);
+  const base = shallow(<App isSignedIn={false} />);
+  const compare = shallow(<App isSignedIn />);
+  const diff = diffComponents(base, compare);
   expect(diff).toMatchSnapshot();
 });
 
-test('allows signing in and out of the app', () => {
+test('allows signing in and out of the app', async () => {
+  axios.api.get.mockResolvedValueOnce({
+    data: {
+      items: [],
+    },
+  });
   const { getByLabelText, getByTestId, getByText } = render(
     <Provider store={Store.create()}>
       <ConnectedApp />
@@ -36,6 +41,7 @@ test('allows signing in and out of the app', () => {
   accessToken.value = fixtures.accessToken;
   Simulate.change(accessToken);
   Simulate.submit(getByTestId('sign-in-form'));
+  expect(getByText('Welcome!')).toBeDefined();
   const signOut = getByText('Sign out');
   expect(signOut).toBeDefined();
   Simulate.click(signOut);

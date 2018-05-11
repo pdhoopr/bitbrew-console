@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders DOM for the sign in form 1`] = `
+<styled.form
+  data-testid="sign-in-form"
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <styled.h1>
+    Sign In
+  </styled.h1>
+  <styled.label
+    htmlFor="accessToken"
+  >
+    <span>
+      Access Token
+    </span>
+    <styled.input
+      id="accessToken"
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+  </styled.label>
+  <styled.div>
+    <styled.button>
+      Sign in
+    </styled.button>
+  </styled.div>
+</styled.form>
+`;

@@ -6,8 +6,7 @@ export default types
   })
   .actions((self) => ({
     update(event) {
-      const { id, value } = event.currentTarget;
-      self[id] = value;
+      self.accessToken = event.currentTarget.value;
     },
     submit(event) {
       event.preventDefault();

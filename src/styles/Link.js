@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export default styled.a`
   border-bottom: 1px solid transparent;
-  color: var(--color-green);
+  color: inherit;
   cursor: pointer;
   text-decoration: none;
   transition: border-bottom-color var(--duration-short),
@@ -10,5 +10,6 @@ export default styled.a`
 
   &:hover {
     border-bottom-color: currentColor;
+    color: var(--color-green);
   }
 `;
