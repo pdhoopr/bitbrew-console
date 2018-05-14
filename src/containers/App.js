@@ -4,14 +4,13 @@ import connect from '../utils/connect';
 import ListOrgsPage from './ListOrgsPage';
 import SignInPage from './SignInPage';
 
-function App({ isSignedIn }) {
-  return isSignedIn ? <ListOrgsPage /> : <SignInPage />;
-}
+const App = ({ isSignedIn }) =>
+  isSignedIn ? <ListOrgsPage /> : <SignInPage />;
 
 App.propTypes = {
   isSignedIn: PropTypes.bool.isRequired,
 };
 
-export default connect(App, (store) => ({
+export default connect(App, store => ({
   isSignedIn: store.isSignedIn,
 }));

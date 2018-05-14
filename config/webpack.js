@@ -5,23 +5,25 @@ const CopyPlugin = require('copy-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const HtmlPlugin = require('html-webpack-plugin');
 const ip = require('ip');
+const path = require('path');
 const webpack = require('webpack');
 const { name } = require('../package.json');
-const { files, folders } = require('./paths');
 
-const { API_ENV, NODE_ENV } = process.env;
 const mode = 'development';
+const rootFolder = path.resolve(__dirname, '..');
+const distFolder = path.resolve(rootFolder, 'dist');
+const srcFolder = path.resolve(rootFolder, 'src');
+const staticFolder = path.resolve(rootFolder, 'static');
+const htmlFile = path.resolve(staticFolder, 'index.html');
 const port = 4321;
-
-function createUrl(domain = 'localhost') {
-  return `http://${domain}:${port}`;
-}
+const localUrl = `http://localhost:${port}`;
+const networkUrl = `http://${ip.address()}:${port}`;
 
 module.exports = {
   mode,
   output: {
     filename: '[name].js',
-    path: folders.dist,
+    path: distFolder,
     pathinfo: true,
     publicPath: '/',
   },
@@ -30,25 +32,25 @@ module.exports = {
       {
         test: /\.js$/,
         use: ['babel-loader'],
-        include: [folders.src],
+        include: [srcFolder],
       },
       {
         test: /\.svg$/,
         use: ['svgr/webpack'],
-        include: [folders.src],
+        include: [srcFolder],
       },
     ],
   },
   plugins: [
     new CaseSensitivePathsPlugin(),
-    new CleanPlugin([folders.dist], {
-      root: folders.root,
+    new CleanPlugin([distFolder], {
+      root: rootFolder,
       verbose: false,
     }),
     new CopyPlugin([
       {
-        from: folders.static,
-        to: folders.dist,
+        from: staticFolder,
+        to: distFolder,
         ignore: 'index.html',
         flatten: true,
       },
@@ -58,20 +60,20 @@ module.exports = {
         messages: [
           [
             `You can now view ${chalk.bold(name)} in the browser.\n`,
-            `\t${chalk.bold('Local:')} ${createUrl()}`,
-            `\t${chalk.bold('On your network:')} ${createUrl(ip.address())}`,
+            `\t${chalk.bold('Local:')} ${localUrl}`,
+            `\t${chalk.bold('On your network:')} ${networkUrl}`,
           ].join('\n'),
         ],
         notes: ['Note that the development build is not optimized.'],
       },
     }),
     new HtmlPlugin({
-      template: files.indexHtml,
+      template: htmlFile,
     }),
     new webpack.DefinePlugin({
       'process.env': {
-        API_ENV: JSON.stringify(API_ENV || mode),
-        NODE_ENV: JSON.stringify(NODE_ENV || mode),
+        API_ENV: JSON.stringify(process.env.API_ENV || mode),
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV || mode),
       },
     }),
     new webpack.HotModuleReplacementPlugin(),
@@ -79,7 +81,7 @@ module.exports = {
   devServer: {
     clientLogLevel: 'none',
     compress: true,
-    contentBase: folders.static,
+    contentBase: staticFolder,
     historyApiFallback: true,
     host: '0.0.0.0',
     hot: true,

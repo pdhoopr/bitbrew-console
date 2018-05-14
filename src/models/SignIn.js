@@ -4,7 +4,7 @@ export default types
   .model('SignIn', {
     accessToken: types.optional(types.string, ''),
   })
-  .actions((self) => ({
+  .actions(self => ({
     update(event) {
       self.accessToken = event.currentTarget.value;
     },

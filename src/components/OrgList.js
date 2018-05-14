@@ -39,10 +39,8 @@ const Title = styled.h2`
   line-height: var(--size-32);
 `;
 
-function searchByOrgName(orgs) {
-  return (query) =>
-    orgs.filter((org) => new RegExp(query, 'i').test(org.properName));
-}
+const searchByOrgName = orgs => query =>
+  orgs.filter(org => new RegExp(query, 'i').test(org.properName));
 
 class OrgList extends React.Component {
   search = Search.create({}, { onSearch: searchByOrgName(this.props.orgs) });
@@ -60,7 +58,7 @@ class OrgList extends React.Component {
             placeholder="Search by organization name"
           />
         </SearchBar>
-        {this.search.results.map((org) => (
+        {this.search.results.map(org => (
           <Section key={org.id}>
             <Title data-testid="org-name">{org.properName}</Title>
           </Section>

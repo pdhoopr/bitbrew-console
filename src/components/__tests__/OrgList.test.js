@@ -27,10 +27,10 @@ test('can filter the org list with a case-insensitive search query', async () =>
   search.value = query;
   Simulate.change(search);
   const allOrgNames = getAllByTestId('org-name').map(
-    (orgName) => orgName.textContent,
+    orgName => orgName.textContent,
   );
   expect(allOrgNames.length).toBe(results.length);
-  results.forEach((result) => {
+  results.forEach(result => {
     expect(allOrgNames).toContain(result.properName);
   });
 });

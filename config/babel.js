@@ -1,4 +1,4 @@
-module.exports = function configureBabel() {
+module.exports = () => {
   const { NODE_ENV } = process.env;
   const isDev = NODE_ENV === 'development';
   const isTest = NODE_ENV === 'test';

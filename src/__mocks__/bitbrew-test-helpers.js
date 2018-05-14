@@ -1,7 +1,7 @@
 import diff from 'jest-diff';
 import ShallowRenderer from 'react-test-renderer/shallow';
 
-export function diffComponents(baseComponent, compareComponent) {
+export const diffComponents = (baseComponent, compareComponent) => {
   const changes = diff(baseComponent, compareComponent, {
     aAnnotation: `<BaseComponent />`,
     bAnnotation: `<CompareComponent />`,
@@ -9,13 +9,13 @@ export function diffComponents(baseComponent, compareComponent) {
     expand: false,
   });
   return `Diff:\n${changes}`;
-}
+};
 
-export function shallow(component) {
+export const shallow = component => {
   const renderer = new ShallowRenderer();
   renderer.render(component);
   return renderer.getRenderOutput();
-}
+};
 
 export const fixtures = {
   accessToken:

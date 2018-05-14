@@ -1,14 +1,13 @@
 import axios from 'axios';
 
-function createApi(authHeaders) {
-  return axios.create({
+const createApi = authHeaders =>
+  axios.create({
     baseURL: '/api',
     headers: {
       'Content-Type': 'application/json',
       ...authHeaders,
     },
   });
-}
 
 let api = createApi();
 

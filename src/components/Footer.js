@@ -25,42 +25,40 @@ const ListItem = styled.li`
   }
 `;
 
-function Footer() {
-  return (
-    <Wrapper>
-      <List>
-        <ListItem>&copy; 2018 BitBrew, Inc.</ListItem>
-        <ListItem>
-          <Link
-            href="http://docs.hub.bitbrew.com/v1.3/reference#authentication"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            API Documentation
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link
-            href="http://docs.hub.bitbrew.com/v1.3/reference"
-            rel="noopener
+const Footer = () => (
+  <Wrapper>
+    <List>
+      <ListItem>&copy; 2018 BitBrew, Inc.</ListItem>
+      <ListItem>
+        <Link
+          href="http://docs.hub.bitbrew.com/v1.3/reference#authentication"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          API Documentation
+        </Link>
+      </ListItem>
+      <ListItem>
+        <Link
+          href="http://docs.hub.bitbrew.com/v1.3/reference"
+          rel="noopener
             noreferrer"
-            target="_blank"
-          >
-            Event Catalog
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link
-            href="https://help.bitbrew.com/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Help
-          </Link>
-        </ListItem>
-      </List>
-    </Wrapper>
-  );
-}
+          target="_blank"
+        >
+          Event Catalog
+        </Link>
+      </ListItem>
+      <ListItem>
+        <Link
+          href="https://help.bitbrew.com/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Help
+        </Link>
+      </ListItem>
+    </List>
+  </Wrapper>
+);
 
 export default observer(Footer);

@@ -8,14 +8,14 @@ import './styles/Global';
 
 const store = Store.create();
 
-function renderToDom(Component) {
+const renderToDom = Component => {
   ReactDOM.render(
     <Provider store={store}>
       <Component />
     </Provider>,
     document.getElementById('root'),
   );
-}
+};
 
 renderToDom(App);
 

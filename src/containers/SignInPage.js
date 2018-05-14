@@ -22,30 +22,28 @@ const ContactUs = styled.p`
   }
 `;
 
-function SignInPage({ signIn }) {
-  return (
-    <>
-      <Header>
-        <FlexCenter>
-          <Logotype />
-        </FlexCenter>
-      </Header>
-      <Content>
-        <SignInForm signIn={signIn} />
-        <ContactUs>
-          Not a BitBrew customer yet?&nbsp;
-          <Link href="mailto:hello@bitbrew.com">Contact us</Link>.
-        </ContactUs>
-      </Content>
-      <Footer />
-    </>
-  );
-}
+const SignInPage = ({ signIn }) => (
+  <>
+    <Header>
+      <FlexCenter>
+        <Logotype />
+      </FlexCenter>
+    </Header>
+    <Content>
+      <SignInForm signIn={signIn} />
+      <ContactUs>
+        Not a BitBrew customer yet?&nbsp;
+        <Link href="mailto:hello@bitbrew.com">Contact us</Link>.
+      </ContactUs>
+    </Content>
+    <Footer />
+  </>
+);
 
 SignInPage.propTypes = {
   signIn: PropTypes.func.isRequired,
 };
 
-export default connect(SignInPage, (store) => ({
+export default connect(SignInPage, store => ({
   signIn: store.signIn,
 }));

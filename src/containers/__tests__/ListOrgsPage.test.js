@@ -34,10 +34,10 @@ test('can successfully list orgs from the API', async () => {
   expect(() => getByTestId('org-name')).toThrow();
   await wait();
   const allOrgNames = getAllByTestId('org-name').map(
-    (orgName) => orgName.textContent,
+    orgName => orgName.textContent,
   );
   expect(allOrgNames.length).toBe(items.length);
-  items.forEach((item) => {
+  items.forEach(item => {
     expect(allOrgNames).toContain(item.properName);
   });
 });

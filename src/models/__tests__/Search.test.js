@@ -30,9 +30,9 @@ test('updates the value of the search query', () => {
 
 test('gets the search results using the query and a callback defined in the environment', () => {
   const env = {
-    onSearch: (query) =>
+    onSearch: query =>
       Object.values(fixtures.orgs)
-        .filter((org) =>
+        .filter(org =>
           org.properName.toLowerCase().includes(query.toLowerCase()),
         )
         .sort((a, b) => a.properName.localeCompare(b.properName)),

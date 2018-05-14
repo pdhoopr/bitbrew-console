@@ -9,12 +9,12 @@ export default types
     storageKey: types.optional(types.string, 'bitbrew-console'),
     token: types.maybe(types.string),
   })
-  .views((self) => ({
+  .views(self => ({
     get isSignedIn() {
       return !!self.token;
     },
   }))
-  .actions((self) => ({
+  .actions(self => ({
     afterCreate() {
       self.token = localStorage.getItem(self.storageKey);
     },
@@ -34,7 +34,7 @@ export default types
     listOrgs: flow(function* listOrgs() {
       const { items } = yield api.orgs.list();
       self.orgs = items
-        .map((org) => Org.create(org))
+        .map(org => Org.create(org))
         .sort((a, b) =>
           a.properName.toLowerCase().localeCompare(b.properName.toLowerCase()),
         );

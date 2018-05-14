@@ -1,17 +1,14 @@
-function getDefaults({ baseURL = '', headers = {} } = {}) {
-  return {
-    baseURL,
-    headers: {
-      common: headers,
-    },
-  };
-}
+const getDefaults = ({ baseURL = '', headers = {} } = {}) => ({
+  baseURL,
+  headers: {
+    common: headers,
+  },
+});
 
-function mockHttpMethod() {
-  return jest.fn().mockResolvedValue({
+const mockHttpMethod = () =>
+  jest.fn().mockResolvedValue({
     data: {},
   });
-}
 
 class AxiosMock {
   defaults = getDefaults();
@@ -24,7 +21,7 @@ class AxiosMock {
 class ApiMock {
   api = new AxiosMock();
 
-  create = jest.fn((config) => {
+  create = jest.fn(config => {
     this.api.defaults = getDefaults(config);
     return this.api;
   });
