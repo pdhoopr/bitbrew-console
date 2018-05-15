@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import SignIn from '../models/SignIn';
-import { RaisedButton } from '../styles/Buttons';
-import { FlexEnd } from '../styles/Flexboxes';
-import { Input } from '../styles/Inputs';
+import { RaisedButton } from './Buttons';
+import { FlexEnd } from './Flexboxes';
+import { Input } from './Inputs';
 
 const Wrapper = styled.form`
   background-color: var(--color-white);

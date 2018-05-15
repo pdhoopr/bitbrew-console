@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders DOM for the sign in page 1`] = `
-<UNDEFINED>
+<React.Fragment>
   <styled.header>
     <styled.div>
       <styled.svg />
@@ -22,5 +22,5 @@ exports[`renders DOM for the sign in page 1`] = `
     </styled.p>
   </styled.main>
   <Footer />
-</UNDEFINED>
+</React.Fragment>
 `;

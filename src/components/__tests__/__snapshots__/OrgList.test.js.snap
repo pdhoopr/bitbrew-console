@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders DOM for the org list without any orgs 1`] = `
-<UNDEFINED>
+<React.Fragment>
   <styled.label
     htmlFor="search"
   >
@@ -14,7 +14,7 @@ exports[`renders DOM for the org list without any orgs 1`] = `
       value=""
     />
   </styled.label>
-</UNDEFINED>
+</React.Fragment>
 `;
 
 exports[`renders different DOM for the org list with orgs 1`] = `
@@ -22,30 +22,36 @@ Diff:
 - <BaseComponent />
 + <CompareComponent />
 
-@@ -11,4 +11,25 @@
+@@ -12,6 +12,33 @@
         value=""
       />
     </styled.label>
-+   <styled.section>
++   <styled.section
++     key="bd006616-3bd2-4783-a84d-b0fa4ed81135"
++   >
 +     <styled.h2
 +       data-testid="org-name"
 +     >
 +       Danlaw
 +     </styled.h2>
 +   </styled.section>
-+   <styled.section>
++   <styled.section
++     key="8d9ec637-f3bb-4c46-83ee-11764d09f0b2"
++   >
 +     <styled.h2
 +       data-testid="org-name"
 +     >
 +       Azuga
 +     </styled.h2>
 +   </styled.section>
-+   <styled.section>
++   <styled.section
++     key="94d9b0ca-a758-4502-8dcd-41d883e38714"
++   >
 +     <styled.h2
 +       data-testid="org-name"
 +     >
 +       BitBrew
 +     </styled.h2>
 +   </styled.section>
-  </UNDEFINED>
+  </React.Fragment>
 `;

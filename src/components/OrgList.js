@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import SearchIcon from '../graphics/search-icon.svg';
 import Search from '../models/Search';
-import { RaisedInput } from '../styles/Inputs';
+import { RaisedInput } from './Inputs';
 
 const SearchBar = styled.label`
   display: block;

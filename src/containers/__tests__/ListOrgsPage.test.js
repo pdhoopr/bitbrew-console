@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { fixtures, shallow } from 'bitbrew-test-helpers';
+import { fixtures } from 'bitbrew-test-helpers';
+import { shallow } from 'enzyme';
 import { Provider } from 'mobx-react';
 import React from 'react';
 import { render, wait } from 'react-testing-library';

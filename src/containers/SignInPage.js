@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import Content from '../components/Content';
+import { FlexCenter } from '../components/Flexboxes';
 import Footer from '../components/Footer';
+import Header from '../components/Header';
+import Link from '../components/Link';
+import { Logotype } from '../components/Logos';
 import SignInForm from '../components/SignInForm';
-import Content from '../styles/Content';
-import { FlexCenter } from '../styles/Flexboxes';
-import Header from '../styles/Header';
-import Link from '../styles/Link';
-import { Logotype } from '../styles/Logos';
 import connect from '../utils/connect';
 
 const ContactUs = styled.p`

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders DOM for a link 1`] = `
+.c0 {
+  border-bottom: 1px solid transparent;
+  color: inherit;
+  cursor: pointer;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  -webkit-transition: border-bottom-color var(--duration-short),color var(--duration-short);
+  transition: border-bottom-color var(--duration-short),color var(--duration-short);
+}
+
+.c0:hover {
+  border-bottom-color: currentColor;
+  color: var(--color-green);
+}
+
+<a
+  className="c0"
+  href="https://bitbrew.com"
+/>
+`;

@@ -1,4 +1,4 @@
-import { shallow } from 'bitbrew-test-helpers';
+import { shallow } from 'enzyme';
 import React from 'react';
 import Footer from '../Footer';
 

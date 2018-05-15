@@ -9,7 +9,7 @@ module.exports = () => {
         {
           modules: isTest ? 'commonjs' : false,
           targets: isTest ? { node: 'current' } : {},
-          useBuiltIns: 'entry',
+          useBuiltIns: 'usage',
         },
       ],
       [

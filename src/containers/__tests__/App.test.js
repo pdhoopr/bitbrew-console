@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { diffComponents, fixtures, shallow } from 'bitbrew-test-helpers';
+import { diffComponents, fixtures } from 'bitbrew-test-helpers';
+import { shallow } from 'enzyme';
 import { Provider } from 'mobx-react';
 import React from 'react';
 import { Simulate, render } from 'react-testing-library';
@@ -19,9 +20,9 @@ test('renders DOM for the app when signed out', () => {
 });
 
 test('renders different DOM for the app when signed in', () => {
-  const base = shallow(<App isSignedIn={false} />);
-  const compare = shallow(<App isSignedIn />);
-  const diff = diffComponents(base, compare);
+  const base = <App isSignedIn={false} />;
+  const comp = <App isSignedIn />;
+  const diff = diffComponents(base, comp);
   expect(diff).toMatchSnapshot();
 });
 

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 import styled from 'styled-components';
-import Link from '../styles/Link';
+import Link from './Link';
 
 const Wrapper = styled.footer`
   margin-bottom: var(--size-32);

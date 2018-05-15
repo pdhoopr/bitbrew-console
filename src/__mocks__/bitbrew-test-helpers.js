@@ -1,20 +1,37 @@
+import { shallow } from 'enzyme';
+import enzymeSerializer from 'enzyme-to-json/serializer';
 import diff from 'jest-diff';
-import ShallowRenderer from 'react-test-renderer/shallow';
+import { addSerializer, getSerializers, utils } from 'jest-snapshot';
+import styledSerializer from 'jest-styled-components/src/styleSheetSerializer';
+import stripAnsi from 'strip-ansi';
+
+const DIFF_HEADER = 'Diff:\n';
 
 export const diffComponents = (baseComponent, compareComponent) => {
-  const changes = diff(baseComponent, compareComponent, {
+  const serializers = getSerializers();
+  [styledSerializer, enzymeSerializer].forEach(serializer => {
+    if (!serializers.includes(serializer)) {
+      addSerializer(serializer);
+    }
+  });
+  const base = `${utils.serialize(shallow(baseComponent))}\n`;
+  const compare = `${utils.serialize(shallow(compareComponent))}\n`;
+  const changes = diff(base, compare, {
     aAnnotation: `<BaseComponent />`,
     bAnnotation: `<CompareComponent />`,
     contextLines: 3,
     expand: false,
   });
-  return `Diff:\n${changes}`;
+  return `${DIFF_HEADER}${changes}`;
 };
 
-export const shallow = component => {
-  const renderer = new ShallowRenderer();
-  renderer.render(component);
-  return renderer.getRenderOutput();
+export const diffSerializer = {
+  test(value) {
+    return typeof value === 'string' && value.startsWith(DIFF_HEADER);
+  },
+  print(value) {
+    return stripAnsi(value).trim();
+  },
 };
 
 export const fixtures = {

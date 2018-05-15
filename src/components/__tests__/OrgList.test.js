@@ -1,4 +1,5 @@
-import { diffComponents, fixtures, shallow } from 'bitbrew-test-helpers';
+import { diffComponents, fixtures } from 'bitbrew-test-helpers';
+import { shallow } from 'enzyme';
 import React from 'react';
 import { Simulate, render } from 'react-testing-library';
 import OrgList from '../OrgList';
@@ -9,9 +10,9 @@ test('renders DOM for the org list without any orgs', () => {
 });
 
 test('renders different DOM for the org list with orgs', () => {
-  const base = shallow(<OrgList orgs={[]} />);
-  const compare = shallow(<OrgList orgs={Object.values(fixtures.orgs)} />);
-  const diff = diffComponents(base, compare);
+  const base = <OrgList orgs={[]} />;
+  const comp = <OrgList orgs={Object.values(fixtures.orgs)} />;
+  const diff = diffComponents(base, comp);
   expect(diff).toMatchSnapshot();
 });
 

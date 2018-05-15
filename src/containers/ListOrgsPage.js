@@ -2,13 +2,13 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { TextButton } from '../components/Buttons';
+import Content from '../components/Content';
+import { FlexBetween } from '../components/Flexboxes';
 import Footer from '../components/Footer';
+import Header from '../components/Header';
+import { Logomark } from '../components/Logos';
 import OrgList from '../components/OrgList';
-import { TextButton } from '../styles/Buttons';
-import Content from '../styles/Content';
-import { FlexBetween } from '../styles/Flexboxes';
-import Header from '../styles/Header';
-import { Logomark } from '../styles/Logos';
 import connect from '../utils/connect';
 
 const WelcomeHeader = Header.extend`
