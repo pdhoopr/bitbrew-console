@@ -1,9 +1,10 @@
 import { Provider } from 'mobx-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactModal from 'react-modal';
 import { injectGlobal } from 'styled-components';
-import App from './containers/App';
 import Store from './models/Store';
+import IndexPage from './pages/IndexPage';
 import './utils/cssVariables';
 
 // eslint-disable-next-line no-unused-expressions
@@ -39,18 +40,20 @@ injectGlobal`
 const store = Store.create();
 
 const renderToDom = Component => {
+  const rootElement = document.getElementById('root');
+  ReactModal.setAppElement(rootElement);
   ReactDOM.render(
     <Provider store={store}>
       <Component />
     </Provider>,
-    document.getElementById('root'),
+    rootElement,
   );
 };
 
-renderToDom(App);
+renderToDom(IndexPage);
 
 if (module.hot) {
-  module.hot.accept('./containers/App', () => {
-    renderToDom(App);
+  module.hot.accept('./pages/IndexPage', () => {
+    renderToDom(IndexPage);
   });
 }

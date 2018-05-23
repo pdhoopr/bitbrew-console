@@ -1,5 +1,11 @@
 import styled, { css } from 'styled-components';
 
+export const Label = styled.label`
+  display: block;
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--size-16);
+`;
+
 export const baseStyles = css`
   border-radius: var(--corner-radius);
   color: var(--color-black);
@@ -17,7 +23,11 @@ export const baseStyles = css`
 export const Input = styled.input`
   ${baseStyles};
   border: 1px solid var(--color-medium-grey);
-  padding: calc(var(--size-8) - 1px) var(--size-16);
+  padding: var(--size-7) var(--size-16);
+
+  ${/* sc-selector */ Label} & {
+    margin-top: var(--size-8);
+  }
 `;
 
 export const RaisedInput = styled.input`

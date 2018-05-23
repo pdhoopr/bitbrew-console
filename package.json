@@ -25,12 +25,14 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0-beta.47",
     "axios": "^0.18.0",
-    "mobx": "^4.2.1",
+    "mobx": "^4.3.0",
     "mobx-react": "^5.1.2",
     "mobx-state-tree": "^2.0.5",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
+    "react-modal": "^3.4.4",
+    "react-router-dom": "^4.2.2",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
@@ -40,37 +42,37 @@
     "@babel/preset-react": "^7.0.0-beta.47",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^8.2.3",
-    "babel-jest": "^22.4.3",
-    "babel-loader": "^8.0.0-beta.2",
+    "babel-jest": "^22.4.4",
+    "babel-loader": "^8.0.0-beta.3",
     "babel-plugin-styled-components": "^1.5.1",
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
     "chalk": "^2.4.1",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.1",
-    "cross-env": "^5.1.5",
+    "cross-env": "^5.1.6",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "enzyme-to-json": "^3.3.3",
+    "enzyme-to-json": "^3.3.4",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-compat": "^2.2.0",
-    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.8.2",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^0.14.3",
     "ip": "^1.1.5",
-    "jest": "^22.4.3",
+    "jest": "^22.4.4",
     "jest-diff": "^22.4.3",
     "jest-snapshot": "^22.4.3",
     "jest-styled-components": "^5.0.1",
     "prettier": "^1.12.1",
-    "pretty-quick": "^1.4.1",
-    "react-testing-library": "^3.1.0",
+    "pretty-quick": "^1.6.0",
+    "react-testing-library": "^3.1.3",
     "strip-ansi": "^4.0.0",
-    "stylelint": "9.1.3",
+    "stylelint": "^9.2.1",
     "stylelint-config-prettier": "^3.2.0",
     "stylelint-config-standard": "^18.2.0",
     "stylelint-config-styled-components": "^0.1.1",
@@ -112,11 +114,37 @@
     },
     "rules": {
       "compat/compat": "error",
+      "jsx-a11y/anchor-has-content": [
+        "error",
+        {
+          "components": ["Link", "RaisedLink"]
+        }
+      ],
+      "jsx-a11y/anchor-is-valid": [
+        "error",
+        {
+          "components": ["Link", "RaisedLink"],
+          "specialLink": ["to"],
+          "aspects": ["noHref", "invalidHref", "preferButton"]
+        }
+      ],
+      "jsx-a11y/heading-has-content": [
+        "error",
+        {
+          "components": ["PageTitle", "SectionTitle", "ContentTitle"]
+        }
+      ],
       "no-param-reassign": [
         "error",
         {
           "ignorePropertyModificationsFor": ["self"],
           "props": true
+        }
+      ],
+      "react/forbid-prop-types": [
+        "error",
+        {
+          "forbid": ["any"]
         }
       ],
       "react/jsx-filename-extension": [

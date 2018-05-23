@@ -19,3 +19,8 @@ export const FlexEnd = styled.div`
   ${baseStyles};
   justify-content: flex-end;
 `;
+
+export const FlexStart = styled.div`
+  ${baseStyles};
+  justify-content: flex-start;
+`;

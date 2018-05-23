@@ -1,4 +1,5 @@
 import axios from 'axios';
+import urls from './urls';
 
 const createApi = authHeaders =>
   axios.create({
@@ -17,9 +18,13 @@ export default {
     api = createApi(authHeaders);
   },
   orgs: {
+    async create(data) {
+      const response = await api.post(urls.orgs, data);
+      return response.data;
+    },
     async list() {
-      const { data } = await api.get('/orgs');
-      return data;
+      const response = await api.get(urls.orgs);
+      return response.data;
     },
   },
 };

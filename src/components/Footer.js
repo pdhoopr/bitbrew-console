@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 import styled from 'styled-components';
-import Link from './Link';
+import { Link } from './Links';
 
 const Wrapper = styled.footer`
   margin-bottom: var(--size-32);
@@ -21,7 +21,7 @@ const ListItem = styled.li`
   display: inline-block;
 
   &:not(:last-of-type) {
-    margin-right: var(--size-24);
+    margin-right: var(--size-16);
   }
 `;
 
@@ -30,32 +30,17 @@ const Footer = () => (
     <List>
       <ListItem>&copy; 2018 BitBrew, Inc.</ListItem>
       <ListItem>
-        <Link
-          href="http://docs.hub.bitbrew.com/v1.3/reference#authentication"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
+        <Link to="http://docs.hub.bitbrew.com/v1.3/reference#authentication">
           API Documentation
         </Link>
       </ListItem>
       <ListItem>
-        <Link
-          href="http://docs.hub.bitbrew.com/v1.3/reference"
-          rel="noopener
-            noreferrer"
-          target="_blank"
-        >
+        <Link to="http://docs.hub.bitbrew.com/v1.3/reference">
           Event Catalog
         </Link>
       </ListItem>
       <ListItem>
-        <Link
-          href="https://help.bitbrew.com/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Help
-        </Link>
+        <Link to="https://help.bitbrew.com/">Help</Link>
       </ListItem>
     </List>
   </Wrapper>
