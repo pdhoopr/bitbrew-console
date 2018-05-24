@@ -1,4 +1,3 @@
-import { types } from 'mobx-state-tree';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { IconButton, RaisedButton } from '../components/Buttons';
@@ -8,7 +7,7 @@ import { CloseIcon } from '../components/Icons';
 import { Input, Label } from '../components/Inputs';
 import Modal from '../components/Modal';
 import { PageTitle } from '../components/Titles';
-import FormEvents from '../models/FormEvents';
+import FormValues from '../models/FormValues';
 import connect from '../utils/connect';
 import urls from '../utils/urls';
 
@@ -25,26 +24,28 @@ class CreateOrgPage extends React.Component {
     this.props.history.push(urls.orgs);
   };
 
-  tryToCreateOrg = async formData => {
-    try {
-      const { createOrg, signOut } = this.props;
-      await createOrg(formData);
-      this.goToOrgs();
-      signOut();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  formValues = types
-    .compose(
-      FormEvents,
-      types.model({
-        name: '',
-        properName: '',
-      }),
-    )
-    .create({}, { onSubmit: this.tryToCreateOrg });
+  formValues = FormValues
+    // prettier-ignore
+    .props({
+      name: '',
+      properName: '',
+    })
+    .actions(self => {
+      const component = this;
+      return {
+        async submit(event) {
+          event.preventDefault();
+          try {
+            await component.props.createOrg(self.serialized);
+            component.goToOrgs();
+            component.props.signOut();
+          } catch (error) {
+            console.log(error);
+          }
+        },
+      };
+    })
+    .create();
 
   render() {
     const pageTitle = 'New Organization';
@@ -62,7 +63,7 @@ class CreateOrgPage extends React.Component {
             <Input
               id="name"
               value={this.formValues.name}
-              onChange={this.formValues.update}
+              onChange={this.formValues.change}
               type="text"
             />
           </Label>
@@ -71,7 +72,7 @@ class CreateOrgPage extends React.Component {
             <Input
               id="properName"
               value={this.formValues.properName}
-              onChange={this.formValues.update}
+              onChange={this.formValues.change}
               type="text"
             />
           </Label>

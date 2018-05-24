@@ -12,7 +12,7 @@ import { RaisedInput } from '../components/Inputs';
 import { RaisedLink } from '../components/Links';
 import { Logomark } from '../components/Logos';
 import { PageTitle, SectionTitle } from '../components/Titles';
-import Search from '../models/Search';
+import FormValues from '../models/FormValues';
 import connect from '../utils/connect';
 import urls from '../utils/urls';
 import CreateOrgPage from './CreateOrgPage';
@@ -76,12 +76,22 @@ class ListOrgsPage extends React.Component {
     this.props.listOrgs();
   }
 
-  searchOrgsByName = query =>
-    this.props.alphabetizedOrgs.filter(org =>
-      new RegExp(query, 'i').test(org.properName),
-    );
-
-  search = Search.create({}, { onSearch: this.searchOrgsByName });
+  search = FormValues
+    // prettier-ignore
+    .props({
+      query: '',
+    })
+    .views(self => {
+      const component = this;
+      return {
+        get results() {
+          return component.props.alphabetizedOrgs.filter(org =>
+            new RegExp(self.query, 'i').test(org.properName),
+          );
+        },
+      };
+    })
+    .create();
 
   render() {
     const { signOut } = this.props;
@@ -105,9 +115,9 @@ class ListOrgsPage extends React.Component {
               <Bar htmlFor="search">
                 <Icon />
                 <Input
-                  id="search"
+                  id="query"
                   value={this.search.query}
-                  onChange={this.search.update}
+                  onChange={this.search.change}
                   type="search"
                   placeholder="Search by organization name"
                 />

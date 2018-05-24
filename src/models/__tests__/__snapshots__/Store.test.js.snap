@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`initializes the store with the default values 1`] = `
-Object {
-  "orgs": Array [],
-  "storageKey": "bitbrew-console",
-  "token": null,
-}
-`;

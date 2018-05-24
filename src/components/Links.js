@@ -18,7 +18,7 @@ AppLink.propTypes = {
   to: PropTypes.string.isRequired,
 };
 
-export const baseStyles = css`
+const baseStyles = css`
   cursor: pointer;
   text-decoration: none;
 `;

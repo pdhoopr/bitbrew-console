@@ -1,4 +1,3 @@
-import { types } from 'mobx-state-tree';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -12,7 +11,7 @@ import { Input, Label } from '../components/Inputs';
 import { Link } from '../components/Links';
 import { Logotype } from '../components/Logos';
 import { ContentTitle } from '../components/Titles';
-import FormEvents from '../models/FormEvents';
+import FormValues from '../models/FormValues';
 import connect from '../utils/connect';
 
 const Title = ContentTitle.withComponent('h1').extend`
@@ -32,14 +31,21 @@ const ContactUs = styled.p`
 `;
 
 class SignInPage extends React.Component {
-  formValues = types
-    .compose(
-      FormEvents,
-      types.model({
-        accessToken: '',
-      }),
-    )
-    .create({}, { onSubmit: this.props.signIn });
+  formValues = FormValues
+    // prettier-ignore
+    .props({
+      accessToken: '',
+    })
+    .actions(self => {
+      const component = this;
+      return {
+        submit(event) {
+          event.preventDefault();
+          component.props.signIn(self.serialized);
+        },
+      };
+    })
+    .create();
 
   render() {
     return (
@@ -57,7 +63,7 @@ class SignInPage extends React.Component {
               <Input
                 id="accessToken"
                 value={this.formValues.accessToken}
-                onChange={this.formValues.update}
+                onChange={this.formValues.change}
                 type="text"
               />
             </Label>

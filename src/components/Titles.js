@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export const baseStyles = css`
+const baseStyles = css`
   margin-bottom: 0;
   margin-top: 0;
 `;

@@ -18,9 +18,7 @@
     "lint:css": "stylelint '**/*.js'",
     "lint:js": "eslint '**/*.js'",
     "precommit": "pretty-quick --staged",
-    "start":
-      "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.js",
-    "test": "cross-env NODE_ENV=test jest"
+    "start": "webpack-dev-server --config config/webpack.js"
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0-beta.47",
@@ -29,8 +27,8 @@
     "mobx-react": "^5.1.2",
     "mobx-state-tree": "^2.0.5",
     "prop-types": "^15.6.1",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
     "react-modal": "^3.4.4",
     "react-router-dom": "^4.2.2",
     "styled-components": "^3.2.6"
@@ -40,23 +38,17 @@
     "@babel/plugin-proposal-class-properties": "^7.0.0-beta.47",
     "@babel/preset-env": "^7.0.0-beta.47",
     "@babel/preset-react": "^7.0.0-beta.47",
-    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^8.2.3",
-    "babel-jest": "^22.4.4",
     "babel-loader": "^8.0.0-beta.3",
     "babel-plugin-styled-components": "^1.5.1",
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
     "chalk": "^2.4.1",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.1",
-    "cross-env": "^5.1.6",
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "enzyme-to-json": "^3.3.4",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-compat": "^2.2.0",
+    "eslint-plugin-compat": "^2.3.0-0",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.8.2",
@@ -64,14 +56,8 @@
     "html-webpack-plugin": "^3.2.0",
     "husky": "^0.14.3",
     "ip": "^1.1.5",
-    "jest": "^22.4.4",
-    "jest-diff": "^22.4.3",
-    "jest-snapshot": "^22.4.3",
-    "jest-styled-components": "^5.0.1",
     "prettier": "^1.12.1",
     "pretty-quick": "^1.6.0",
-    "react-testing-library": "^3.1.3",
-    "strip-ansi": "^4.0.0",
     "stylelint": "^9.2.1",
     "stylelint-config-prettier": "^3.2.0",
     "stylelint-config-standard": "^18.2.0",
@@ -81,16 +67,21 @@
     "stylelint-processor-styled-components": "^1.3.1",
     "svgr": "^1.9.2",
     "webpack": "^4.8.3",
-    "webpack-cli": "^2.1.3",
+    "webpack-cli": "^2.1.4",
     "webpack-dev-server": "^3.1.4"
   },
   "browserslist": [
-    "last 2 Chrome versions",
-    "last 2 Edge versions",
-    "last 2 Firefox versions",
-    "last 2 Opera versions",
-    "last 2 Safari versions",
-    "last 2 iOS versions"
+    "last 3 Chrome versions",
+    "last 3 ChromeAndroid versions",
+    "last 3 Edge versions",
+    "last 3 Firefox versions",
+    "last 3 FirefoxAndroid versions",
+    "Firefox ESR",
+    "last 3 Opera versions",
+    "last 3 OperaMobile versions",
+    "last 3 Safari versions",
+    "last 3 iOS versions",
+    "not dead"
   ],
   "babel": {
     "presets": ["./config/babel.js"]
@@ -152,18 +143,12 @@
         {
           "extensions": [".js"]
         }
-      ]
+      ],
+      "react/no-unused-prop-types": "warn"
     },
     "overrides": [
       {
-        "files": [
-          "config/**/*.js",
-          "src/__mocks__/**/*.js",
-          "src/**/*.test.js"
-        ],
-        "env": {
-          "jest": true
-        },
+        "files": ["config/**/*.js"],
         "rules": {
           "import/no-extraneous-dependencies": [
             "error",
@@ -171,20 +156,9 @@
               "devDependencies": true
             }
           ]
-        },
-        "settings": {
-          "import/core-modules": ["bitbrew-test-helpers"]
         }
       }
     ]
-  },
-  "jest": {
-    "setupFiles": ["<rootDir>/config/jest/localStorage.js"],
-    "setupTestFrameworkScriptFile": "<rootDir>/config/jest/setupTests.js",
-    "transform": {
-      "^.+\\.js$": "babel-jest",
-      "^.+\\.svg$": "<rootDir>/config/jest/svgTransformer.js"
-    }
   },
   "prettier": {
     "singleQuote": true,
@@ -212,7 +186,12 @@
         "at-rules",
         "rules"
       ],
-      "plugin/no-unsupported-browser-features": true,
+      "plugin/no-unsupported-browser-features": [
+        true,
+        {
+          "ignore": ["viewport-units"]
+        }
+      ],
       "rule-empty-line-before": [
         "always-multi-line",
         {

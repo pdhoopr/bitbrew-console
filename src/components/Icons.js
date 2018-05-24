@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import CloseSvg from '../graphics/close-icon.svg';
 import SearchSvg from '../graphics/search-icon.svg';
 
-export const baseStyles = css`
+const baseStyles = css`
   fill: var(--color-dark-grey);
   height: var(--size-20);
   vertical-align: middle;

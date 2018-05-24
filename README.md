@@ -14,7 +14,7 @@ We aim to support most modern browsers, which currently includes:
 
 **Please note that Internet Explorer is not on this list!**
 
-We officially support the last 2 versions of each browser, meaning when a new version is released, we start supporting that version and stop supporting the 3rd to last version. The app may work in other browsers and versions, but it's not guaranteed.
+We officially support the last 3 versions of each browser listed. The app may work in other browsers and versions, but it's not guaranteed.
 
 ## Project Overview
 
@@ -29,7 +29,6 @@ Other noteable tooling includes:
 * [Browserslist](https://github.com/ai/browserslist) keeps a centralized list of supported browsers that can be accessed across tools.
 * [Babel](http://babeljs.io/) compiles future JavaScript to current, well-supported JavaScript.
 * [ESLint](https://eslint.org/) and [stylelint](https://stylelint.io/) check for errors and consistent code style.
-* [Jest](https://facebook.github.io/jest/), [react-testing-library](https://github.com/kentcdodds/react-testing-library), and [react-test-renderer](https://reactjs.org/docs/shallow-renderer.html) are used for testing.
 * [Prettier](https://prettier.io/) automatically formats a variety of file types, allowing for consistent code formatting throughout the project.
 * [webpack](https://webpack.js.org/) builds the app.
 
@@ -50,4 +49,3 @@ Once you've installed the dependencies, you can make use of the available npm sc
 * `lint:js`: Runs ESLint on all the JavaScript in the project.
 * `precommit`: Automatically runs Prettier on all files staged in Git before committing. You probably won't call this directly.
 * `start`: Starts the development version of the app. See your terminal output for URLs.
-* `test`: Runs all Jest-powered tests.

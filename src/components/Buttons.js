@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export const baseStyles = css`
+const baseStyles = css`
   background: none;
   border: none;
   border-radius: var(--corner-radius);

@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import { Provider } from 'mobx-react';
 import React from 'react';
 import ReactDOM from 'react-dom';

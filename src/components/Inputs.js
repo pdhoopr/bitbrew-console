@@ -1,12 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export const Label = styled.label`
-  display: block;
-  font-weight: var(--weight-bold);
-  margin-bottom: var(--size-16);
-`;
-
-export const baseStyles = css`
+const baseStyles = css`
   border-radius: var(--corner-radius);
   color: var(--color-black);
   display: block;
@@ -18,6 +12,12 @@ export const baseStyles = css`
   &::placeholder {
     color: var(--color-dark-grey);
   }
+`;
+
+export const Label = styled.label`
+  display: block;
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--size-16);
 `;
 
 export const Input = styled.input`

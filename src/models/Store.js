@@ -5,7 +5,7 @@ import Org from './Org';
 
 export default types
   .model('Store', {
-    orgs: types.optional(types.map(Org), {}),
+    orgs: types.optional(types.array(Org), []),
     storageKey: types.optional(types.string, 'bitbrew-console'),
     token: types.maybe(types.string),
   })
@@ -14,7 +14,7 @@ export default types
       return !!self.token;
     },
     get alphabetizedOrgs() {
-      return [...self.orgs.values()].sort((a, b) =>
+      return [...self.orgs].sort((a, b) =>
         a.properName.toLowerCase().localeCompare(b.properName.toLowerCase()),
       );
     },
@@ -37,13 +37,10 @@ export default types
       });
     }),
     createOrg: flow(function* createOrg(data) {
-      const orgData = yield api.orgs.create(data);
-      self.orgs.put(orgData);
+      yield api.orgs.create(data);
     }),
     listOrgs: flow(function* listOrgs() {
       const { items } = yield api.orgs.list();
-      items.forEach(orgData => {
-        self.orgs.put(orgData);
-      });
+      self.orgs = items;
     }),
   }));
