@@ -6,8 +6,8 @@ import urls from '../utils/urls';
 import ListOrgsPage from './ListOrgsPage';
 import SignInPage from './SignInPage';
 
-const IndexPage = ({ isSignedIn }) =>
-  isSignedIn ? (
+function IndexPage({ isSignedIn }) {
+  return isSignedIn ? (
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
@@ -19,11 +19,15 @@ const IndexPage = ({ isSignedIn }) =>
   ) : (
     <SignInPage />
   );
+}
 
 IndexPage.propTypes = {
   isSignedIn: PropTypes.bool.isRequired,
 };
 
-export default connect(IndexPage, store => ({
-  isSignedIn: store.isSignedIn,
-}));
+export default connect(
+  IndexPage,
+  store => ({
+    isSignedIn: store.isSignedIn,
+  }),
+);

@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { RaisedButton } from './Buttons';
 
-const AppLink = ({ to, ...props }) => {
+function AppLink({ to, ...props }) {
   const isInternal = /^\/(?!\/)/.test(to);
   return isInternal ? (
     <RouterLink to={to} {...props} />
@@ -12,7 +12,7 @@ const AppLink = ({ to, ...props }) => {
     // eslint-disable-next-line jsx-a11y/anchor-has-content
     <a href={to} rel="noopener noreferrer" target="_blank" {...props} />
   );
-};
+}
 
 AppLink.propTypes = {
   to: PropTypes.string.isRequired,

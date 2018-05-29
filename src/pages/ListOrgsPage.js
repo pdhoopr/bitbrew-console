@@ -146,8 +146,11 @@ ListOrgsPage.propTypes = {
   signOut: PropTypes.func.isRequired,
 };
 
-export default connect(ListOrgsPage, store => ({
-  alphabetizedOrgs: store.alphabetizedOrgs,
-  listOrgs: store.listOrgs,
-  signOut: store.signOut,
-}));
+export default connect(
+  ListOrgsPage,
+  store => ({
+    alphabetizedOrgs: store.alphabetizedOrgs,
+    listOrgs: store.listOrgs,
+    signOut: store.signOut,
+  }),
+);

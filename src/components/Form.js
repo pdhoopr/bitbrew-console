@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const AppForm = props => <form noValidate {...props} />;
+function AppForm(props) {
+  return <form noValidate {...props} />;
+}
 
 export default styled(AppForm)`
   background-color: var(--color-white);

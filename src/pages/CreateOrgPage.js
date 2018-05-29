@@ -30,21 +30,18 @@ class CreateOrgPage extends React.Component {
       name: '',
       properName: '',
     })
-    .actions(self => {
-      const component = this;
-      return {
-        async submit(event) {
-          event.preventDefault();
-          try {
-            await component.props.createOrg(self.serialized);
-            component.goToOrgs();
-            component.props.signOut();
-          } catch (error) {
-            console.log(error);
-          }
-        },
-      };
-    })
+    .actions(self => ({
+      submit: async event => {
+        event.preventDefault();
+        try {
+          await this.props.createOrg(self.serialized);
+          this.goToOrgs();
+          this.props.signOut();
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    }))
     .create();
 
   render() {
@@ -93,7 +90,10 @@ CreateOrgPage.propTypes = {
   signOut: PropTypes.func.isRequired,
 };
 
-export default connect(CreateOrgPage, store => ({
-  createOrg: store.createOrg,
-  signOut: store.signOut,
-}));
+export default connect(
+  CreateOrgPage,
+  store => ({
+    createOrg: store.createOrg,
+    signOut: store.signOut,
+  }),
+);

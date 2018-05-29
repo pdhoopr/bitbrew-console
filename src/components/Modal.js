@@ -3,15 +3,17 @@ import React from 'react';
 import ReactModal from 'react-modal';
 import styled from 'styled-components';
 
-const AppModal = ({ className, ...props }) => (
-  <ReactModal
-    bodyOpenClassName={`${className}__Body--open`}
-    className={`${className}__Content`}
-    overlayClassName={`${className}__Overlay`}
-    portalClassName={className}
-    {...props}
-  />
-);
+function AppModal({ className, ...props }) {
+  return (
+    <ReactModal
+      bodyOpenClassName={`${className}__Body--open`}
+      className={`${className}__Content`}
+      overlayClassName={`${className}__Overlay`}
+      portalClassName={className}
+      {...props}
+    />
+  );
+}
 
 AppModal.propTypes = {
   className: PropTypes.string.isRequired,

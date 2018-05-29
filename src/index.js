@@ -40,7 +40,7 @@ injectGlobal`
 
 const store = Store.create();
 
-const renderToDom = Component => {
+function renderToDom(Component) {
   const rootElement = document.getElementById('root');
   ReactModal.setAppElement(rootElement);
   ReactDOM.render(
@@ -49,7 +49,7 @@ const renderToDom = Component => {
     </Provider>,
     rootElement,
   );
-};
+}
 
 renderToDom(IndexPage);
 

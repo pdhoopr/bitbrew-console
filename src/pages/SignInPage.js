@@ -36,15 +36,12 @@ class SignInPage extends React.Component {
     .props({
       accessToken: '',
     })
-    .actions(self => {
-      const component = this;
-      return {
-        submit(event) {
-          event.preventDefault();
-          component.props.signIn(self.serialized);
-        },
-      };
-    })
+    .actions(self => ({
+      submit: event => {
+        event.preventDefault();
+        this.props.signIn(self.serialized);
+      },
+    }))
     .create();
 
   render() {
@@ -86,6 +83,9 @@ SignInPage.propTypes = {
   signIn: PropTypes.func.isRequired,
 };
 
-export default connect(SignInPage, store => ({
-  signIn: store.signIn,
-}));
+export default connect(
+  SignInPage,
+  store => ({
+    signIn: store.signIn,
+  }),
+);

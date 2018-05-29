@@ -25,25 +25,27 @@ const ListItem = styled.li`
   }
 `;
 
-const Footer = () => (
-  <Wrapper>
-    <List>
-      <ListItem>&copy; 2018 BitBrew, Inc.</ListItem>
-      <ListItem>
-        <Link to="http://docs.hub.bitbrew.com/v1.3/reference#authentication">
-          API Documentation
-        </Link>
-      </ListItem>
-      <ListItem>
-        <Link to="http://docs.hub.bitbrew.com/v1.3/reference">
-          Event Catalog
-        </Link>
-      </ListItem>
-      <ListItem>
-        <Link to="https://help.bitbrew.com/">Help</Link>
-      </ListItem>
-    </List>
-  </Wrapper>
-);
+function Footer() {
+  return (
+    <Wrapper>
+      <List>
+        <ListItem>&copy; 2018 BitBrew, Inc.</ListItem>
+        <ListItem>
+          <Link to="http://docs.hub.bitbrew.com/v1.3/reference#authentication">
+            API Documentation
+          </Link>
+        </ListItem>
+        <ListItem>
+          <Link to="http://docs.hub.bitbrew.com/v1.3/reference">
+            Event Catalog
+          </Link>
+        </ListItem>
+        <ListItem>
+          <Link to="https://help.bitbrew.com/">Help</Link>
+        </ListItem>
+      </List>
+    </Wrapper>
+  );
+}
 
 export default observer(Footer);
