@@ -1,11 +1,14 @@
 import { autorun } from 'mobx';
 import { flow, types } from 'mobx-state-tree';
 import api from '../utils/api';
+import flatMap from '../utils/flatMap';
 import Org from './Org';
+import Project from './Project';
 
 export default types
   .model('Store', {
     orgs: types.optional(types.array(Org), []),
+    projects: types.optional(types.array(Project), []),
     storageKey: types.optional(types.string, 'bitbrew-console'),
     token: types.maybe(types.string),
   })
@@ -13,9 +16,20 @@ export default types
     get isSignedIn() {
       return !!self.token;
     },
-    get alphabetizedOrgs() {
+    get alphabeticalOrgs() {
       return [...self.orgs].sort((a, b) =>
-        a.properName.toLowerCase().localeCompare(b.properName.toLowerCase()),
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+      );
+    },
+    get newestProjects() {
+      return self.orgs.reduce(
+        (hash, org) => ({
+          ...hash,
+          [org.id]: self.projects
+            .filter(project => project.orgId === org)
+            .sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+        }),
+        {},
       );
     },
   }))
@@ -40,7 +54,12 @@ export default types
       yield api.orgs.create(data);
     }),
     listOrgs: flow(function* listOrgs() {
-      const { items } = yield api.orgs.list();
-      self.orgs = items;
+      const response = yield api.orgs.list();
+      self.orgs = response.items;
+    }),
+    listProjects: flow(function* listProjects() {
+      const requests = self.orgs.map(org => api.projects.list(org.id));
+      const responses = yield Promise.all(requests);
+      self.projects = flatMap(responses, response => response.items);
     }),
   }));

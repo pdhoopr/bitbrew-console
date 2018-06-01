@@ -10,7 +10,7 @@ const baseStyles = css`
   width: 100%;
 
   &::placeholder {
-    color: var(--color-dark-grey);
+    color: var(--color-dark-gray);
   }
 `;
 
@@ -22,7 +22,7 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   ${baseStyles};
-  border: 1px solid var(--color-medium-grey);
+  border: 1px solid var(--color-medium-gray);
   padding: var(--size-7) var(--size-16);
 
   ${/* sc-selector */ Label} & {

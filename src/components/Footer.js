@@ -9,7 +9,7 @@ const Wrapper = styled.footer`
 `;
 
 const List = styled.ul`
-  color: var(--color-dark-grey);
+  color: var(--color-dark-gray);
   list-style-type: none;
   margin-bottom: 0;
   margin-top: 0;

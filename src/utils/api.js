@@ -1,31 +1,43 @@
 import axios from 'axios';
 import urls from './urls';
 
-function createApi(authHeaders) {
-  return axios.create({
-    baseURL: '/api',
-    headers: {
-      'Content-Type': 'application/json',
-      ...authHeaders,
-    },
-  });
+function newAxios({ token } = {}) {
+  const baseURL = '/api';
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  return axios.create({ baseURL, headers });
 }
 
-let api = createApi();
+const http = {
+  instance: newAxios(),
+  async request(config) {
+    const response = await this.instance.request(config);
+    return response.data;
+  },
+  get(url) {
+    const method = 'get';
+    return this.request({ method, url });
+  },
+  post(url, data) {
+    const method = 'post';
+    return this.request({ method, url, data });
+  },
+};
 
 export default {
-  configure({ token }) {
-    const authHeaders = token && { Authorization: `Bearer ${token}` };
-    api = createApi(authHeaders);
+  configure(config) {
+    http.instance = newAxios(config);
   },
   orgs: {
-    async create(data) {
-      const response = await api.post(urls.orgs, data);
-      return response.data;
+    create(data) {
+      return http.post(urls.orgs, data);
     },
-    async list() {
-      const response = await api.get(urls.orgs);
-      return response.data;
+    list() {
+      return http.get(urls.orgs);
+    },
+  },
+  projects: {
+    list(orgId) {
+      return http.get(`${urls.projects}?orgId=${orgId}`);
     },
   },
 };

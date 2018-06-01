@@ -4,9 +4,9 @@ import { injectGlobal } from 'styled-components';
 injectGlobal`
   :root {
     --color-black: #333;
-    --color-blue-grey: #eceff1;
-    --color-medium-grey: #e0e0e0;
-    --color-dark-grey: #757575;
+    --color-blue-gray: #eceff1;
+    --color-medium-gray: #e0e0e0;
+    --color-dark-gray: #757575;
     --color-green: #02ca91;
     --color-white: #fff;
     --corner-radius: 3px;
@@ -27,6 +27,7 @@ injectGlobal`
     --size-28: 1.75rem;
     --size-32: 2rem;
     --size-40: 2.5rem;
+    --size-48: 3rem;
     --size-52: 3.25rem;
     --size-56: 3.5rem;
     --size-128: 8rem;

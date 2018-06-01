@@ -1,21 +1,22 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'styled-components';
 import { IconButton, RaisedButton } from '../components/Buttons';
 import { FlexEnd, FlexStart } from '../components/Flexboxes';
 import Form from '../components/Form';
 import { CloseIcon } from '../components/Icons';
 import { Input, Label } from '../components/Inputs';
 import Modal from '../components/Modal';
-import { PageTitle } from '../components/Titles';
+import { PageTitle } from '../components/Typography';
 import FormValues from '../models/FormValues';
 import connect from '../utils/connect';
 import urls from '../utils/urls';
 
-const Header = FlexStart.extend`
+const Header = styled(FlexStart)`
   margin-bottom: var(--size-32);
 `;
 
-const Title = PageTitle.withComponent('h2').extend`
+const Title = styled(PageTitle.withComponent('h2'))`
   margin-left: var(--size-20);
 `;
 
@@ -28,7 +29,6 @@ class CreateOrgPage extends React.Component {
     // prettier-ignore
     .props({
       name: '',
-      properName: '',
     })
     .actions(self => ({
       submit: async event => {
@@ -60,15 +60,6 @@ class CreateOrgPage extends React.Component {
             <Input
               id="name"
               value={this.formValues.name}
-              onChange={this.formValues.change}
-              type="text"
-            />
-          </Label>
-          <Label htmlFor="properName">
-            Display Name
-            <Input
-              id="properName"
-              value={this.formValues.properName}
               onChange={this.formValues.change}
               type="text"
             />

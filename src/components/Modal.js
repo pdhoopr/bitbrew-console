@@ -25,7 +25,7 @@ export default styled(AppModal)`
   }
 
   &__Content {
-    background: var(--color-blue-grey);
+    background: var(--color-blue-gray);
     box-shadow: var(--elevation-high);
     bottom: 0;
     max-width: var(--size-480);

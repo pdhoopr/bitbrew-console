@@ -13,5 +13,4 @@ export default styled(AppForm)`
   margin-right: auto;
   max-width: var(--size-320);
   padding: var(--size-16) var(--size-24);
-  width: 100%;
 `;

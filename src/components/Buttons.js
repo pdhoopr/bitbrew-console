@@ -38,7 +38,7 @@ export const Button = styled.button`
   }
 `;
 
-export const IconButton = Button.extend`
+export const IconButton = styled(Button)`
   &::before {
     border-radius: 50%;
   }

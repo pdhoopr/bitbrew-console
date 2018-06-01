@@ -21,7 +21,7 @@ injectGlobal`
   }
 
   body {
-    background-color: var(--color-blue-grey);
+    background-color: var(--color-blue-gray);
     color: var(--color-black);
     font-family: var(--font-roboto);
     font-size: var(--size-14);

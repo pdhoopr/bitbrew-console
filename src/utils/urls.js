@@ -1,5 +1,6 @@
 const baseUrls = {
   orgs: '/orgs',
+  projects: '/projects',
 };
 
 const subUrls = {

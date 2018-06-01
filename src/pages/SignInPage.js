@@ -10,20 +10,17 @@ import Header from '../components/Header';
 import { Input, Label } from '../components/Inputs';
 import { Link } from '../components/Links';
 import { Logotype } from '../components/Logos';
-import { ContentTitle } from '../components/Titles';
+import { ContentTitle, Text } from '../components/Typography';
 import FormValues from '../models/FormValues';
 import connect from '../utils/connect';
 
-const Title = ContentTitle.withComponent('h1').extend`
+const Title = styled(ContentTitle.withComponent('h1'))`
   margin-bottom: var(--size-16);
 `;
 
-const ContactUs = styled.p`
-  color: var(--color-dark-grey);
-  margin-bottom: 0;
+const ContactUs = styled(Text)`
   margin-top: var(--size-32);
   text-align: center;
-  width: 100%;
 
   ${/* sc-selector */ Link} {
     color: var(--color-green);
@@ -53,7 +50,7 @@ class SignInPage extends React.Component {
           </FlexCenter>
         </Header>
         <Content>
-          <Form onSubmit={this.formValues.submit} data-testid="sign-in-form">
+          <Form onSubmit={this.formValues.submit}>
             <Title>Sign In</Title>
             <Label htmlFor="accessToken">
               Access Token
@@ -68,7 +65,7 @@ class SignInPage extends React.Component {
               <RaisedButton>Sign in</RaisedButton>
             </FlexEnd>
           </Form>
-          <ContactUs>
+          <ContactUs gray>
             Not a BitBrew customer yet?&nbsp;
             <Link to="mailto:hello@bitbrew.com">Contact us</Link>.
           </ContactUs>

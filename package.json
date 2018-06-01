@@ -28,7 +28,7 @@
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
-    "react-modal": "^3.4.4",
+    "react-modal": "^3.4.5",
     "react-router-dom": "^4.2.2",
     "styled-components": "^3.3.0"
   },
@@ -55,7 +55,7 @@
     "html-webpack-plugin": "^3.2.0",
     "husky": "^0.14.3",
     "ip": "^1.1.5",
-    "prettier": "^1.13.2",
+    "prettier": "^1.13.4",
     "pretty-quick": "^1.6.0",
     "stylelint": "^9.2.1",
     "stylelint-config-prettier": "^3.2.0",
@@ -65,7 +65,7 @@
     "stylelint-order": "^0.8.1",
     "stylelint-processor-styled-components": "^1.3.1",
     "svgr": "^1.10.0",
-    "webpack": "^4.10.1",
+    "webpack": "^4.10.2",
     "webpack-cli": "^2.1.4",
     "webpack-dev-server": "^3.1.4"
   },
