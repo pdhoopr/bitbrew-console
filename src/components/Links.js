@@ -1,6 +1,6 @@
+import { Link as RouterLink } from '@reach/router';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { RaisedButton } from './Buttons';
 

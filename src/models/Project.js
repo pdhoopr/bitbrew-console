@@ -1,6 +1,5 @@
 import { types } from 'mobx-state-tree';
-import matchesDate from '../utils/matchesDate';
-import matchesUuid from '../utils/matchesUuid';
+import { matchesDate, matchesUuid } from '../utils/tools';
 import Org from './Org';
 
 export default types.model('Project', {

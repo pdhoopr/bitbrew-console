@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Route } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '../components/Buttons';
 import Content from '../components/Content';
@@ -19,11 +18,8 @@ import {
   Text,
 } from '../components/Typography';
 import FormValues from '../models/FormValues';
-import connect from '../utils/connect';
-import formatDate from '../utils/formatDate';
-import pluralize from '../utils/pluralize';
-import urls from '../utils/urls';
-import CreateOrgPage from './CreateOrgPage';
+import { connect, localizeDate, pluralize } from '../utils/tools';
+import { newOrgPath } from '../utils/urls';
 
 const WelcomeHeader = styled(Header)`
   background-color: var(--color-black);
@@ -129,7 +125,7 @@ class ListOrgsPage extends React.Component {
     .create();
 
   render() {
-    const { alphabeticalOrgs, signOut } = this.props;
+    const { children, newestOrgs, signOut } = this.props;
     return (
       <>
         <WelcomeHeader>
@@ -157,19 +153,18 @@ class ListOrgsPage extends React.Component {
                   placeholder="Search by project name"
                 />
               </Bar>
-              <RaisedLink to={urls.newOrg}>New</RaisedLink>
+              <RaisedLink to={newOrgPath}>New</RaisedLink>
             </SearchHeader>
-            {alphabeticalOrgs.map(org => {
+            {newestOrgs.map(org => {
               const projects = this.search.getResults(org);
               const showOrg = this.search.isEmpty || projects.length > 0;
               return (
                 showOrg && (
                   <OrgSection key={org.id}>
+                    <SectionTitle>{org.name}</SectionTitle>
                     <FlexBetween>
-                      <SectionTitle>{org.name}</SectionTitle>
-                      <Subtitle gray>
-                        {pluralize('project', projects.length)}
-                      </Subtitle>
+                      <Text gray>Created on {localizeDate(org.createdAt)}</Text>
+                      <Text gray>{pluralize('project', projects.length)}</Text>
                     </FlexBetween>
                     {projects.map(project => (
                       <ProjectSection key={project.id}>
@@ -181,7 +176,7 @@ class ListOrgsPage extends React.Component {
                           <ListRow>
                             <ListTerm>Date Created</ListTerm>
                             <ListDescription>
-                              {formatDate(project.createdAt)}
+                              {localizeDate(project.createdAt)}
                             </ListDescription>
                           </ListRow>
                         </List>
@@ -194,28 +189,30 @@ class ListOrgsPage extends React.Component {
           </Width640>
         </Content>
         <Footer />
-        <Route exact path={urls.newOrg} component={CreateOrgPage} />
+        {children}
       </>
     );
   }
 }
 
 ListOrgsPage.propTypes = {
-  alphabeticalOrgs: PropTypes.arrayOf(
+  children: PropTypes.element.isRequired,
+  listOrgs: PropTypes.func.isRequired,
+  listProjects: PropTypes.func.isRequired,
+  newestOrgs: PropTypes.arrayOf(
     PropTypes.shape({
+      createdAt: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  listOrgs: PropTypes.func.isRequired,
-  listProjects: PropTypes.func.isRequired,
   newestProjects: PropTypes.objectOf(
     PropTypes.arrayOf(
       PropTypes.shape({
+        createdAt: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-        createdAt: PropTypes.string.isRequired,
       }),
     ),
   ).isRequired,
@@ -225,9 +222,9 @@ ListOrgsPage.propTypes = {
 export default connect(
   ListOrgsPage,
   store => ({
-    alphabeticalOrgs: store.alphabeticalOrgs,
     listOrgs: store.listOrgs,
     listProjects: store.listProjects,
+    newestOrgs: store.newestOrgs,
     newestProjects: store.newestProjects,
     signOut: store.signOut,
   }),

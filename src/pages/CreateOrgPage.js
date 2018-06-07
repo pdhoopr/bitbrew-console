@@ -9,8 +9,8 @@ import { Input, Label } from '../components/Inputs';
 import Modal from '../components/Modal';
 import { PageTitle } from '../components/Typography';
 import FormValues from '../models/FormValues';
-import connect from '../utils/connect';
-import urls from '../utils/urls';
+import { connect } from '../utils/tools';
+import { goToOrgs } from '../utils/urls';
 
 const Header = styled(FlexStart)`
   margin-bottom: var(--size-32);
@@ -21,10 +21,6 @@ const Title = styled(PageTitle.withComponent('h2'))`
 `;
 
 class CreateOrgPage extends React.Component {
-  goToOrgs = () => {
-    this.props.history.push(urls.orgs);
-  };
-
   formValues = FormValues
     // prettier-ignore
     .props({
@@ -35,8 +31,8 @@ class CreateOrgPage extends React.Component {
         event.preventDefault();
         try {
           await this.props.createOrg(self.serialized);
-          this.goToOrgs();
           this.props.signOut();
+          goToOrgs();
         } catch (error) {
           console.log(error);
         }
@@ -47,9 +43,9 @@ class CreateOrgPage extends React.Component {
   render() {
     const pageTitle = 'New Organization';
     return (
-      <Modal isOpen onRequestClose={this.goToOrgs} contentLabel={pageTitle}>
+      <Modal isOpen onRequestClose={goToOrgs} contentLabel={pageTitle}>
         <Header>
-          <IconButton onClick={this.goToOrgs}>
+          <IconButton onClick={goToOrgs}>
             <CloseIcon />
           </IconButton>
           <Title>{pageTitle}</Title>
@@ -75,9 +71,6 @@ class CreateOrgPage extends React.Component {
 
 CreateOrgPage.propTypes = {
   createOrg: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
   signOut: PropTypes.func.isRequired,
 };
 

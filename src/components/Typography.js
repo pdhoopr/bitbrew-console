@@ -24,7 +24,7 @@ export const ContentTitle = styled.h3`
   line-height: var(--size-28);
 `;
 
-export const Subtitle = styled.p`
+export const Subtitle = styled.h4`
   ${baseStyles};
   color: ${props => (props.gray ? 'var(--color-dark-gray)' : 'inherit')};
   font-size: var(--size-16);

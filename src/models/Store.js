@@ -1,7 +1,7 @@
 import { autorun } from 'mobx';
 import { flow, types } from 'mobx-state-tree';
-import api from '../utils/api';
-import flatMap from '../utils/flatMap';
+import * as api from '../utils/api';
+import { flatMap } from '../utils/tools';
 import Org from './Org';
 import Project from './Project';
 
@@ -16,9 +16,9 @@ export default types
     get isSignedIn() {
       return !!self.token;
     },
-    get alphabeticalOrgs() {
+    get newestOrgs() {
       return [...self.orgs].sort((a, b) =>
-        a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+        b.createdAt.localeCompare(a.createdAt),
       );
     },
     get newestProjects() {
@@ -46,19 +46,19 @@ export default types
       localStorage.removeItem(self.storageKey);
     },
     configureApi: autorun(() => {
-      api.configure({
+      api.configureHttp({
         token: self.token,
       });
     }),
     createOrg: flow(function* createOrg(data) {
-      yield api.orgs.create(data);
+      yield api.postOrg(data);
     }),
     listOrgs: flow(function* listOrgs() {
-      const response = yield api.orgs.list();
+      const response = yield api.getOrgs();
       self.orgs = response.items;
     }),
     listProjects: flow(function* listProjects() {
-      const requests = self.orgs.map(org => api.projects.list(org.id));
+      const requests = self.orgs.map(api.getProjects);
       const responses = yield Promise.all(requests);
       self.projects = flatMap(responses, response => response.items);
     }),

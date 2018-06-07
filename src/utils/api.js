@@ -1,5 +1,5 @@
 import axios from 'axios';
-import urls from './urls';
+import * as urls from './urls';
 
 function newAxios({ token } = {}) {
   const baseURL = '/api';
@@ -8,36 +8,36 @@ function newAxios({ token } = {}) {
 }
 
 const http = {
-  instance: newAxios(),
-  async request(config) {
-    const response = await this.instance.request(config);
+  request: newAxios(),
+  async get(url, queryParams) {
+    const response = await this.request.get(url, {
+      params: {
+        pageSize: 500,
+        ...queryParams,
+      },
+    });
     return response.data;
   },
-  get(url) {
-    const method = 'get';
-    return this.request({ method, url });
-  },
-  post(url, data) {
-    const method = 'post';
-    return this.request({ method, url, data });
+  async post(url, data) {
+    const response = await this.request.post(url, data);
+    return response.data;
   },
 };
 
-export default {
-  configure(config) {
-    http.instance = newAxios(config);
-  },
-  orgs: {
-    create(data) {
-      return http.post(urls.orgs, data);
-    },
-    list() {
-      return http.get(urls.orgs);
-    },
-  },
-  projects: {
-    list(orgId) {
-      return http.get(`${urls.projects}?orgId=${orgId}`);
-    },
-  },
-};
+export function configureHttp(config) {
+  http.request = newAxios(config);
+}
+
+export function getOrgs() {
+  return http.get(urls.orgsPath);
+}
+
+export function postOrg(data) {
+  return http.post(urls.orgsPath, data);
+}
+
+export function getProjects(org) {
+  return http.get(urls.projectsPath, {
+    orgId: org.id,
+  });
+}

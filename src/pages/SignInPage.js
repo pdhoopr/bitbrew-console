@@ -12,7 +12,7 @@ import { Link } from '../components/Links';
 import { Logotype } from '../components/Logos';
 import { ContentTitle, Text } from '../components/Typography';
 import FormValues from '../models/FormValues';
-import connect from '../utils/connect';
+import { connect } from '../utils/tools';
 
 const Title = styled(ContentTitle.withComponent('h1'))`
   margin-bottom: var(--size-16);

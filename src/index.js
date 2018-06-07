@@ -6,7 +6,7 @@ import ReactModal from 'react-modal';
 import { injectGlobal } from 'styled-components';
 import Store from './models/Store';
 import IndexPage from './pages/IndexPage';
-import './utils/cssVariables';
+import './utils/variables';
 
 // eslint-disable-next-line no-unused-expressions
 injectGlobal`
