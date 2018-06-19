@@ -3,21 +3,18 @@ import React from 'react';
 import styled from 'styled-components';
 import { IconButton, RaisedButton } from '../components/Buttons';
 import { FlexEnd, FlexStart } from '../components/Flexboxes';
-import Form from '../components/Form';
+import { Form, Input, Label } from '../components/Forms';
+import { PageHeader } from '../components/Headers';
 import { CloseIcon } from '../components/Icons';
-import { Input, Label } from '../components/Inputs';
 import Modal from '../components/Modal';
-import { PageTitle } from '../components/Typography';
+import { PageTitle } from '../components/Texts';
+import { Width320 } from '../components/Widths';
 import FormValues from '../models/FormValues';
 import { connect } from '../utils/tools';
-import { goToOrgs } from '../utils/urls';
-
-const Header = styled(FlexStart)`
-  margin-bottom: var(--size-32);
-`;
+import { goToListOrgs } from '../utils/urls';
 
 const Title = styled(PageTitle.withComponent('h2'))`
-  margin-left: var(--size-20);
+  margin-left: var(--size-16);
 `;
 
 class CreateOrgPage extends React.Component {
@@ -32,7 +29,7 @@ class CreateOrgPage extends React.Component {
         try {
           await this.props.createOrg(self.serialized);
           this.props.signOut();
-          goToOrgs();
+          goToListOrgs();
         } catch (error) {
           console.log(error);
         }
@@ -43,27 +40,31 @@ class CreateOrgPage extends React.Component {
   render() {
     const pageTitle = 'New Organization';
     return (
-      <Modal isOpen onRequestClose={goToOrgs} contentLabel={pageTitle}>
-        <Header>
-          <IconButton onClick={goToOrgs}>
-            <CloseIcon />
-          </IconButton>
-          <Title>{pageTitle}</Title>
-        </Header>
-        <Form onSubmit={this.formValues.submit}>
-          <Label htmlFor="name">
-            Name
-            <Input
-              id="name"
-              value={this.formValues.name}
-              onChange={this.formValues.change}
-              type="text"
-            />
-          </Label>
-          <FlexEnd>
-            <RaisedButton>Create</RaisedButton>
-          </FlexEnd>
-        </Form>
+      <Modal isOpen onRequestClose={goToListOrgs} contentLabel={pageTitle}>
+        <PageHeader>
+          <FlexStart>
+            <IconButton onClick={goToListOrgs}>
+              <CloseIcon />
+            </IconButton>
+            <Title>{pageTitle}</Title>
+          </FlexStart>
+        </PageHeader>
+        <Width320>
+          <Form onSubmit={this.formValues.submit}>
+            <Label htmlFor="name">
+              Name
+              <Input
+                id="name"
+                value={this.formValues.name}
+                onChange={this.formValues.change}
+                type="text"
+              />
+            </Label>
+            <FlexEnd>
+              <RaisedButton>Create</RaisedButton>
+            </FlexEnd>
+          </Form>
+        </Width320>
       </Modal>
     );
   }

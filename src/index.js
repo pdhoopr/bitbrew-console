@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
 import { injectGlobal } from 'styled-components';
 import Store from './models/Store';
-import IndexPage from './pages/IndexPage';
+import Routes from './pages/Routes';
 import './utils/variables';
 
 // eslint-disable-next-line no-unused-expressions
@@ -51,10 +51,10 @@ function renderToDom(Component) {
   );
 }
 
-renderToDom(IndexPage);
+renderToDom(Routes);
 
 if (module.hot) {
-  module.hot.accept('./pages/IndexPage', () => {
-    renderToDom(IndexPage);
+  module.hot.accept('./pages/Routes', () => {
+    renderToDom(Routes);
   });
 }

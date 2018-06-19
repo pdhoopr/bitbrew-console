@@ -31,7 +31,6 @@ export default styled(AppModal)`
     max-width: var(--size-480);
     outline: none;
     overflow: auto;
-    padding: var(--size-32) var(--size-24);
     position: absolute;
     right: 0;
     top: 0;

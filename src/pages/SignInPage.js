@@ -2,15 +2,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { RaisedButton } from '../components/Buttons';
-import Content from '../components/Content';
 import { FlexCenter, FlexEnd } from '../components/Flexboxes';
-import Footer from '../components/Footer';
-import Form from '../components/Form';
-import Header from '../components/Header';
-import { Input, Label } from '../components/Inputs';
+import { Form, Input, Label } from '../components/Forms';
+import { PageHeader } from '../components/Headers';
 import { Link } from '../components/Links';
 import { Logotype } from '../components/Logos';
-import { ContentTitle, Text } from '../components/Typography';
+import { ContentTitle, Text } from '../components/Texts';
+import { Width320 } from '../components/Widths';
 import FormValues from '../models/FormValues';
 import { connect } from '../utils/tools';
 
@@ -44,12 +42,12 @@ class SignInPage extends React.Component {
   render() {
     return (
       <>
-        <Header>
+        <PageHeader>
           <FlexCenter>
             <Logotype />
           </FlexCenter>
-        </Header>
-        <Content>
+        </PageHeader>
+        <Width320>
           <Form onSubmit={this.formValues.submit}>
             <Title>Sign In</Title>
             <Label htmlFor="accessToken">
@@ -69,8 +67,7 @@ class SignInPage extends React.Component {
             Not a BitBrew customer yet?&nbsp;
             <Link to="mailto:hello@bitbrew.com">Contact us</Link>.
           </ContactUs>
-        </Content>
-        <Footer />
+        </Width320>
       </>
     );
   }

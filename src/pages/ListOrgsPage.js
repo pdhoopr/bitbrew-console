@@ -2,104 +2,35 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { Button } from '../components/Buttons';
-import Content from '../components/Content';
-import { FlexBetween, FlexStart } from '../components/Flexboxes';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
-import { SearchIcon } from '../components/Icons';
-import { RaisedInput } from '../components/Inputs';
-import { RaisedLink } from '../components/Links';
+import { FlexBetween } from '../components/Flexboxes';
+import { PageHeader } from '../components/Headers';
+import { Link, RaisedLink } from '../components/Links';
 import { Logomark } from '../components/Logos';
-import {
-  ContentTitle,
-  PageTitle,
-  SectionTitle,
-  Subtitle,
-  Text,
-} from '../components/Typography';
-import FormValues from '../models/FormValues';
+import ProjectList from '../components/ProjectList';
+import SearchBar from '../components/SearchBar';
+import { Section } from '../components/Sections';
+import { PageTitle, SectionTitle, Subtitle, Text } from '../components/Texts';
+import { Width640 } from '../components/Widths';
+import Search from '../models/Search';
 import { connect, localizeDate, pluralize } from '../utils/tools';
-import { newOrgPath } from '../utils/urls';
+import { createOrgPath, viewOrgPath } from '../utils/urls';
 
-const WelcomeHeader = styled(Header)`
+const WelcomeHeader = styled(PageHeader)`
   background-color: var(--color-black);
   color: var(--color-white);
-`;
-
-const Width640 = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  max-width: var(--size-640);
 `;
 
 const Title = styled(PageTitle)`
   margin-top: var(--size-32);
 `;
 
-const SearchHeader = styled(FlexBetween)`
+const Actions = styled(FlexBetween)`
+  margin-bottom: var(--size-32);
   margin-top: var(--size-32);
 `;
 
-const Bar = styled.label`
-  display: block;
-  flex: 1;
-  margin-right: var(--size-16);
-  position: relative;
-`;
-
-const Icon = styled(SearchIcon)`
-  margin-bottom: var(--size-8);
+const NewLink = styled(RaisedLink)`
   margin-left: var(--size-16);
-  margin-top: var(--size-8);
-  position: relative;
-  z-index: 1;
-`;
-
-const Input = styled(RaisedInput)`
-  bottom: 0;
-  left: 0;
-  padding-left: var(--size-52);
-  position: absolute;
-  right: 0;
-  top: 0;
-`;
-
-const OrgSection = styled.section`
-  margin-top: var(--size-32);
-`;
-
-const ProjectSection = styled.section`
-  background-color: var(--color-white);
-  border-radius: var(--corner-radius);
-  box-shadow: var(--elevation-low);
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: var(--size-16);
-  max-width: var(--size-640);
-`;
-
-const ProjectHeader = styled.header`
-  padding: var(--size-16) var(--size-24);
-`;
-
-const List = styled.dl`
-  margin-bottom: 0;
-  margin-top: 0;
-`;
-
-const ListRow = styled(FlexStart)`
-  border-top: 1px solid var(--color-medium-gray);
-  padding: var(--size-16) var(--size-24);
-`;
-
-const ListTerm = styled.dt`
-  font-weight: var(--weight-bold);
-  flex: 1;
-`;
-
-const ListDescription = styled.dd`
-  margin-left: 0;
-  flex: 1.5;
 `;
 
 class ListOrgsPage extends React.Component {
@@ -108,24 +39,17 @@ class ListOrgsPage extends React.Component {
     this.props.listProjects();
   }
 
-  search = FormValues
+  search = Search
     // prettier-ignore
-    .props({
-      query: '',
-    })
     .views(self => ({
-      get isEmpty() {
-        return self.query.trim() === '';
+      getResults(projects) {
+        return projects.filter(project => self.matchesQuery(project.name));
       },
-      getResults: org =>
-        this.props.newestProjects[org.id].filter(project =>
-          new RegExp(self.query, 'i').test(project.name),
-        ),
     }))
     .create();
 
   render() {
-    const { children, newestOrgs, signOut } = this.props;
+    const { projectsByOrg, orgs, signOut } = this.props;
     return (
       <>
         <WelcomeHeader>
@@ -140,78 +64,54 @@ class ListOrgsPage extends React.Component {
             </Subtitle>
           </Width640>
         </WelcomeHeader>
-        <Content>
-          <Width640>
-            <SearchHeader>
-              <Bar htmlFor="search">
-                <Icon />
-                <Input
-                  id="query"
-                  value={this.search.query}
-                  onChange={this.search.change}
-                  type="search"
-                  placeholder="Search by project name"
-                />
-              </Bar>
-              <RaisedLink to={newOrgPath}>New</RaisedLink>
-            </SearchHeader>
-            {newestOrgs.map(org => {
-              const projects = this.search.getResults(org);
-              const showOrg = this.search.isEmpty || projects.length > 0;
-              return (
-                showOrg && (
-                  <OrgSection key={org.id}>
-                    <SectionTitle>{org.name}</SectionTitle>
-                    <FlexBetween>
-                      <Text gray>Created on {localizeDate(org.createdAt)}</Text>
-                      <Text gray>{pluralize('project', projects.length)}</Text>
-                    </FlexBetween>
-                    {projects.map(project => (
-                      <ProjectSection key={project.id}>
-                        <ProjectHeader>
-                          <ContentTitle>{project.name}</ContentTitle>
-                          <Text gray>{project.description}</Text>
-                        </ProjectHeader>
-                        <List>
-                          <ListRow>
-                            <ListTerm>Date Created</ListTerm>
-                            <ListDescription>
-                              {localizeDate(project.createdAt)}
-                            </ListDescription>
-                          </ListRow>
-                        </List>
-                      </ProjectSection>
-                    ))}
-                  </OrgSection>
-                )
-              );
-            })}
-          </Width640>
-        </Content>
-        <Footer />
-        {children}
+        <Width640>
+          <Actions>
+            <SearchBar
+              description="The list of organizations below will change to show only those with project names matching the search query."
+              value={this.search.query}
+              onChange={this.search.change}
+              placeholder="Search by project name"
+            />
+            <NewLink to={createOrgPath}>New</NewLink>
+          </Actions>
+          {orgs.map(org => {
+            const projects = projectsByOrg[org.id];
+            const results = this.search.getResults(projects);
+            const showOrg = this.search.isEmpty || results.length > 0;
+            return (
+              showOrg && (
+                <Section key={org.id}>
+                  <SectionTitle>
+                    <Link to={viewOrgPath(org.id)}>{org.name}</Link>
+                  </SectionTitle>
+                  <FlexBetween>
+                    <Text gray>Created on {localizeDate(org.createdAt)}</Text>
+                    <Text gray>{pluralize('project', results.length)}</Text>
+                  </FlexBetween>
+                  <ProjectList projects={results} />
+                </Section>
+              )
+            );
+          })}
+        </Width640>
       </>
     );
   }
 }
 
 ListOrgsPage.propTypes = {
-  children: PropTypes.element.isRequired,
   listOrgs: PropTypes.func.isRequired,
   listProjects: PropTypes.func.isRequired,
-  newestOrgs: PropTypes.arrayOf(
+  orgs: PropTypes.arrayOf(
     PropTypes.shape({
       createdAt: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  newestProjects: PropTypes.objectOf(
+  projectsByOrg: PropTypes.objectOf(
     PropTypes.arrayOf(
       PropTypes.shape({
-        createdAt: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-        id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
       }),
     ),
@@ -224,8 +124,8 @@ export default connect(
   store => ({
     listOrgs: store.listOrgs,
     listProjects: store.listProjects,
-    newestOrgs: store.newestOrgs,
-    newestProjects: store.newestProjects,
+    orgs: store.newestOrgs,
+    projectsByOrg: store.newestProjectsByOrg,
     signOut: store.signOut,
   }),
 );

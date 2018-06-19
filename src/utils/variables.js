@@ -6,7 +6,7 @@ injectGlobal`
     --color-black: #333;
     --color-blue-gray: #eceff1;
     --color-medium-gray: #e0e0e0;
-    --color-dark-gray: #757575;
+    --color-dark-gray: #616161;
     --color-green: #02ca91;
     --color-white: #fff;
     --corner-radius: 3px;

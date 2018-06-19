@@ -28,16 +28,18 @@ export function configureHttp(config) {
   http.request = newAxios(config);
 }
 
-export function getOrgs() {
-  return http.get(urls.orgsPath);
+export function listOrgs() {
+  return http.get(urls.listOrgsPath);
 }
 
-export function postOrg(data) {
-  return http.post(urls.orgsPath, data);
+export function createOrg(data) {
+  return http.post(urls.listOrgsPath, data);
 }
 
-export function getProjects(org) {
-  return http.get(urls.projectsPath, {
-    orgId: org.id,
-  });
+export function viewOrg(id) {
+  return http.get(urls.viewOrgPath(id));
+}
+
+export function listProjects(orgId) {
+  return http.get(urls.listProjectsPath, { orgId });
 }

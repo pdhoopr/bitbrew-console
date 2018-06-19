@@ -22,6 +22,10 @@ export function localizeDate(dateString) {
   return date.toLocaleString(locale, format);
 }
 
+export function mapArrayToObject(arr, mapItemToObject) {
+  return arr.reduce((obj, item) => ({ ...obj, ...mapItemToObject(item) }), {});
+}
+
 export function matchesDate(value) {
   return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value);
 }

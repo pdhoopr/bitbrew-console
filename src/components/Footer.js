@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react';
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from './Links';
@@ -25,7 +24,7 @@ const ListItem = styled.li`
   }
 `;
 
-function Footer() {
+export default function Footer() {
   return (
     <Wrapper>
       <List>
@@ -47,5 +46,3 @@ function Footer() {
     </Wrapper>
   );
 }
-
-export default observer(Footer);

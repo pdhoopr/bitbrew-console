@@ -1,11 +1,13 @@
 import { navigate } from '@reach/router';
 
-export const basePath = '/';
-export const newPath = '/new';
-export const orgsPath = '/orgs';
-export const newOrgPath = '/orgs/new';
-export const projectsPath = '/projects';
+export const listPath = '/';
+export const createPath = '/new';
+export const viewPath = '/:id';
+export const listOrgsPath = '/orgs';
+export const createOrgPath = '/orgs/new';
+export const viewOrgPath = id => `/orgs/${id}`;
+export const listProjectsPath = '/projects';
 
-export function goToOrgs() {
-  navigate(orgsPath);
+export function goToListOrgs() {
+  navigate(listOrgsPath);
 }
