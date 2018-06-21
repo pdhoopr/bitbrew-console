@@ -31,6 +31,10 @@ injectGlobal`
     margin: 0;
   }
 
+  strong {
+    font-weight: var(--weight-bold);
+  }
+
   #root {
     display: flex;
     flex-direction: column;

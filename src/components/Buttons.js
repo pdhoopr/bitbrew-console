@@ -16,7 +16,6 @@ const baseStyles = css`
 export const Button = styled.button`
   ${baseStyles};
   color: inherit;
-  font-weight: var(--weight-regular);
   padding: var(--size-8);
   position: relative;
 
@@ -38,7 +37,9 @@ export const Button = styled.button`
   }
 `;
 
-export const IconButton = styled(Button)`
+export const IconButton = styled(Button).attrs({
+  'aria-label': props => props.title,
+})`
   &::before {
     border-radius: 50%;
   }
@@ -46,7 +47,8 @@ export const IconButton = styled(Button)`
 
 export const RaisedButton = styled.button`
   ${baseStyles};
-  background-color: var(--color-green);
+  background-color: ${props =>
+    props.red ? 'var(--color-red)' : 'var(--color-green)'};
   box-shadow: var(--elevation-low);
   color: var(--color-white);
   transition: opacity var(--duration-short);

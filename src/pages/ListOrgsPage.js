@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '../components/Buttons';
+import { Button, RaisedButton } from '../components/Buttons';
 import { FlexBetween } from '../components/Flexboxes';
 import { PageHeader } from '../components/Headers';
-import { Link, RaisedLink } from '../components/Links';
+import { Link } from '../components/Links';
 import { Logomark } from '../components/Logos';
 import ProjectList from '../components/ProjectList';
 import SearchBar from '../components/SearchBar';
@@ -13,7 +13,7 @@ import { PageTitle, SectionTitle, Subtitle, Text } from '../components/Texts';
 import { Width640 } from '../components/Widths';
 import Search from '../models/Search';
 import { connect, localizeDate, pluralize } from '../utils/tools';
-import { createOrgPath, viewOrgPath } from '../utils/urls';
+import { goToCreateOrg, viewOrgPath } from '../utils/urls';
 
 const WelcomeHeader = styled(PageHeader)`
   background-color: var(--color-black);
@@ -29,7 +29,7 @@ const Actions = styled(FlexBetween)`
   margin-top: var(--size-32);
 `;
 
-const NewLink = styled(RaisedLink)`
+const NewButton = styled(RaisedButton)`
   margin-left: var(--size-16);
 `;
 
@@ -72,7 +72,7 @@ class ListOrgsPage extends React.Component {
               onChange={this.search.change}
               placeholder="Search by project name"
             />
-            <NewLink to={createOrgPath}>New</NewLink>
+            <NewButton onClick={goToCreateOrg}>New</NewButton>
           </Actions>
           {orgs.map(org => {
             const projects = projectsByOrg[org.id];

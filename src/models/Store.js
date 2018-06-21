@@ -12,6 +12,9 @@ export default types
     storageKey: types.optional(types.string, 'bitbrew-console'),
     token: types.maybe(types.string),
   })
+  .volatile(() => ({
+    deletedOrgs: {},
+  }))
   .views(self => ({
     get isSignedIn() {
       return !!self.token;
@@ -53,7 +56,7 @@ export default types
     }),
     listOrgs: flow(function* listOrgs() {
       const response = yield api.listOrgs();
-      self.orgs = response.items;
+      self.orgs = response.items.filter(org => !self.deletedOrgs[org.id]);
     }),
     createOrg: flow(function* createOrg(data) {
       yield api.createOrg(data);
@@ -70,6 +73,10 @@ export default types
       }));
       const projects = self.projects.filter(project => !projectIds[project.id]);
       self.projects = [...projects, ...projectsResponse.items];
+    }),
+    deleteOrg: flow(function* deleteOrg(id) {
+      yield api.deleteOrg(id);
+      self.deletedOrgs[id] = true;
     }),
     listProjects: flow(function* listProjects() {
       const requests = self.orgs.map(org => api.listProjects(org.id));

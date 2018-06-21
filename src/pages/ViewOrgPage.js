@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { Button, IconButton } from '../components/Buttons';
+import { Button, RaisedButton } from '../components/Buttons';
 import { FlexBetween, FlexStart } from '../components/Flexboxes';
 import { PageHeader } from '../components/Headers';
 import { BackArrowIcon } from '../components/Icons';
+import { IconLink } from '../components/Links';
 import List from '../components/List';
 import ProjectList from '../components/ProjectList';
 import SearchBar from '../components/SearchBar';
@@ -13,7 +14,7 @@ import { PageTitle, SectionTitle, Text } from '../components/Texts';
 import { Width640 } from '../components/Widths';
 import Search from '../models/Search';
 import { connect, localizeDate, pluralize } from '../utils/tools';
-import { goToListOrgs } from '../utils/urls';
+import { goToDeleteOrg, listOrgsPath } from '../utils/urls';
 
 const Title = styled(PageTitle)`
   flex: 1;
@@ -30,6 +31,10 @@ class ViewOrgPage extends React.Component {
     this.props.viewOrg(this.props.id);
   }
 
+  goToDeleteOrg = () => {
+    goToDeleteOrg(this.props.id);
+  };
+
   search = Search
     // prettier-ignore
     .views(self => ({
@@ -44,15 +49,14 @@ class ViewOrgPage extends React.Component {
     const org = orgsById[id];
     const pageTitle = org ? org.name : '';
     const projects = projectsByOrg[id] || [];
-    const showSearch = projects.length > 0;
     const results = this.search.getResults(projects);
     return (
       <>
         <PageHeader>
           <FlexStart>
-            <IconButton onClick={goToListOrgs}>
+            <IconLink to={listOrgsPath} title="Back to all organizations">
               <BackArrowIcon />
-            </IconButton>
+            </IconLink>
             <Title>{pageTitle}</Title>
             <Button onClick={signOut}>Sign out</Button>
           </FlexStart>
@@ -60,7 +64,12 @@ class ViewOrgPage extends React.Component {
         {org && (
           <Width640>
             <Section>
-              <SectionTitle>Overview</SectionTitle>
+              <FlexBetween>
+                <SectionTitle>Overview</SectionTitle>
+                <RaisedButton onClick={this.goToDeleteOrg} red>
+                  Delete
+                </RaisedButton>
+              </FlexBetween>
               <Content>
                 <List items={[['Date Created', localizeDate(org.createdAt)]]} />
               </Content>
@@ -70,14 +79,12 @@ class ViewOrgPage extends React.Component {
                 <SectionTitle>Projects</SectionTitle>
                 <Text gray>{pluralize('project', results.length)}</Text>
               </ProjectsHeader>
-              {showSearch && (
-                <SearchBar
-                  description="The list of projects below will change to show only those with names matching the search query."
-                  value={this.search.query}
-                  onChange={this.search.change}
-                  placeholder="Search by project name"
-                />
-              )}
+              <SearchBar
+                description="The list of projects below will change to show only those with names matching the search query."
+                value={this.search.query}
+                onChange={this.search.change}
+                placeholder="Search by project name"
+              />
               <ProjectList projects={results} />
             </Section>
           </Width640>

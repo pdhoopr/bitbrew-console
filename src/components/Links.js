@@ -2,9 +2,9 @@ import { Link as RouterLink } from '@reach/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { RaisedButton } from './Buttons';
+import { Button } from './Buttons';
 
-function AppLink({ to, ...props }) {
+function AppLink({ red, to, ...props }) {
   const isInternal = /^\/(?!\/)/.test(to);
   return isInternal ? (
     <RouterLink to={to} {...props} />
@@ -15,7 +15,12 @@ function AppLink({ to, ...props }) {
 }
 
 AppLink.propTypes = {
+  red: PropTypes.bool,
   to: PropTypes.string.isRequired,
+};
+
+AppLink.defaultProps = {
+  red: false,
 };
 
 const baseStyles = css`
@@ -36,6 +41,12 @@ export const Link = styled(AppLink)`
   }
 `;
 
-export const RaisedLink = styled(RaisedButton.withComponent(AppLink))`
+export const IconLink = styled(Button.withComponent(AppLink)).attrs({
+  'aria-label': props => props.title,
+})`
   ${baseStyles};
+
+  &::before {
+    border-radius: 50%;
+  }
 `;

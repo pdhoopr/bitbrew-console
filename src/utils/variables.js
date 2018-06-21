@@ -8,6 +8,7 @@ injectGlobal`
     --color-medium-gray: #e0e0e0;
     --color-dark-gray: #616161;
     --color-green: #02ca91;
+    --color-red: #ff5252;
     --color-white: #fff;
     --corner-radius: 3px;
     --duration-short: 0.15s;

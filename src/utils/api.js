@@ -22,6 +22,10 @@ const http = {
     const response = await this.request.post(url, data);
     return response.data;
   },
+  async delete(url) {
+    const response = await this.request.delete(url);
+    return response.data;
+  },
 };
 
 export function configureHttp(config) {
@@ -38,6 +42,10 @@ export function createOrg(data) {
 
 export function viewOrg(id) {
   return http.get(urls.viewOrgPath(id));
+}
+
+export function deleteOrg(id) {
+  return http.delete(urls.viewOrgPath(id));
 }
 
 export function listProjects(orgId) {

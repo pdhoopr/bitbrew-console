@@ -26,11 +26,11 @@
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.3",
     "mobx-state-tree": "^2.2.0",
-    "prop-types": "^15.6.1",
+    "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-modal": "^3.4.5",
-    "styled-components": "^3.3.2"
+    "styled-components": "^3.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.51",
@@ -59,7 +59,7 @@
     "prettier": "^1.13.5",
     "pretty-quick": "^1.6.0",
     "stylelint": "^9.3.0",
-    "stylelint-config-prettier": "^3.2.0",
+    "stylelint-config-prettier": "^3.3.0",
     "stylelint-config-standard": "^18.2.0",
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-no-unsupported-browser-features": "^3.0.0",
@@ -117,7 +117,7 @@
         {
           "components": [
             "Link",
-            "RaisedLink"
+            "IconLink"
           ]
         }
       ],
@@ -126,7 +126,7 @@
         {
           "components": [
             "Link",
-            "RaisedLink"
+            "IconLink"
           ],
           "specialLink": [
             "to"
@@ -144,7 +144,8 @@
           "components": [
             "PageTitle",
             "SectionTitle",
-            "ContentTitle"
+            "ContentTitle",
+            "Subtitle"
           ]
         }
       ],

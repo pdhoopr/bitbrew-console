@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import { connect } from '../utils/tools';
 import * as urls from '../utils/urls';
 import CreateOrgPage from './CreateOrgPage';
+import DeleteOrgPage from './DeleteOrgPage';
 import ListOrgsPage from './ListOrgsPage';
 import SignInPage from './SignInPage';
 import ViewOrgPage from './ViewOrgPage';
@@ -37,9 +38,19 @@ function Routes({ isSignedIn }) {
           render={({ listProps, showList }) => (
             <>
               {showList && <ListOrgsPage {...listProps} />}
-              <Router>
+              <Router primary={false}>
                 <CreateOrgPage path={urls.createPath} />
-                <ViewOrgPage path={urls.viewPath} />
+                <NestedRoutes
+                  path={wildcardPath(urls.viewPath)}
+                  render={({ listProps: viewProps }) => (
+                    <>
+                      <ViewOrgPage {...viewProps} />
+                      <Router primary={false}>
+                        <DeleteOrgPage path={urls.deletePath} />
+                      </Router>
+                    </>
+                  )}
+                />
               </Router>
             </>
           )}

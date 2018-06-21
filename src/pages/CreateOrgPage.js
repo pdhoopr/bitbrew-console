@@ -6,7 +6,7 @@ import { FlexEnd, FlexStart } from '../components/Flexboxes';
 import { Form, Input, Label } from '../components/Forms';
 import { PageHeader } from '../components/Headers';
 import { CloseIcon } from '../components/Icons';
-import Modal from '../components/Modal';
+import { Drawer } from '../components/Modals';
 import { PageTitle } from '../components/Texts';
 import { Width320 } from '../components/Widths';
 import FormValues from '../models/FormValues';
@@ -40,10 +40,13 @@ class CreateOrgPage extends React.Component {
   render() {
     const pageTitle = 'New Organization';
     return (
-      <Modal isOpen onRequestClose={goToListOrgs} contentLabel={pageTitle}>
+      <Drawer onRequestClose={goToListOrgs} contentLabel={pageTitle}>
         <PageHeader>
           <FlexStart>
-            <IconButton onClick={goToListOrgs}>
+            <IconButton
+              onClick={goToListOrgs}
+              title={`Close ${pageTitle.toLowerCase()} form`}
+            >
               <CloseIcon />
             </IconButton>
             <Title>{pageTitle}</Title>
@@ -65,7 +68,7 @@ class CreateOrgPage extends React.Component {
             </FlexEnd>
           </Form>
         </Width320>
-      </Modal>
+      </Drawer>
     );
   }
 }
