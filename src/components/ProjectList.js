@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ContentHeader } from '../components/Headers';
-import List from '../components/List';
-import { Content } from '../components/Sections';
-import { ContentTitle, Text } from '../components/Texts';
 import { localizeDate } from '../utils/tools';
+import { ContentHeader } from './Headers';
+import List from './List';
+import { Content } from './Sections';
+import { ContentTitle, Text } from './Texts';
 
 export default function ProjectList({ projects }) {
   return projects.map(project => (

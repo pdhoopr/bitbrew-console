@@ -7,7 +7,7 @@ import { ContentHeader } from '../components/Headers';
 import { Dialog } from '../components/Modals';
 import { ContentTitle, Text } from '../components/Texts';
 import { connect } from '../utils/tools';
-import { goToListOrgs, goToViewOrg } from '../utils/urls';
+import { goToOrgs, goToOrgWithId } from '../utils/urls';
 
 const Title = ContentTitle.withComponent('h2');
 
@@ -31,22 +31,22 @@ const CancelButton = styled(Button)`
 `;
 
 class DeleteOrgPage extends React.Component {
-  goToViewOrg = () => {
-    goToViewOrg(this.props.id);
+  closeDeleteOrg = () => {
+    goToOrgWithId(this.props.id);
   };
 
-  deleteOrg = async () => {
+  tryToDeleteOrg = async () => {
     await this.props.deleteOrg(this.props.id);
-    goToListOrgs();
+    goToOrgs();
   };
 
   render() {
-    const { id, orgsById } = this.props;
+    const { getOrgWithId, id } = this.props;
     const pageTitle = 'Delete Organization';
-    const org = orgsById[id] || null;
+    const org = getOrgWithId(id);
     return (
       org && (
-        <Dialog onRequestClose={this.goToViewOrg} contentLabel={pageTitle}>
+        <Dialog onRequestClose={this.closeDeleteOrg} contentLabel={pageTitle}>
           <ContentHeader>
             <Title>{pageTitle}</Title>
           </ContentHeader>
@@ -56,8 +56,8 @@ class DeleteOrgPage extends React.Component {
             organization will be permanently deleted.
           </Message>
           <Actions>
-            <CancelButton onClick={this.goToViewOrg}>Cancel</CancelButton>
-            <RaisedButton onClick={this.deleteOrg} red>
+            <CancelButton onClick={this.closeDeleteOrg}>Cancel</CancelButton>
+            <RaisedButton onClick={this.tryToDeleteOrg} red>
               Delete
             </RaisedButton>
           </Actions>
@@ -69,18 +69,14 @@ class DeleteOrgPage extends React.Component {
 
 DeleteOrgPage.propTypes = {
   deleteOrg: PropTypes.func.isRequired,
+  getOrgWithId: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
-  orgsById: PropTypes.objectOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
 };
 
 export default connect(
   DeleteOrgPage,
-  store => ({
-    deleteOrg: store.deleteOrg,
-    orgsById: store.orgsById,
+  ({ orgStore }) => ({
+    deleteOrg: orgStore.deleteOrg,
+    getOrgWithId: orgStore.getOrgWithId,
   }),
 );

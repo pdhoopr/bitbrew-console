@@ -38,7 +38,7 @@ export const Button = styled.button`
 `;
 
 export const IconButton = styled(Button).attrs({
-  'aria-label': props => props.title,
+  'aria-label': ({ title }) => title,
 })`
   &::before {
     border-radius: 50%;
@@ -47,8 +47,8 @@ export const IconButton = styled(Button).attrs({
 
 export const RaisedButton = styled.button`
   ${baseStyles};
-  background-color: ${props =>
-    props.red ? 'var(--color-red)' : 'var(--color-green)'};
+  background-color: ${({ red }) =>
+    red ? 'var(--color-red)' : 'var(--color-green)'};
   box-shadow: var(--elevation-low);
   color: var(--color-white);
   transition: opacity var(--duration-short);

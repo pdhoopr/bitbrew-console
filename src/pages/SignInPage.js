@@ -9,7 +9,7 @@ import { Link } from '../components/Links';
 import { Logotype } from '../components/Logos';
 import { ContentTitle, Text } from '../components/Texts';
 import { Width320 } from '../components/Widths';
-import FormValues from '../models/FormValues';
+import FormStore from '../stores/FormStore';
 import { connect } from '../utils/tools';
 
 const Title = styled(ContentTitle.withComponent('h1'))`
@@ -26,18 +26,17 @@ const ContactUs = styled(Text)`
 `;
 
 class SignInPage extends React.Component {
-  formValues = FormValues
+  form = FormStore
     // prettier-ignore
     .props({
       accessToken: '',
     })
-    .actions(self => ({
-      submit: event => {
-        event.preventDefault();
-        this.props.signIn(self.serialized);
-      },
-    }))
     .create();
+
+  tryToSignIn = event => {
+    event.preventDefault();
+    this.props.signIn(this.form.serialized);
+  };
 
   render() {
     return (
@@ -48,14 +47,14 @@ class SignInPage extends React.Component {
           </FlexCenter>
         </PageHeader>
         <Width320>
-          <Form onSubmit={this.formValues.submit}>
+          <Form onSubmit={this.tryToSignIn}>
             <Title>Sign In</Title>
             <Label htmlFor="accessToken">
               Access Token
               <Input
                 id="accessToken"
-                value={this.formValues.accessToken}
-                onChange={this.formValues.change}
+                value={this.form.accessToken}
+                onChange={this.form.setValue}
                 type="text"
               />
             </Label>
@@ -79,7 +78,7 @@ SignInPage.propTypes = {
 
 export default connect(
   SignInPage,
-  store => ({
-    signIn: store.signIn,
+  ({ authStore }) => ({
+    signIn: authStore.signIn,
   }),
 );

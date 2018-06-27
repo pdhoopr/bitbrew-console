@@ -3,7 +3,7 @@ import React from 'react';
 import ReactModal from 'react-modal';
 import styled, { css } from 'styled-components';
 
-function AppModal({ className, role, ...props }) {
+function ModalImpl({ className, role, ...props }) {
   return (
     <ReactModal
       aria={{
@@ -21,12 +21,12 @@ function AppModal({ className, role, ...props }) {
   );
 }
 
-AppModal.propTypes = {
+ModalImpl.propTypes = {
   className: PropTypes.string.isRequired,
   role: PropTypes.string,
 };
 
-AppModal.defaultProps = {
+ModalImpl.defaultProps = {
   role: 'dialog',
 };
 
@@ -55,7 +55,7 @@ const baseStyles = css`
   }
 `;
 
-export const Dialog = styled(AppModal).attrs({
+export const Dialog = styled(ModalImpl).attrs({
   role: 'alertdialog',
 })`
   ${baseStyles};
@@ -70,7 +70,7 @@ export const Dialog = styled(AppModal).attrs({
   }
 `;
 
-export const Drawer = styled(AppModal)`
+export const Drawer = styled(ModalImpl)`
   ${baseStyles};
 
   &__Content {

@@ -29,12 +29,7 @@ const Query = styled(Input)`
   top: 0;
 `;
 
-export default function SearchBar({
-  description,
-  onChange,
-  placeholder,
-  value,
-}) {
+export default function Search({ description, onChange, placeholder, value }) {
   return (
     <Wrapper>
       <label htmlFor="query">
@@ -56,13 +51,13 @@ export default function SearchBar({
   );
 }
 
-SearchBar.propTypes = {
+Search.propTypes = {
   description: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
   value: PropTypes.string.isRequired,
 };
 
-SearchBar.defaultProps = {
+Search.defaultProps = {
   placeholder: '',
 };

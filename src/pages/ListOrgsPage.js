@@ -7,13 +7,13 @@ import { PageHeader } from '../components/Headers';
 import { Link } from '../components/Links';
 import { Logomark } from '../components/Logos';
 import ProjectList from '../components/ProjectList';
-import SearchBar from '../components/SearchBar';
+import Search from '../components/Search';
 import { Section } from '../components/Sections';
 import { PageTitle, SectionTitle, Subtitle, Text } from '../components/Texts';
 import { Width640 } from '../components/Widths';
-import Search from '../models/Search';
+import SearchStore from '../stores/SearchStore';
 import { connect, localizeDate, pluralize } from '../utils/tools';
-import { goToCreateOrg, viewOrgPath } from '../utils/urls';
+import { goToCreateOrg, orgWithIdPath } from '../utils/urls';
 
 const WelcomeHeader = styled(PageHeader)`
   background-color: var(--color-black);
@@ -34,22 +34,14 @@ const NewButton = styled(RaisedButton)`
 `;
 
 class ListOrgsPage extends React.Component {
-  async componentDidMount() {
-    await this.props.listOrgs();
-    this.props.listProjects();
+  search = SearchStore.create();
+
+  componentDidMount() {
+    this.props.listOrgs();
   }
 
-  search = Search
-    // prettier-ignore
-    .views(self => ({
-      getResults(projects) {
-        return projects.filter(project => self.matchesQuery(project.name));
-      },
-    }))
-    .create();
-
   render() {
-    const { projectsByOrg, orgs, signOut } = this.props;
+    const { orgs, signOut } = this.props;
     return (
       <>
         <WelcomeHeader>
@@ -66,29 +58,28 @@ class ListOrgsPage extends React.Component {
         </WelcomeHeader>
         <Width640>
           <Actions>
-            <SearchBar
+            <Search
               description="The list of organizations below will change to show only those with project names matching the search query."
               value={this.search.query}
-              onChange={this.search.change}
+              onChange={this.search.setQuery}
               placeholder="Search by project name"
             />
             <NewButton onClick={goToCreateOrg}>New</NewButton>
           </Actions>
           {orgs.map(org => {
-            const projects = projectsByOrg[org.id];
-            const results = this.search.getResults(projects);
-            const showOrg = this.search.isEmpty || results.length > 0;
+            const projects = org.getProjectsWithName(this.search.query);
+            const showOrg = this.search.isEmpty || projects.length > 0;
             return (
               showOrg && (
                 <Section key={org.id}>
                   <SectionTitle>
-                    <Link to={viewOrgPath(org.id)}>{org.name}</Link>
+                    <Link to={orgWithIdPath(org.id)}>{org.name}</Link>
                   </SectionTitle>
                   <FlexBetween>
                     <Text gray>Created on {localizeDate(org.createdAt)}</Text>
-                    <Text gray>{pluralize('project', results.length)}</Text>
+                    <Text gray>{pluralize('project', projects.length)}</Text>
                   </FlexBetween>
-                  <ProjectList projects={results} />
+                  <ProjectList projects={projects} />
                 </Section>
               )
             );
@@ -101,31 +92,22 @@ class ListOrgsPage extends React.Component {
 
 ListOrgsPage.propTypes = {
   listOrgs: PropTypes.func.isRequired,
-  listProjects: PropTypes.func.isRequired,
   orgs: PropTypes.arrayOf(
     PropTypes.shape({
       createdAt: PropTypes.string.isRequired,
+      getProjectsWithName: PropTypes.func.isRequired,
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
-  ).isRequired,
-  projectsByOrg: PropTypes.objectOf(
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-      }),
-    ),
   ).isRequired,
   signOut: PropTypes.func.isRequired,
 };
 
 export default connect(
   ListOrgsPage,
-  store => ({
-    listOrgs: store.listOrgs,
-    listProjects: store.listProjects,
-    orgs: store.newestOrgs,
-    projectsByOrg: store.newestProjectsByOrg,
-    signOut: store.signOut,
+  ({ authStore, orgStore }) => ({
+    listOrgs: orgStore.listOrgs,
+    orgs: orgStore.orgs,
+    signOut: authStore.signOut,
   }),
 );

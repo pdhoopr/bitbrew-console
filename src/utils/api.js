@@ -33,21 +33,21 @@ export function configureHttp(config) {
 }
 
 export function listOrgs() {
-  return http.get(urls.listOrgsPath);
+  return http.get(urls.orgsPath);
 }
 
 export function createOrg(data) {
-  return http.post(urls.listOrgsPath, data);
+  return http.post(urls.orgsPath, data);
 }
 
 export function viewOrg(id) {
-  return http.get(urls.viewOrgPath(id));
+  return http.get(urls.orgWithIdPath(id));
 }
 
 export function deleteOrg(id) {
-  return http.delete(urls.viewOrgPath(id));
+  return http.delete(urls.orgWithIdPath(id));
 }
 
 export function listProjects(orgId) {
-  return http.get(urls.listProjectsPath, { orgId });
+  return http.get(urls.projectsPath, { orgId });
 }

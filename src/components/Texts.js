@@ -26,14 +26,14 @@ export const ContentTitle = styled.h3`
 
 export const Subtitle = styled.h4`
   ${baseStyles};
-  color: ${props => (props.gray ? 'var(--color-dark-gray)' : 'inherit')};
+  color: ${({ gray }) => (gray ? 'var(--color-dark-gray)' : 'inherit')};
   font-size: var(--size-16);
   line-height: var(--size-24);
 `;
 
 export const Text = styled.p`
   ${baseStyles};
-  color: ${props => (props.gray ? 'var(--color-dark-gray)' : 'inherit')};
+  color: ${({ gray }) => (gray ? 'var(--color-dark-gray)' : 'inherit')};
   font-size: var(--size-14);
   line-height: var(--size-20);
 `;

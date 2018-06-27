@@ -4,7 +4,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { Button } from './Buttons';
 
-function AppLink({ red, to, ...props }) {
+function LinkImpl({ red, to, ...props }) {
   const isInternal = /^\/(?!\/)/.test(to);
   return isInternal ? (
     <RouterLink to={to} {...props} />
@@ -14,12 +14,12 @@ function AppLink({ red, to, ...props }) {
   );
 }
 
-AppLink.propTypes = {
+LinkImpl.propTypes = {
   red: PropTypes.bool,
   to: PropTypes.string.isRequired,
 };
 
-AppLink.defaultProps = {
+LinkImpl.defaultProps = {
   red: false,
 };
 
@@ -28,7 +28,7 @@ const baseStyles = css`
   text-decoration: none;
 `;
 
-export const Link = styled(AppLink)`
+export const Link = styled(LinkImpl)`
   ${baseStyles};
   border-bottom: 1px solid transparent;
   color: inherit;
@@ -41,8 +41,8 @@ export const Link = styled(AppLink)`
   }
 `;
 
-export const IconLink = styled(Button.withComponent(AppLink)).attrs({
-  'aria-label': props => props.title,
+export const IconLink = styled(Button.withComponent(LinkImpl)).attrs({
+  'aria-label': ({ title }) => title,
 })`
   ${baseStyles};
 

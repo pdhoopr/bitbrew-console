@@ -8,13 +8,13 @@ import { BackArrowIcon } from '../components/Icons';
 import { IconLink } from '../components/Links';
 import List from '../components/List';
 import ProjectList from '../components/ProjectList';
-import SearchBar from '../components/SearchBar';
+import Search from '../components/Search';
 import { Content, Section } from '../components/Sections';
 import { PageTitle, SectionTitle, Text } from '../components/Texts';
 import { Width640 } from '../components/Widths';
-import Search from '../models/Search';
+import SearchStore from '../stores/SearchStore';
 import { connect, localizeDate, pluralize } from '../utils/tools';
-import { goToDeleteOrg, listOrgsPath } from '../utils/urls';
+import { goToDeleteOrg, orgsPath } from '../utils/urls';
 
 const Title = styled(PageTitle)`
   flex: 1;
@@ -27,34 +27,26 @@ const ProjectsHeader = styled(FlexBetween)`
 `;
 
 class ViewOrgPage extends React.Component {
+  search = SearchStore.create();
+
   componentDidMount() {
     this.props.viewOrg(this.props.id);
   }
 
-  goToDeleteOrg = () => {
+  openDeleteOrg = () => {
     goToDeleteOrg(this.props.id);
   };
 
-  search = Search
-    // prettier-ignore
-    .views(self => ({
-      getResults(projects) {
-        return projects.filter(project => self.matchesQuery(project.name));
-      },
-    }))
-    .create();
-
   render() {
-    const { id, orgsById, projectsByOrg, signOut } = this.props;
-    const org = orgsById[id];
+    const { getOrgWithId, id, signOut } = this.props;
+    const org = getOrgWithId(id);
     const pageTitle = org ? org.name : '';
-    const projects = projectsByOrg[id] || [];
-    const results = this.search.getResults(projects);
+    const projects = org ? org.getProjectsWithName(this.search.query) : [];
     return (
       <>
         <PageHeader>
           <FlexStart>
-            <IconLink to={listOrgsPath} title="Back to all organizations">
+            <IconLink to={orgsPath} title="Back to all organizations">
               <BackArrowIcon />
             </IconLink>
             <Title>{pageTitle}</Title>
@@ -66,7 +58,7 @@ class ViewOrgPage extends React.Component {
             <Section>
               <FlexBetween>
                 <SectionTitle>Overview</SectionTitle>
-                <RaisedButton onClick={this.goToDeleteOrg} red>
+                <RaisedButton onClick={this.openDeleteOrg} red>
                   Delete
                 </RaisedButton>
               </FlexBetween>
@@ -77,15 +69,15 @@ class ViewOrgPage extends React.Component {
             <Section>
               <ProjectsHeader>
                 <SectionTitle>Projects</SectionTitle>
-                <Text gray>{pluralize('project', results.length)}</Text>
+                <Text gray>{pluralize('project', projects.length)}</Text>
               </ProjectsHeader>
-              <SearchBar
+              <Search
                 description="The list of projects below will change to show only those with names matching the search query."
                 value={this.search.query}
-                onChange={this.search.change}
+                onChange={this.search.setQuery}
                 placeholder="Search by project name"
               />
-              <ProjectList projects={results} />
+              <ProjectList projects={projects} />
             </Section>
           </Width640>
         )}
@@ -95,30 +87,17 @@ class ViewOrgPage extends React.Component {
 }
 
 ViewOrgPage.propTypes = {
+  getOrgWithId: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
-  orgsById: PropTypes.objectOf(
-    PropTypes.shape({
-      createdAt: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
-  projectsByOrg: PropTypes.objectOf(
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-      }),
-    ),
-  ).isRequired,
   signOut: PropTypes.func.isRequired,
   viewOrg: PropTypes.func.isRequired,
 };
 
 export default connect(
   ViewOrgPage,
-  store => ({
-    orgsById: store.orgsById,
-    projectsByOrg: store.newestProjectsByOrg,
-    signOut: store.signOut,
-    viewOrg: store.viewOrg,
+  ({ authStore, orgStore }) => ({
+    getOrgWithId: orgStore.getOrgWithId,
+    signOut: authStore.signOut,
+    viewOrg: orgStore.viewOrg,
   }),
 );

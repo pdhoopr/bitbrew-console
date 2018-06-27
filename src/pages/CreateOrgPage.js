@@ -9,42 +9,37 @@ import { CloseIcon } from '../components/Icons';
 import { Drawer } from '../components/Modals';
 import { PageTitle } from '../components/Texts';
 import { Width320 } from '../components/Widths';
-import FormValues from '../models/FormValues';
+import FormStore from '../stores/FormStore';
 import { connect } from '../utils/tools';
-import { goToListOrgs } from '../utils/urls';
+import { goToOrgs } from '../utils/urls';
 
 const Title = styled(PageTitle.withComponent('h2'))`
   margin-left: var(--size-16);
 `;
 
 class CreateOrgPage extends React.Component {
-  formValues = FormValues
+  form = FormStore
     // prettier-ignore
     .props({
       name: '',
     })
-    .actions(self => ({
-      submit: async event => {
-        event.preventDefault();
-        try {
-          await this.props.createOrg(self.serialized);
-          this.props.signOut();
-          goToListOrgs();
-        } catch (error) {
-          console.log(error);
-        }
-      },
-    }))
     .create();
+
+  tryToCreateOrg = async event => {
+    event.preventDefault();
+    await this.props.createOrg(this.form.serialized);
+    this.props.signOut();
+    goToOrgs();
+  };
 
   render() {
     const pageTitle = 'New Organization';
     return (
-      <Drawer onRequestClose={goToListOrgs} contentLabel={pageTitle}>
+      <Drawer onRequestClose={goToOrgs} contentLabel={pageTitle}>
         <PageHeader>
           <FlexStart>
             <IconButton
-              onClick={goToListOrgs}
+              onClick={goToOrgs}
               title={`Close ${pageTitle.toLowerCase()} form`}
             >
               <CloseIcon />
@@ -53,13 +48,13 @@ class CreateOrgPage extends React.Component {
           </FlexStart>
         </PageHeader>
         <Width320>
-          <Form onSubmit={this.formValues.submit}>
+          <Form onSubmit={this.tryToCreateOrg}>
             <Label htmlFor="name">
               Name
               <Input
                 id="name"
-                value={this.formValues.name}
-                onChange={this.formValues.change}
+                value={this.form.name}
+                onChange={this.form.setValue}
                 type="text"
               />
             </Label>
@@ -80,8 +75,8 @@ CreateOrgPage.propTypes = {
 
 export default connect(
   CreateOrgPage,
-  store => ({
-    createOrg: store.createOrg,
-    signOut: store.signOut,
+  ({ authStore, orgStore }) => ({
+    createOrg: orgStore.createOrg,
+    signOut: authStore.signOut,
   }),
 );

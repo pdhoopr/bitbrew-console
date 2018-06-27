@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import Card from './Card';
 
-function AppForm(props) {
+function FormImpl(props) {
   return <form noValidate {...props} />;
 }
 
-export const Form = styled(Card.withComponent(AppForm))`
+export const Form = styled(Card.withComponent(FormImpl))`
   padding: var(--size-16) var(--size-24);
 `;
 

@@ -1,7 +1,7 @@
 import { inject, observer } from 'mobx-react';
 
 export function connect(Component, mapStoreToProps) {
-  return inject(context => mapStoreToProps(context.store))(observer(Component));
+  return inject(({ store }) => mapStoreToProps(store))(observer(Component));
 }
 
 export function flatMap(list, mapItemToArray) {
@@ -20,10 +20,6 @@ export function localizeDate(dateString) {
     year: 'numeric',
   };
   return date.toLocaleString(locale, format);
-}
-
-export function mapArrayToObject(arr, mapItemToObject) {
-  return arr.reduce((obj, item) => ({ ...obj, ...mapItemToObject(item) }), {});
 }
 
 export function matchesDate(value) {

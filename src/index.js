@@ -4,8 +4,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
 import { injectGlobal } from 'styled-components';
-import Store from './models/Store';
-import Routes from './pages/Routes';
+import RootPage from './pages/RootPage';
+import RootStore from './stores/RootStore';
+import * as api from './utils/api';
 import './utils/variables';
 
 // eslint-disable-next-line no-unused-expressions
@@ -42,7 +43,7 @@ injectGlobal`
   }
 `;
 
-const store = Store.create();
+const store = RootStore.create({}, { api });
 
 function renderToDom(Component) {
   const rootElement = document.getElementById('root');
@@ -55,10 +56,10 @@ function renderToDom(Component) {
   );
 }
 
-renderToDom(Routes);
+renderToDom(RootPage);
 
 if (module.hot) {
-  module.hot.accept('./pages/Routes', () => {
-    renderToDom(Routes);
+  module.hot.accept('./pages/RootPage', () => {
+    renderToDom(RootPage);
   });
 }
