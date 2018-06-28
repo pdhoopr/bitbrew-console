@@ -21,8 +21,12 @@ We officially support the last 3 versions of each browser listed. The app may wo
 This app uses a few pieces of tech worth highlighting:
 
 - [React](https://reactjs.org/) powers the app.
+- [axios](https://github.com/axios/axios) is used to make HTTP requests.
 - [mobx-state-tree](https://github.com/mobxjs/mobx-state-tree) is used for state management.
-- [styled-components](https://www.styled-components.com/) are used to write styles.
+- [Reach Router](https://reach.tech/router) is used for routing.
+- [React Loadable](https://github.com/jamiebuilds/react-loadable) is used for code splitting.
+- [react-modal](http://reactcommunity.org/react-modal/) is used to create accessible modals.
+- [styled-components](https://www.styled-components.com/) is used to write styles.
 
 Other noteable tooling includes:
 
@@ -44,8 +48,11 @@ After cloning your repo, you'll want to navigate into the repository folder and 
 
 Once you've installed the dependencies, you can make use of the available npm scripts to help you develop the app by running `yarn <SCRIPT_NAME>` in your terminal. You can always find the entire list of scripts in the [`package.json`](package.json) file, but some useful ones are:
 
+- `build`: Builds a production version of the app that is suitable for deployment.
+- `check:css`: Runs Stylelint on all the CSS (styled-components) in the project.
+- `check:format`: Lists any files that aren't formatted as Prettier would like them to be.
+- `check:js`: Runs ESLint on all the JavaScript in the project.
+- `ci`: Runs all checks and builds the app if they pass.
 - `format`: Runs Prettier on all project files supported by Prettier.
-- `lint:css`: Runs Stylelint on all the CSS (styled-components) in the project.
-- `lint:js`: Runs ESLint on all the JavaScript in the project.
-- `precommit`: Automatically runs Prettier on all files staged in Git before committing. You probably won't call this directly.
-- `start`: Starts the development version of the app. See your terminal output for URLs.
+- `precommit`: Automatically runs Prettier on all files staged in Git before committing.
+- `start`: Serves a development version of the app locally at the URLs listed in the terminal.

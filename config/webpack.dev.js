@@ -7,14 +7,11 @@ const HtmlPlugin = require('html-webpack-plugin');
 const ip = require('ip');
 const path = require('path');
 const webpack = require('webpack');
+const ManifestPlugin = require('webpack-manifest-plugin');
 const { name } = require('../package.json');
+const paths = require('./paths');
 
 const mode = 'development';
-const rootFolder = path.resolve(__dirname, '..');
-const distFolder = path.resolve(rootFolder, 'dist');
-const srcFolder = path.resolve(rootFolder, 'src');
-const staticFolder = path.resolve(rootFolder, 'static');
-const htmlFile = path.resolve(staticFolder, 'index.html');
 const port = 4321;
 const localUrl = `http://localhost:${port}`;
 const networkUrl = `http://${ip.address()}:${port}`;
@@ -22,8 +19,12 @@ const networkUrl = `http://${ip.address()}:${port}`;
 module.exports = {
   mode,
   output: {
-    filename: '[name].js',
-    path: distFolder,
+    chunkFilename: 'js/[name].js',
+    devtoolModuleFilenameTemplate(info) {
+      return path.resolve(info.absoluteResourcePath).replace(/\\/g, '/');
+    },
+    filename: 'js/[name].js',
+    path: paths.distFolder,
     pathinfo: true,
     publicPath: '/',
   },
@@ -31,26 +32,42 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        use: ['babel-loader'],
-        include: [srcFolder],
+        use: [
+          {
+            loader: 'thread-loader',
+            options: {
+              poolTimeout: Infinity,
+            },
+          },
+          'babel-loader',
+        ],
+        include: [paths.srcFolder],
       },
       {
         test: /\.svg$/,
         use: ['@svgr/webpack'],
-        include: [srcFolder],
+        include: [paths.srcFolder],
       },
     ],
+    strictExportPresence: true,
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      name: 'vendors',
+    },
+    runtimeChunk: 'single',
   },
   plugins: [
     new CaseSensitivePathsPlugin(),
-    new CleanPlugin([distFolder], {
-      root: rootFolder,
+    new CleanPlugin([paths.distFolder], {
+      root: paths.rootFolder,
       verbose: false,
     }),
     new CopyPlugin([
       {
-        from: staticFolder,
-        to: distFolder,
+        from: paths.staticFolder,
+        to: paths.distFolder,
         ignore: 'index.html',
         flatten: true,
       },
@@ -64,24 +81,31 @@ module.exports = {
             `\t${chalk.bold('On your network:')} ${networkUrl}`,
           ].join('\n'),
         ],
-        notes: ['Note that the development build is not optimized.'],
+        notes: [
+          [
+            'Note that the development build is not optimized.',
+            `    To create a production build, use ${chalk.cyan(
+              'yarn build',
+            )}.`,
+          ].join('\n'),
+        ],
       },
     }),
     new HtmlPlugin({
-      template: htmlFile,
+      template: paths.htmlFile,
+    }),
+    new ManifestPlugin({
+      fileName: 'asset-manifest.json',
     }),
     new webpack.DefinePlugin({
-      'process.env': {
-        API_ENV: JSON.stringify(process.env.API_ENV || mode),
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV || mode),
-      },
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || mode),
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
   devServer: {
     clientLogLevel: 'none',
     compress: true,
-    contentBase: staticFolder,
+    contentBase: paths.staticFolder,
     historyApiFallback: true,
     host: '0.0.0.0',
     hot: true,
@@ -103,7 +127,4 @@ module.exports = {
     watchContentBase: true,
   },
   devtool: 'cheap-module-source-map',
-  performance: {
-    hints: false,
-  },
 };

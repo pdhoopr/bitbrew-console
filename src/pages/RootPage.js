@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import Footer from '../components/Footer';
-import { connect } from '../utils/tools';
+import { connect, loadAsync } from '../utils/tools';
 import * as urls from '../utils/urls';
-import CreateOrgPage from './CreateOrgPage';
-import DeleteOrgPage from './DeleteOrgPage';
-import ListOrgsPage from './ListOrgsPage';
-import SignInPage from './SignInPage';
-import ViewOrgPage from './ViewOrgPage';
+
+const CreateOrgPage = loadAsync(() => import('./CreateOrgPage'));
+const DeleteOrgPage = loadAsync(() => import('./DeleteOrgPage'));
+const ListOrgsPage = loadAsync(() => import('./ListOrgsPage'));
+const SignInPage = loadAsync(() => import('./SignInPage'));
+const ViewOrgPage = loadAsync(() => import('./ViewOrgPage'));
 
 const Wrapper = styled.main`
   flex: 1;

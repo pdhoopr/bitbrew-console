@@ -1,4 +1,5 @@
 module.exports = function buildBabelPreset() {
+  const isProd = process.env.NODE_ENV === 'production';
   return {
     presets: [
       [
@@ -11,14 +12,26 @@ module.exports = function buildBabelPreset() {
       [
         '@babel/preset-react',
         {
-          development: true,
+          development: !isProd,
           useBuiltIns: true,
         },
       ],
     ],
     plugins: [
       '@babel/plugin-proposal-class-properties',
-      'babel-plugin-styled-components',
-    ],
+      '@babel/plugin-syntax-dynamic-import',
+      [
+        'babel-plugin-styled-components',
+        {
+          displayName: !isProd,
+        },
+      ],
+      isProd && [
+        'babel-plugin-transform-react-remove-prop-types',
+        {
+          removeImport: true,
+        },
+      ],
+    ].filter(Boolean),
   };
 };

@@ -1,11 +1,16 @@
 import { inject, observer } from 'mobx-react';
+import Loadable from 'react-loadable';
+import Loading from '../components/Loading';
 
 export function connect(Component, mapStoreToProps) {
   return inject(({ store }) => mapStoreToProps(store))(observer(Component));
 }
 
-export function flatMap(list, mapItemToArray) {
-  return list.reduce((arr, item) => [...arr, ...mapItemToArray(item)], []);
+export function loadAsync(loader) {
+  return Loadable({
+    loader,
+    loading: Loading,
+  });
 }
 
 export function localizeDate(dateString) {
