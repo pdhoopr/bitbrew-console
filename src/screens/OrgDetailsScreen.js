@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { Button, RaisedButton } from '../components/Buttons';
-import CreateProjectModal from '../components/CreateProjectModal';
 import { FlexBetween, FlexStart } from '../components/Flexboxes';
 import { PageHeader } from '../components/Headers';
 import { BackIcon } from '../components/Icons';
@@ -18,7 +17,8 @@ import UiStore from '../stores/UiStore';
 import { connect, loadAsync, localizeDate, pluralize } from '../utils/tools';
 import { orgsPath } from '../utils/urls';
 
-const DeleteOrgModal = loadAsync(() => import('../components/DeleteOrgModal'));
+const DeleteOrgScreen = loadAsync(() => import('./DeleteOrgScreen'));
+const NewProjectScreen = loadAsync(() => import('./NewProjectScreen'));
 
 const Title = styled(PageTitle)`
   flex: 1;
@@ -34,25 +34,19 @@ const ProjectsHeader = styled(FlexBetween)`
   margin-bottom: var(--size-16);
 `;
 
-class OrgDetailsPage extends React.Component {
+class OrgDetailsScreen extends React.Component {
   search = SearchStore.create();
 
-  deleteOrgModal = UiStore.create();
+  deleteOrgUi = UiStore.create();
 
-  createProjectModal = UiStore.create();
+  newProjectUi = UiStore.create();
 
   componentDidMount() {
     this.props.viewOrg(this.props.orgId);
   }
 
   render() {
-    const {
-      createProject,
-      deleteOrg,
-      getOrgWithId,
-      orgId,
-      signOut,
-    } = this.props;
+    const { getOrgWithId, orgId, signOut } = this.props;
     const org = getOrgWithId(orgId);
     const title = org ? org.name : '';
     const projects = org ? org.getProjectsWithName(this.search.query) : [];
@@ -73,7 +67,7 @@ class OrgDetailsPage extends React.Component {
               <Section>
                 <FlexBetween>
                   <SectionTitle>Overview</SectionTitle>
-                  <RaisedButton onClick={this.deleteOrgModal.open} red>
+                  <RaisedButton onClick={this.deleteOrgUi.open} red>
                     Delete
                   </RaisedButton>
                 </FlexBetween>
@@ -95,26 +89,16 @@ class OrgDetailsPage extends React.Component {
                     onChange={this.search.setQuery}
                     placeholder="Search by project name"
                   />
-                  <NewButton onClick={this.createProjectModal.open}>
-                    New
-                  </NewButton>
+                  <NewButton onClick={this.newProjectUi.open}>New</NewButton>
                 </FlexBetween>
                 <ProjectList projects={projects} />
               </Section>
             </Width640>
-            {this.deleteOrgModal.isOpen && (
-              <DeleteOrgModal
-                close={this.deleteOrgModal.close}
-                deleteOrg={deleteOrg}
-                org={org}
-              />
+            {this.deleteOrgUi.isOpen && (
+              <DeleteOrgScreen org={org} close={this.deleteOrgUi.close} />
             )}
-            {this.createProjectModal.isOpen && (
-              <CreateProjectModal
-                close={this.createProjectModal.close}
-                createProject={createProject}
-                scopeToOrg={org}
-              />
+            {this.newProjectUi.isOpen && (
+              <NewProjectScreen org={org} close={this.newProjectUi.close} />
             )}
           </React.Fragment>
         )}
@@ -123,9 +107,7 @@ class OrgDetailsPage extends React.Component {
   }
 }
 
-OrgDetailsPage.propTypes = {
-  createProject: PropTypes.func.isRequired,
-  deleteOrg: PropTypes.func.isRequired,
+OrgDetailsScreen.propTypes = {
   getOrgWithId: PropTypes.func.isRequired,
   orgId: PropTypes.string.isRequired,
   signOut: PropTypes.func.isRequired,
@@ -133,10 +115,8 @@ OrgDetailsPage.propTypes = {
 };
 
 export default connect(
-  OrgDetailsPage,
-  ({ authStore, orgStore, projectStore }) => ({
-    createProject: projectStore.createProject,
-    deleteOrg: orgStore.deleteOrg,
+  OrgDetailsScreen,
+  ({ authStore, orgStore }) => ({
     getOrgWithId: orgStore.getOrgWithId,
     signOut: authStore.signOut,
     viewOrg: orgStore.viewOrg,

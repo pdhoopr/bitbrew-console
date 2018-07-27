@@ -22,6 +22,10 @@ const http = {
     const response = await this.request.post(url, data);
     return response.data;
   },
+  async put(url, data) {
+    const response = await this.request.put(url, data);
+    return response.data;
+  },
   async delete(url) {
     const response = await this.request.delete(url);
     return response.data;
@@ -54,4 +58,8 @@ export function listProjects(orgId) {
 
 export function createProject(data) {
   return http.post(urls.projectsPath, data);
+}
+
+export function updateProject(projectId, data) {
+  return http.put(urls.projectDetailsPath(projectId), data);
 }

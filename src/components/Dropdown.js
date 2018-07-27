@@ -55,11 +55,11 @@ class Dropdown extends React.Component {
 
   buttonRef = React.createRef();
 
-  menu = UiStore.create();
-
   menuId = createIdForA11y(`${Dropdown.name}__menu`);
 
   menuRef = React.createRef();
+
+  menuUi = UiStore.create();
 
   menuItemRefs = React.Children.map(this.props.children, React.createRef);
 
@@ -73,20 +73,19 @@ class Dropdown extends React.Component {
   }
 
   openMenu = () => {
-    this.menu.open();
+    this.menuUi.open();
     window.addEventListener('click', this.closeOnOuterClick);
     window.addEventListener('keydown', this.closeOnEscOrTab);
   };
 
   closeMenu = () => {
-    this.menu.close();
+    this.menuUi.close();
     window.removeEventListener('click', this.closeOnOuterClick);
     window.removeEventListener('keydown', this.closeOnEscOrTab);
   };
 
-  toggleMenu = event => {
-    event.stopPropagation();
-    if (this.menu.isOpen) {
+  toggleMenu = () => {
+    if (this.menuUi.isOpen) {
       this.closeMenu();
     } else {
       this.openMenu();
@@ -117,17 +116,12 @@ class Dropdown extends React.Component {
         const isLastItem = itemIndex === lastItemIndex;
         itemIndexToFocus = isLastItem ? firstItemIndex : itemIndex + 1;
       }
-      if (this.menu.isClosed) {
+      if (this.menuUi.isClosed) {
         this.openMenu();
         await nextTick();
       }
       this.menuItemRefs[itemIndexToFocus].current.focus();
     }
-  };
-
-  focusOnMenuItemClick = onMenuItemClick => () => {
-    this.buttonRef.current.focus();
-    onMenuItemClick();
   };
 
   closeOnEscOrTab = event => {
@@ -142,7 +136,11 @@ class Dropdown extends React.Component {
   };
 
   closeOnOuterClick = event => {
-    if (event.target !== this.menuRef.current) {
+    if (
+      event.target !== this.buttonRef.current &&
+      !this.buttonRef.current.contains(event.target) &&
+      event.target !== this.menuRef.current
+    ) {
       this.closeMenu();
     }
   };
@@ -156,20 +154,23 @@ class Dropdown extends React.Component {
           onClick: this.toggleMenu,
           onKeyDown: this.focusOnSomeKeyPresses,
           'aria-controls': this.menuId,
-          'aria-expanded': this.menu.isOpen,
+          'aria-expanded': this.menuUi.isOpen,
           'aria-haspopup': true,
           innerRef: this.buttonRef,
         })}
         <Menu
           id={this.menuId}
-          hidden={this.menu.isClosed}
+          hidden={this.menuUi.isClosed}
           aria-labelledby={this.buttonId}
           role="menu"
           innerRef={this.menuRef}
         >
           {React.Children.map(children, (menuItem, index) =>
             React.cloneElement(menuItem, {
-              onClick: this.focusOnMenuItemClick(menuItem.props.onClick),
+              onClick: () => {
+                this.buttonRef.current.focus();
+                menuItem.props.onClick();
+              },
               onKeyDown: this.focusOnSomeKeyPresses,
               'data-index': index,
               tabIndex: -1,

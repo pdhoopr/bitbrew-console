@@ -21,7 +21,7 @@ const ContactUs = styled(Text)`
   text-align: center;
 `;
 
-class SignInPage extends React.Component {
+class SignInScreen extends React.Component {
   form = FormStore
     // prettier-ignore
     .props({
@@ -69,12 +69,12 @@ class SignInPage extends React.Component {
   }
 }
 
-SignInPage.propTypes = {
+SignInScreen.propTypes = {
   signIn: PropTypes.func.isRequired,
 };
 
 export default connect(
-  SignInPage,
+  SignInScreen,
   ({ authStore }) => ({
     signIn: authStore.signIn,
   }),

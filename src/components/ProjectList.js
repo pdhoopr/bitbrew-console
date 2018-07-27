@@ -1,22 +1,65 @@
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localizeDate } from '../utils/tools';
+import UiStore from '../stores/UiStore';
+import { loadAsync, localizeDate } from '../utils/tools';
+import { Button, IconButton } from './Buttons';
+import Dropdown from './Dropdown';
+import { FlexBetween } from './Flexboxes';
 import { ContentHeader } from './Headers';
+import { MoreIcon } from './Icons';
 import List from './List';
 import { Content } from './Sections';
 import { ContentTitle, Text } from './Texts';
 
-function ProjectList({ projects }) {
-  return projects.map(project => (
-    <Content key={project.id}>
-      <ContentHeader>
-        <ContentTitle>{project.name}</ContentTitle>
-        <Text gray>{project.description}</Text>
-      </ContentHeader>
-      <List items={[['Date Created', localizeDate(project.createdAt)]]} />
-    </Content>
-  ));
+const EditProjectScreen = loadAsync(() =>
+  import('../screens/EditProjectScreen'),
+);
+
+class ProjectList extends React.Component {
+  editProjectUi = UiStore.create();
+
+  render() {
+    const { projects } = this.props;
+    return (
+      <React.Fragment>
+        {projects.map(project => (
+          <Content key={project.id}>
+            <ContentHeader>
+              <FlexBetween>
+                <div>
+                  <ContentTitle>{project.name}</ContentTitle>
+                  <Text gray>{project.description}</Text>
+                </div>
+                <Dropdown
+                  triggerButton={
+                    <IconButton title="Show more project actions">
+                      <MoreIcon />
+                    </IconButton>
+                  }
+                >
+                  <Button
+                    onClick={() => {
+                      this.editProjectUi.open({ project });
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </Dropdown>
+              </FlexBetween>
+            </ContentHeader>
+            <List items={[['Date Created', localizeDate(project.createdAt)]]} />
+          </Content>
+        ))}
+        {this.editProjectUi.isOpen && (
+          <EditProjectScreen
+            project={this.editProjectUi.metadata.project}
+            close={this.editProjectUi.close}
+          />
+        )}
+      </React.Fragment>
+    );
+  }
 }
 
 ProjectList.propTypes = {

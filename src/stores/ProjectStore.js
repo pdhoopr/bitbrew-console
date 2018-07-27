@@ -4,10 +4,11 @@ import { OrgImpl } from './OrgStore';
 
 export const ProjectImpl = types.model('ProjectImpl', {
   id: types.refinement(types.identifier, matchesUuid),
+  org: types.reference(OrgImpl),
   name: types.string,
   description: types.string,
+  usesSimulatedDevices: types.boolean,
   createdAt: types.refinement(types.string, matchesDate),
-  org: types.reference(OrgImpl),
 });
 
 export default types
@@ -42,6 +43,10 @@ export default types
     },
     createProject: flow(function* createProject(data) {
       const response = yield self.api.createProject(data);
+      self.setProject(response);
+    }),
+    updateProject: flow(function* updateProject(project, data) {
+      const response = yield self.api.updateProject(project.id, data);
       self.setProject(response);
     }),
   }));

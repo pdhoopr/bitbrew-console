@@ -1,8 +1,9 @@
 import styled, { css } from 'styled-components';
-import BackSvg from '../graphics/back-icon.svg';
-import CloseSvg from '../graphics/close-icon.svg';
-import DropdownSvg from '../graphics/dropdown-icon.svg';
-import SearchSvg from '../graphics/search-icon.svg';
+import BackIconSvg from '../images/back-icon.svg';
+import CloseIconSvg from '../images/close-icon.svg';
+import DropdownIconSvg from '../images/dropdown-icon.svg';
+import MoreIconSvg from '../images/more-icon.svg';
+import SearchIconSvg from '../images/search-icon.svg';
 
 const baseStyles = css`
   fill: var(--color-dark-gray);
@@ -11,18 +12,22 @@ const baseStyles = css`
   width: var(--size-20);
 `;
 
-export const BackIcon = styled(BackSvg)`
+export const BackIcon = styled(BackIconSvg)`
   ${baseStyles};
 `;
 
-export const CloseIcon = styled(CloseSvg)`
+export const CloseIcon = styled(CloseIconSvg)`
   ${baseStyles};
 `;
 
-export const DropdownIcon = styled(DropdownSvg)`
+export const DropdownIcon = styled(DropdownIconSvg)`
   ${baseStyles};
 `;
 
-export const SearchIcon = styled(SearchSvg)`
+export const MoreIcon = styled(MoreIconSvg)`
+  ${baseStyles};
+`;
+
+export const SearchIcon = styled(SearchIconSvg)`
   ${baseStyles};
 `;

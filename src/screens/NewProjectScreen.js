@@ -1,17 +1,17 @@
-import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Input, Label, ReadOnlyInput } from '../components/Forms';
+import ModalForm from '../components/ModalForm';
+import Select from '../components/Select';
 import FormStore from '../stores/FormStore';
-import { Input, Label, ReadOnlyInput } from './Forms';
-import ModalForm from './ModalForm';
-import Select from './Select';
+import { connect } from '../utils/tools';
 
-class CreateProjectModal extends React.Component {
+class NewProjectScreen extends React.Component {
   form = FormStore
     // prettier-ignore
     .props({
+      orgId: this.props.org ? this.props.org.id : '',
       name: '',
-      orgId: this.props.scopeToOrg ? this.props.scopeToOrg.id : '',
       description: '',
       usesSimulatedDevices: false,
     })
@@ -24,7 +24,7 @@ class CreateProjectModal extends React.Component {
   };
 
   render() {
-    const { close, orgs, scopeToOrg } = this.props;
+    const { close, org, orgsAtoZ } = this.props;
     return (
       <ModalForm
         close={close}
@@ -34,17 +34,17 @@ class CreateProjectModal extends React.Component {
       >
         <Label htmlFor="orgId">
           Organization
-          {scopeToOrg ? (
-            <ReadOnlyInput id="orgId" value={scopeToOrg.name} />
+          {org ? (
+            <ReadOnlyInput id="orgId" value={org.name} />
           ) : (
             <Select
               id="orgId"
               value={this.form.orgId}
               onChange={this.form.setValue}
             >
-              {orgs.map(org => (
-                <option key={org.id} value={org.id}>
-                  {org.name}
+              {orgsAtoZ.map(item => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
                 </option>
               ))}
             </Select>
@@ -71,24 +71,29 @@ class CreateProjectModal extends React.Component {
   }
 }
 
-CreateProjectModal.propTypes = {
+NewProjectScreen.propTypes = {
   close: PropTypes.func.isRequired,
   createProject: PropTypes.func.isRequired,
-  orgs: PropTypes.arrayOf(
+  org: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }),
+  orgsAtoZ: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
-  ),
-  scopeToOrg: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
+  ).isRequired,
+};
+
+NewProjectScreen.defaultProps = {
+  org: undefined,
+};
+
+export default connect(
+  NewProjectScreen,
+  ({ orgStore, projectStore }) => ({
+    createProject: projectStore.createProject,
+    orgsAtoZ: orgStore.orgsAtoZ,
   }),
-};
-
-CreateProjectModal.defaultProps = {
-  orgs: undefined,
-  scopeToOrg: undefined,
-};
-
-export default observer(CreateProjectModal);
+);

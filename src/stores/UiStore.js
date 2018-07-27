@@ -4,16 +4,21 @@ export default types
   .model('UiStore', {
     isOpen: types.optional(types.boolean, false),
   })
+  .volatile(() => ({
+    metadata: {},
+  }))
   .views(self => ({
     get isClosed() {
       return !self.isOpen;
     },
   }))
   .actions(self => ({
-    open() {
+    open(metadata = {}) {
+      self.metadata = metadata;
       self.isOpen = true;
     },
     close() {
       self.isOpen = false;
+      self.metadata = {};
     },
   }));

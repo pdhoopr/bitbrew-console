@@ -1,13 +1,13 @@
 import { navigate } from '@reach/router';
-import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Input, Label } from '../components/Forms';
+import ModalForm from '../components/ModalForm';
 import FormStore from '../stores/FormStore';
+import { connect } from '../utils/tools';
 import { orgsPath } from '../utils/urls';
-import { Input, Label } from './Forms';
-import ModalForm from './ModalForm';
 
-class CreateOrgModal extends React.Component {
+class NewOrgScreen extends React.Component {
   form = FormStore
     // prettier-ignore
     .props({
@@ -44,10 +44,16 @@ class CreateOrgModal extends React.Component {
   }
 }
 
-CreateOrgModal.propTypes = {
+NewOrgScreen.propTypes = {
   close: PropTypes.func.isRequired,
   createOrg: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
 };
 
-export default observer(CreateOrgModal);
+export default connect(
+  NewOrgScreen,
+  ({ authStore, orgStore }) => ({
+    createOrg: orgStore.createOrg,
+    signOut: authStore.signOut,
+  }),
+);

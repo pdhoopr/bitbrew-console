@@ -1,14 +1,14 @@
 import { navigate } from '@reach/router';
-import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { Button, RaisedButton } from '../components/Buttons';
+import { FlexEnd } from '../components/Flexboxes';
+import { ContentHeader } from '../components/Headers';
+import { Dialog } from '../components/Modals';
+import { ContentTitle, Text } from '../components/Texts';
+import { connect } from '../utils/tools';
 import { orgsPath } from '../utils/urls';
-import { Button, RaisedButton } from './Buttons';
-import { FlexEnd } from './Flexboxes';
-import { ContentHeader } from './Headers';
-import { Dialog } from './Modals';
-import { ContentTitle, Text } from './Texts';
 
 const Title = ContentTitle.withComponent('h2');
 
@@ -31,7 +31,7 @@ const CancelButton = styled(Button)`
   margin-right: var(--size-16);
 `;
 
-class DeleteOrgModal extends React.Component {
+class DeleteOrgScreen extends React.Component {
   tryToDeleteOrg = async () => {
     await this.props.deleteOrg(this.props.org);
     navigate(orgsPath);
@@ -61,7 +61,7 @@ class DeleteOrgModal extends React.Component {
   }
 }
 
-DeleteOrgModal.propTypes = {
+DeleteOrgScreen.propTypes = {
   close: PropTypes.func.isRequired,
   deleteOrg: PropTypes.func.isRequired,
   org: PropTypes.shape({
@@ -69,4 +69,9 @@ DeleteOrgModal.propTypes = {
   }).isRequired,
 };
 
-export default observer(DeleteOrgModal);
+export default connect(
+  DeleteOrgScreen,
+  ({ orgStore }) => ({
+    deleteOrg: orgStore.deleteOrg,
+  }),
+);

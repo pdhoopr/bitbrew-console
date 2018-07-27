@@ -18,10 +18,8 @@ import UiStore from '../stores/UiStore';
 import { connect, loadAsync, localizeDate, pluralize } from '../utils/tools';
 import { orgDetailsPath } from '../utils/urls';
 
-const CreateOrgModal = loadAsync(() => import('../components/CreateOrgModal'));
-const CreateProjectModal = loadAsync(() =>
-  import('../components/CreateProjectModal'),
-);
+const NewOrgScreen = loadAsync(() => import('./NewOrgScreen'));
+const NewProjectScreen = loadAsync(() => import('./NewProjectScreen'));
 
 const WelcomeHeader = styled(PageHeader)`
   background-color: var(--color-black);
@@ -44,19 +42,19 @@ const NewButtonIcon = styled(DropdownIcon)`
   width: var(--size-16);
 `;
 
-class OrgsPage extends React.Component {
+class OrgsScreen extends React.Component {
   search = SearchStore.create();
 
-  createOrgModal = UiStore.create();
+  newOrgUi = UiStore.create();
 
-  createProjectModal = UiStore.create();
+  newProjectUi = UiStore.create();
 
   componentDidMount() {
     this.props.listOrgs();
   }
 
   render() {
-    const { createOrg, createProject, orgs, orgsAtoZ, signOut } = this.props;
+    const { orgs, signOut } = this.props;
     return (
       <React.Fragment>
         <WelcomeHeader>
@@ -86,8 +84,8 @@ class OrgsPage extends React.Component {
                 </RaisedButton>
               }
             >
-              <Button onClick={this.createOrgModal.open}>Organization</Button>
-              <Button onClick={this.createProjectModal.open}>Project</Button>
+              <Button onClick={this.newOrgUi.open}>Organization</Button>
+              <Button onClick={this.newProjectUi.open}>Project</Button>
             </Dropdown>
           </Actions>
           {orgs.map(org => {
@@ -109,28 +107,16 @@ class OrgsPage extends React.Component {
             );
           })}
         </Width640>
-        {this.createOrgModal.isOpen && (
-          <CreateOrgModal
-            close={this.createOrgModal.close}
-            createOrg={createOrg}
-            signOut={signOut}
-          />
-        )}
-        {this.createProjectModal.isOpen && (
-          <CreateProjectModal
-            close={this.createProjectModal.close}
-            createProject={createProject}
-            orgs={orgsAtoZ}
-          />
+        {this.newOrgUi.isOpen && <NewOrgScreen close={this.newOrgUi.close} />}
+        {this.newProjectUi.isOpen && (
+          <NewProjectScreen close={this.newProjectUi.close} />
         )}
       </React.Fragment>
     );
   }
 }
 
-OrgsPage.propTypes = {
-  createOrg: PropTypes.func.isRequired,
-  createProject: PropTypes.func.isRequired,
+OrgsScreen.propTypes = {
   listOrgs: PropTypes.func.isRequired,
   orgs: PropTypes.arrayOf(
     PropTypes.shape({
@@ -140,18 +126,14 @@ OrgsPage.propTypes = {
       name: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  orgsAtoZ: PropTypes.array.isRequired,
   signOut: PropTypes.func.isRequired,
 };
 
 export default connect(
-  OrgsPage,
-  ({ authStore, orgStore, projectStore }) => ({
-    createOrg: orgStore.createOrg,
-    createProject: projectStore.createProject,
+  OrgsScreen,
+  ({ authStore, orgStore }) => ({
     listOrgs: orgStore.listOrgs,
     orgs: orgStore.orgs,
-    orgsAtoZ: orgStore.orgsAtoZ,
     signOut: authStore.signOut,
   }),
 );

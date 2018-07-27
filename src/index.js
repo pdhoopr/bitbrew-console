@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
 import { injectGlobal } from 'styled-components';
-import RootPage from './pages/RootPage';
+import RootScreen from './screens/RootScreen';
 import RootStore from './stores/RootStore';
 import * as api from './utils/api';
 import './utils/variables';
@@ -56,10 +56,10 @@ function renderToDom(Component) {
   );
 }
 
-renderToDom(RootPage);
+renderToDom(RootScreen);
 
 if (module.hot) {
-  module.hot.accept('./pages/RootPage', () => {
-    renderToDom(RootPage);
+  module.hot.accept('./screens/RootScreen', () => {
+    renderToDom(RootScreen);
   });
 }

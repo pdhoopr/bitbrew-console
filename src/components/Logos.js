@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
-import Mark from '../graphics/logomark.svg';
-import Type from '../graphics/logotype.svg';
+import LogomarkSvg from '../images/logomark.svg';
+import LogotypeSvg from '../images/logotype.svg';
 
 const baseStyles = css`
   display: block;
@@ -8,10 +8,10 @@ const baseStyles = css`
   width: auto;
 `;
 
-export const Logomark = styled(Mark)`
+export const Logomark = styled(LogomarkSvg)`
   ${baseStyles};
 `;
 
-export const Logotype = styled(Type)`
+export const Logotype = styled(LogotypeSvg)`
   ${baseStyles};
 `;
