@@ -26,10 +26,10 @@ class EditProjectScreen extends React.Component {
     const { close, project } = this.props;
     return (
       <ModalForm
-        close={close}
         title="Edit Project"
         buttonText="Save"
-        submit={this.tryToUpdateProject}
+        onSubmit={this.tryToUpdateProject}
+        close={close}
       >
         <Label htmlFor="orgId">
           Organization

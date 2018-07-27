@@ -15,6 +15,7 @@ const Wrapper = styled.div`
 
 const Icon = styled(SearchIcon)`
   left: var(--size-14);
+  pointer-events: none;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

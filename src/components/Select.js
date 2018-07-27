@@ -17,6 +17,7 @@ const Field = styled(Input.withComponent('select'))`
 `;
 
 const Icon = styled(DropdownIcon)`
+  pointer-events: none;
   position: absolute;
   right: var(--size-12);
   top: 50%;

@@ -12,12 +12,17 @@ import List from './List';
 import { Content } from './Sections';
 import { ContentTitle, Text } from './Texts';
 
+const DeleteProjectScreen = loadAsync(() =>
+  import('../screens/DeleteProjectScreen'),
+);
 const EditProjectScreen = loadAsync(() =>
   import('../screens/EditProjectScreen'),
 );
 
 class ProjectList extends React.Component {
   editProjectUi = UiStore.create();
+
+  deleteProjectUi = UiStore.create();
 
   render() {
     const { projects } = this.props;
@@ -45,6 +50,13 @@ class ProjectList extends React.Component {
                   >
                     Edit
                   </Button>
+                  <Button
+                    onClick={() => {
+                      this.deleteProjectUi.open({ project });
+                    }}
+                  >
+                    Delete
+                  </Button>
                 </Dropdown>
               </FlexBetween>
             </ContentHeader>
@@ -55,6 +67,12 @@ class ProjectList extends React.Component {
           <EditProjectScreen
             project={this.editProjectUi.metadata.project}
             close={this.editProjectUi.close}
+          />
+        )}
+        {this.deleteProjectUi.isOpen && (
+          <DeleteProjectScreen
+            project={this.deleteProjectUi.metadata.project}
+            close={this.deleteProjectUi.close}
           />
         )}
       </React.Fragment>

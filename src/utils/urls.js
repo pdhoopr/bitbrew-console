@@ -1,6 +1,13 @@
 export const rootPath = '/';
+
 export const orgsPath = '/orgs';
-export const orgDetailsPath = (orgId = ':orgId') => `/orgs/${orgId}`;
+
+export function orgDetailsPath(orgId = ':orgId') {
+  return `${orgsPath}/${orgId}`;
+}
+
 export const projectsPath = '/projects';
-export const projectDetailsPath = (projectId = ':projectId') =>
-  `/projects/${projectId}`;
+
+export function projectDetailsPath(projectId = ':projectId') {
+  return `${projectsPath}/${projectId}`;
+}

@@ -49,4 +49,8 @@ export default types
       const response = yield self.api.updateProject(project.id, data);
       self.setProject(response);
     }),
+    deleteProject: flow(function* deleteProject(project) {
+      yield self.api.deleteProject(project.id);
+      self.removeProject(project);
+    }),
   }));

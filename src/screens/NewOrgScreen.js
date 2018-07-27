@@ -26,10 +26,10 @@ class NewOrgScreen extends React.Component {
     const { close } = this.props;
     return (
       <ModalForm
-        close={close}
         title="New Organization"
         buttonText="Create"
-        submit={this.tryToCreateOrg}
+        onSubmit={this.tryToCreateOrg}
+        close={close}
       >
         <Label htmlFor="name">
           Name

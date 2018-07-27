@@ -63,3 +63,7 @@ export function createProject(data) {
 export function updateProject(projectId, data) {
   return http.put(urls.projectDetailsPath(projectId), data);
 }
+
+export function deleteProject(projectId) {
+  return http.delete(urls.projectDetailsPath(projectId));
+}

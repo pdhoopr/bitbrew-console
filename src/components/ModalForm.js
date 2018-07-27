@@ -15,7 +15,7 @@ const Title = styled(PageTitle.withComponent('h2'))`
   margin-left: var(--size-16);
 `;
 
-function ModalForm({ buttonText, children, close, submit, title }) {
+function ModalForm({ buttonText, children, close, onSubmit, title }) {
   return (
     <Drawer onRequestClose={close} contentLabel={title}>
       <PageHeader>
@@ -30,7 +30,7 @@ function ModalForm({ buttonText, children, close, submit, title }) {
         </FlexStart>
       </PageHeader>
       <Width320>
-        <Form onSubmit={submit}>
+        <Form onSubmit={onSubmit}>
           {children}
           <FlexEnd>
             <RaisedButton type="submit">{buttonText}</RaisedButton>
@@ -48,7 +48,7 @@ ModalForm.propTypes = {
     PropTypes.arrayOf(PropTypes.element),
   ]).isRequired,
   close: PropTypes.func.isRequired,
-  submit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
 };
 
