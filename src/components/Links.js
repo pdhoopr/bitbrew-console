@@ -1,10 +1,11 @@
 import { Link as RouterLink } from '@reach/router';
+import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { Button } from './Buttons';
 
-function LinkImpl({ red, to, ...props }) {
+function LinkImpl({ green, to, ...props }) {
   const isInternal = /^\/(?!\/)/.test(to);
   return isInternal ? (
     <RouterLink to={to} {...props} />
@@ -15,34 +16,38 @@ function LinkImpl({ red, to, ...props }) {
 }
 
 LinkImpl.propTypes = {
-  red: PropTypes.bool,
+  green: PropTypes.bool,
   to: PropTypes.string.isRequired,
 };
 
 LinkImpl.defaultProps = {
-  red: false,
+  green: false,
 };
+
+const ReactiveLink = observer(LinkImpl);
 
 const baseStyles = css`
   cursor: pointer;
   text-decoration: none;
 `;
 
-export const Link = styled(LinkImpl)`
+export const Link = styled(ReactiveLink)`
   ${baseStyles};
   border-bottom: 1px solid transparent;
-  color: inherit;
+  color: ${({ green }) => (green ? 'var(--color-green)' : 'inherit')};
   transition: border-bottom-color var(--duration-short),
     color var(--duration-short);
 
-  &:hover {
+  &:hover,
+  &:focus {
     border-bottom-color: currentColor;
     color: var(--color-green);
   }
 `;
 
-export const IconLink = styled(Button.withComponent(LinkImpl)).attrs({
+export const IconLink = styled(Button.withComponent(ReactiveLink)).attrs({
   'aria-label': ({ title }) => title,
+  type: undefined,
 })`
   ${baseStyles};
 

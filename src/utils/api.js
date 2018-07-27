@@ -40,14 +40,18 @@ export function createOrg(data) {
   return http.post(urls.orgsPath, data);
 }
 
-export function viewOrg(id) {
-  return http.get(urls.orgWithIdPath(id));
+export function viewOrg(orgId) {
+  return http.get(urls.orgDetailsPath(orgId));
 }
 
-export function deleteOrg(id) {
-  return http.delete(urls.orgWithIdPath(id));
+export function deleteOrg(orgId) {
+  return http.delete(urls.orgDetailsPath(orgId));
 }
 
 export function listProjects(orgId) {
   return http.get(urls.projectsPath, { orgId });
+}
+
+export function createProject(data) {
+  return http.post(urls.projectsPath, data);
 }

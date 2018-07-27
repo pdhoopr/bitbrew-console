@@ -4,7 +4,7 @@ import { getEnv, getRoot, types } from 'mobx-state-tree';
 export default types
   .model('AuthStore', {
     storageKey: types.optional(types.string, 'bitbrew-console'),
-    token: types.maybe(types.string),
+    token: types.maybeNull(types.string),
   })
   .views(self => ({
     get api() {

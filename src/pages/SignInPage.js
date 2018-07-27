@@ -19,10 +19,6 @@ const Title = styled(ContentTitle.withComponent('h1'))`
 const ContactUs = styled(Text)`
   margin-top: var(--size-32);
   text-align: center;
-
-  ${/* sc-selector */ Link} {
-    color: var(--color-green);
-  }
 `;
 
 class SignInPage extends React.Component {
@@ -40,7 +36,7 @@ class SignInPage extends React.Component {
 
   render() {
     return (
-      <>
+      <React.Fragment>
         <PageHeader>
           <FlexCenter>
             <Logotype />
@@ -55,19 +51,20 @@ class SignInPage extends React.Component {
                 id="accessToken"
                 value={this.form.accessToken}
                 onChange={this.form.setValue}
-                type="text"
               />
             </Label>
             <FlexEnd>
-              <RaisedButton>Sign in</RaisedButton>
+              <RaisedButton type="submit">Sign in</RaisedButton>
             </FlexEnd>
           </Form>
           <ContactUs gray>
             Not a BitBrew customer yet?&nbsp;
-            <Link to="mailto:hello@bitbrew.com">Contact us</Link>.
+            <Link to="mailto:hello@bitbrew.com" green>
+              Contact us
+            </Link>.
           </ContactUs>
         </Width320>
-      </>
+      </React.Fragment>
     );
   }
 }

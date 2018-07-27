@@ -1,9 +1,15 @@
 import { inject, observer } from 'mobx-react';
 import Loadable from 'react-loadable';
+import uniqid from 'uniqid';
 import Loading from '../components/Loading';
 
 export function connect(Component, mapStoreToProps) {
   return inject(({ store }) => mapStoreToProps(store))(observer(Component));
+}
+
+export function createIdForA11y(displayName) {
+  const prefix = process.env.NODE_ENV === 'production' ? 'a11y' : displayName;
+  return `${prefix}-${uniqid()}`;
 }
 
 export function loadAsync(loader) {
@@ -33,6 +39,10 @@ export function matchesDate(value) {
 
 export function matchesUuid(value) {
   return /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.test(value);
+}
+
+export function nextTick() {
+  return Promise.resolve();
 }
 
 export function pluralize(word, count) {

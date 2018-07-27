@@ -1,5 +1,8 @@
+import { observer } from 'mobx-react';
 import React from 'react';
 
-export default function Loading() {
+function Loading() {
   return <React.Fragment />;
 }
+
+export default observer(Loading);

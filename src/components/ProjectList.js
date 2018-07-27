@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localizeDate } from '../utils/tools';
@@ -6,7 +7,7 @@ import List from './List';
 import { Content } from './Sections';
 import { ContentTitle, Text } from './Texts';
 
-export default function ProjectList({ projects }) {
+function ProjectList({ projects }) {
   return projects.map(project => (
     <Content key={project.id}>
       <ContentHeader>
@@ -28,3 +29,5 @@ ProjectList.propTypes = {
     }),
   ).isRequired,
 };
+
+export default observer(ProjectList);

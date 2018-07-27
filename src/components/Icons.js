@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
-import BackArrowSvg from '../graphics/back-arrow-icon.svg';
+import BackSvg from '../graphics/back-icon.svg';
 import CloseSvg from '../graphics/close-icon.svg';
+import DropdownSvg from '../graphics/dropdown-icon.svg';
 import SearchSvg from '../graphics/search-icon.svg';
 
 const baseStyles = css`
@@ -10,11 +11,15 @@ const baseStyles = css`
   width: var(--size-20);
 `;
 
-export const BackArrowIcon = styled(BackArrowSvg)`
+export const BackIcon = styled(BackSvg)`
   ${baseStyles};
 `;
 
 export const CloseIcon = styled(CloseSvg)`
+  ${baseStyles};
+`;
+
+export const DropdownIcon = styled(DropdownSvg)`
   ${baseStyles};
 `;
 

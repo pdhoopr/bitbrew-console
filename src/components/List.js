@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -23,7 +24,7 @@ const Description = styled.dd`
   flex: 1.5;
 `;
 
-export default function List({ items }) {
+function List({ items }) {
   return (
     <Wrapper>
       {items.map(([term, description]) => (
@@ -39,3 +40,5 @@ export default function List({ items }) {
 List.propTypes = {
   items: PropTypes.arrayOf(PropTypes.array).isRequired,
 };
+
+export default observer(List);

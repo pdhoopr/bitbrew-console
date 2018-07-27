@@ -1,54 +1,63 @@
+import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { createIdForA11y } from '../utils/tools';
 import Card from './Card';
 import { Input } from './Forms';
 import { SearchIcon } from './Icons';
 
-const Wrapper = styled(Card)`
+const Wrapper = styled.div`
   display: block;
   flex: 1;
   position: relative;
 `;
 
 const Icon = styled(SearchIcon)`
-  margin-bottom: var(--size-8);
-  margin-left: var(--size-16);
-  margin-top: var(--size-8);
-  position: relative;
+  left: var(--size-14);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 1;
 `;
 
-const Query = styled(Input)`
+const Field = styled(Card.withComponent(Input))`
   border: none;
-  bottom: 0;
-  left: 0;
-  padding-left: var(--size-52);
-  position: absolute;
-  right: 0;
-  top: 0;
+  padding-bottom: var(--size-8);
+  padding-left: var(--size-48);
+  padding-top: var(--size-8);
+  transition: box-shadow var(--duration-short);
+
+  &:hover,
+  &:focus {
+    box-shadow: var(--elevation-low-darker);
+  }
 `;
 
-export default function Search({ description, onChange, placeholder, value }) {
-  return (
-    <Wrapper>
-      <label htmlFor="query">
-        <Icon />
-        <Query
-          id="query"
-          value={value}
-          onChange={onChange}
-          type="search"
-          placeholder={placeholder}
-          aria-label={placeholder}
-          aria-describedby="searchDescription"
-        />
-      </label>
-      <p id="searchDescription" hidden>
-        {description}
-      </p>
-    </Wrapper>
-  );
+class Search extends React.Component {
+  descriptionId = createIdForA11y(`${Search.name}__description`);
+
+  render() {
+    const { description, onChange, placeholder, value } = this.props;
+    return (
+      <Wrapper>
+        <label htmlFor="query">
+          <Icon aria-hidden />
+          <Field
+            id="query"
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder}
+            aria-label={placeholder}
+            aria-describedby={this.descriptionId}
+          />
+        </label>
+        <p id={this.descriptionId} hidden>
+          {description}
+        </p>
+      </Wrapper>
+    );
+  }
 }
 
 Search.propTypes = {
@@ -61,3 +70,5 @@ Search.propTypes = {
 Search.defaultProps = {
   placeholder: '',
 };
+
+export default observer(Search);

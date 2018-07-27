@@ -13,7 +13,9 @@ const baseStyles = css`
   text-transform: uppercase;
 `;
 
-export const Button = styled.button`
+export const Button = styled.button.attrs({
+  type: 'button',
+})`
   ${baseStyles};
   color: inherit;
   padding: var(--size-8);
@@ -32,7 +34,8 @@ export const Button = styled.button`
     transition: opacity var(--duration-short);
   }
 
-  &:hover::before {
+  &:hover::before,
+  &:focus::before {
     opacity: 0.08;
   }
 `;
@@ -45,7 +48,9 @@ export const IconButton = styled(Button).attrs({
   }
 `;
 
-export const RaisedButton = styled.button`
+export const RaisedButton = styled.button.attrs({
+  type: 'button',
+})`
   ${baseStyles};
   background-color: ${({ red }) =>
     red ? 'var(--color-red)' : 'var(--color-green)'};
@@ -53,7 +58,8 @@ export const RaisedButton = styled.button`
   color: var(--color-white);
   transition: opacity var(--duration-short);
 
-  &:hover {
+  &:hover,
+  &:focus {
     opacity: 0.64;
   }
 `;

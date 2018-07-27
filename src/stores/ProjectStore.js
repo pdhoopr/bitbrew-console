@@ -1,9 +1,9 @@
-import { types } from 'mobx-state-tree';
+import { flow, getEnv, types } from 'mobx-state-tree';
 import { matchesDate, matchesUuid } from '../utils/tools';
 import { OrgImpl } from './OrgStore';
 
 export const ProjectImpl = types.model('ProjectImpl', {
-  id: types.identifier(types.refinement(types.string, matchesUuid)),
+  id: types.refinement(types.identifier, matchesUuid),
   name: types.string,
   description: types.string,
   createdAt: types.refinement(types.string, matchesDate),
@@ -15,6 +15,9 @@ export default types
     projectMap: types.optional(types.map(ProjectImpl), {}),
   })
   .views(self => ({
+    get api() {
+      return getEnv(self).api;
+    },
     get projects() {
       return [...self.projectMap.values()].sort((a, b) =>
         b.createdAt.localeCompare(a.createdAt),
@@ -37,4 +40,8 @@ export default types
     clearProjects(projects) {
       projects.forEach(self.removeProject);
     },
+    createProject: flow(function* createProject(data) {
+      const response = yield self.api.createProject(data);
+      self.setProject(response);
+    }),
   }));

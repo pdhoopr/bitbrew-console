@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactModal from 'react-modal';
@@ -30,6 +31,8 @@ ModalImpl.defaultProps = {
   role: 'dialog',
 };
 
+const ReactiveModal = observer(ModalImpl);
+
 const baseStyles = css`
   &__Body--open {
     overflow: hidden;
@@ -51,11 +54,11 @@ const baseStyles = css`
     position: fixed;
     right: 0;
     top: 0;
-    z-index: 2;
+    z-index: 3;
   }
 `;
 
-export const Dialog = styled(ModalImpl).attrs({
+export const Dialog = styled(ReactiveModal).attrs({
   role: 'alertdialog',
 })`
   ${baseStyles};
@@ -70,7 +73,7 @@ export const Dialog = styled(ModalImpl).attrs({
   }
 `;
 
-export const Drawer = styled(ModalImpl)`
+export const Drawer = styled(ReactiveModal)`
   ${baseStyles};
 
   &__Content {

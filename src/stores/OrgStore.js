@@ -3,7 +3,7 @@ import { matchesDate, matchesUuid } from '../utils/tools';
 
 export const OrgImpl = types
   .model('OrgImpl', {
-    id: types.identifier(types.refinement(types.string, matchesUuid)),
+    id: types.refinement(types.identifier, matchesUuid),
     name: types.string,
     createdAt: types.refinement(types.string, matchesDate),
   })
@@ -48,8 +48,13 @@ export default types
         b.createdAt.localeCompare(a.createdAt),
       );
     },
-    getOrgWithId(id) {
-      return self.orgMap.get(id) || null;
+    get orgsAtoZ() {
+      return [...self.orgMap.values()].sort((a, b) =>
+        a.name.localeCompare(b.name),
+      );
+    },
+    getOrgWithId(orgId) {
+      return self.orgMap.get(orgId) || null;
     },
   }))
   .actions(self => ({
@@ -79,20 +84,19 @@ export default types
     createOrg: flow(function* createOrg(data) {
       yield self.api.createOrg(data);
     }),
-    viewOrg: flow(function* viewOrg(id) {
+    viewOrg: flow(function* viewOrg(orgId) {
       yield self.listOrgs();
-      if (!self.getOrgWithId(id)) {
+      if (!self.getOrgWithId(orgId)) {
         const [orgResponse, projectsResponse] = yield Promise.all([
-          self.api.viewOrg(id),
-          self.api.listProjects(id),
+          self.api.viewOrg(orgId),
+          self.api.listProjects(orgId),
         ]);
         self.setOrg(orgResponse);
         self.projectStore.replaceProjects(projectsResponse.items);
       }
     }),
-    deleteOrg: flow(function* deleteOrg(id) {
-      yield self.api.deleteOrg(id);
-      const org = self.getOrgWithId(id);
+    deleteOrg: flow(function* deleteOrg(org) {
+      yield self.api.deleteOrg(org.id);
       self.projectStore.clearProjects(org.projects);
       self.removeOrg(org);
     }),

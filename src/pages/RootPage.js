@@ -6,75 +6,30 @@ import Footer from '../components/Footer';
 import { connect, loadAsync } from '../utils/tools';
 import * as urls from '../utils/urls';
 
-const CreateOrgPage = loadAsync(() => import('./CreateOrgPage'));
-const DeleteOrgPage = loadAsync(() => import('./DeleteOrgPage'));
-const ListOrgsPage = loadAsync(() => import('./ListOrgsPage'));
+const OrgDetailsPage = loadAsync(() => import('./OrgDetailsPage'));
+const OrgsPage = loadAsync(() => import('./OrgsPage'));
 const SignInPage = loadAsync(() => import('./SignInPage'));
-const ViewOrgPage = loadAsync(() => import('./ViewOrgPage'));
 
 const Wrapper = styled.main`
   flex: 1;
 `;
 
-function addWildcardTo(path) {
-  return `${path}/*`;
-}
-
-function RouterWithoutFocus(props) {
-  return <Router primary={false} {...props} />;
-}
-
-function Subroutes({ Delete, View, '*': wildcard, ...props }) {
-  return (
-    <>
-      <View {...props} path={urls.rootPath} />
-      <RouterWithoutFocus>
-        <Delete path={urls.deletePath} />
-      </RouterWithoutFocus>
-    </>
-  );
-}
-
-function Routes({ Create, Delete, List, View, '*': wildcard, ...props }) {
-  const path = `/${wildcard}`;
-  const showList = path === urls.rootPath || path === urls.createPath;
-  return (
-    <>
-      {showList && <List {...props} path={urls.rootPath} />}
-      <RouterWithoutFocus>
-        <Create path={urls.createPath} />
-        <Subroutes
-          path={addWildcardTo(urls.idPath)}
-          View={View}
-          Delete={Delete}
-        />
-      </RouterWithoutFocus>
-    </>
-  );
-}
-
 function RootPage({ isSignedIn }) {
-  return isSignedIn ? (
-    <>
-      <RouterWithoutFocus component={Wrapper}>
-        <Redirect from={urls.rootPath} to={urls.orgsPath} noThrow />
-        <Routes
-          path={addWildcardTo(urls.orgsPath)}
-          List={ListOrgsPage}
-          Create={CreateOrgPage}
-          View={ViewOrgPage}
-          Delete={DeleteOrgPage}
-        />
-      </RouterWithoutFocus>
-      <Footer />
-    </>
-  ) : (
-    <>
+  return (
+    <React.Fragment>
       <Wrapper>
-        <SignInPage />
+        {isSignedIn ? (
+          <Router>
+            <Redirect from={urls.rootPath} to={urls.orgsPath} noThrow />
+            <OrgsPage path={urls.orgsPath} />
+            <OrgDetailsPage path={urls.orgDetailsPath()} />
+          </Router>
+        ) : (
+          <SignInPage />
+        )}
       </Wrapper>
       <Footer />
-    </>
+    </React.Fragment>
   );
 }
 
