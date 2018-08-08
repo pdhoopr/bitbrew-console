@@ -3,10 +3,8 @@ import { types } from 'mobx-state-tree';
 export default types
   .model('UiStore', {
     isOpen: types.optional(types.boolean, false),
+    metadata: types.optional(types.frozen(), {}),
   })
-  .volatile(() => ({
-    metadata: {},
-  }))
   .views(self => ({
     get isClosed() {
       return !self.isOpen;

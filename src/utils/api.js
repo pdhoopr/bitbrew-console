@@ -67,3 +67,7 @@ export function updateProject(projectId, data) {
 export function deleteProject(projectId) {
   return http.delete(urls.projectDetailsPath(projectId));
 }
+
+export function viewSelf() {
+  return http.get(urls.selfDetailsPath);
+}

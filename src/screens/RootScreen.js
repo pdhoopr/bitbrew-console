@@ -8,38 +8,39 @@ import * as urls from '../utils/urls';
 
 const OrgDetailsScreen = loadAsync(() => import('./OrgDetailsScreen'));
 const OrgsScreen = loadAsync(() => import('./OrgsScreen'));
-const SignInScreen = loadAsync(() => import('./SignInScreen'));
 
 const Wrapper = styled.main`
   flex: 1;
 `;
 
-function RootScreen({ isSignedIn }) {
+function RootScreen({ token }) {
   return (
-    <React.Fragment>
-      <Wrapper>
-        {isSignedIn ? (
+    token && (
+      <React.Fragment>
+        <Wrapper>
           <Router>
             <Redirect from={urls.rootPath} to={urls.orgsPath} noThrow />
             <OrgsScreen path={urls.orgsPath} />
             <OrgDetailsScreen path={urls.orgDetailsPath()} />
           </Router>
-        ) : (
-          <SignInScreen />
-        )}
-      </Wrapper>
-      <Footer />
-    </React.Fragment>
+        </Wrapper>
+        <Footer />
+      </React.Fragment>
+    )
   );
 }
 
 RootScreen.propTypes = {
-  isSignedIn: PropTypes.bool.isRequired,
+  token: PropTypes.string,
+};
+
+RootScreen.defaultProps = {
+  token: null,
 };
 
 export default connect(
   RootScreen,
   ({ authStore }) => ({
-    isSignedIn: authStore.isSignedIn,
+    token: authStore.token,
   }),
 );

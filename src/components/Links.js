@@ -3,9 +3,8 @@ import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { Button } from './Buttons';
 
-function LinkImpl({ green, to, ...props }) {
+function LinkImpl({ to, ...props }) {
   const isInternal = /^\/(?!\/)/.test(to);
   return isInternal ? (
     <RouterLink to={to} {...props} />
@@ -16,17 +15,13 @@ function LinkImpl({ green, to, ...props }) {
 }
 
 LinkImpl.propTypes = {
-  green: PropTypes.bool,
   to: PropTypes.string.isRequired,
-};
-
-LinkImpl.defaultProps = {
-  green: false,
 };
 
 const ReactiveLink = observer(LinkImpl);
 
 const baseStyles = css`
+  color: inherit;
   cursor: pointer;
   text-decoration: none;
 `;
@@ -34,7 +29,6 @@ const baseStyles = css`
 export const Link = styled(ReactiveLink)`
   ${baseStyles};
   border-bottom: 1px solid transparent;
-  color: ${({ green }) => (green ? 'var(--color-green)' : 'inherit')};
   transition: border-bottom-color var(--duration-short),
     color var(--duration-short);
 
@@ -45,13 +39,28 @@ export const Link = styled(ReactiveLink)`
   }
 `;
 
-export const IconLink = styled(Button.withComponent(ReactiveLink)).attrs({
+export const IconLink = styled(ReactiveLink).attrs({
   'aria-label': ({ title }) => title,
-  type: undefined,
 })`
   ${baseStyles};
+  padding: var(--size-8);
+  position: relative;
 
   &::before {
+    background-color: currentColor;
     border-radius: 50%;
+    bottom: 0;
+    content: '';
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: opacity var(--duration-short);
+  }
+
+  &:hover::before,
+  &:focus::before {
+    opacity: 0.08;
   }
 `;

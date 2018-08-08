@@ -4,11 +4,13 @@ import DeleteModal from '../components/DeleteModal';
 import { connect } from '../utils/tools';
 
 class DeleteProjectScreen extends React.Component {
+  /* eslint-disable react/destructuring-assignment */
   tryToDeleteProject = async () => {
     await this.props.deleteProject(this.props.project);
     this.props.close();
   };
 
+  /* eslint-enable react/destructuring-assignment */
   render() {
     const { close, project } = this.props;
     return (

@@ -29,7 +29,7 @@ module.exports = {
       {
         test: /\.js$/,
         use: ['thread-loader', 'babel-loader'],
-        include: [paths.srcFolder],
+        include: [paths.envFile, paths.srcFolder],
       },
       {
         test: /\.svg$/,

@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 const baseStyles = css`
+  appearance: button;
   background: none;
   border: none;
   border-radius: var(--corner-radius);
@@ -9,8 +10,18 @@ const baseStyles = css`
   font-size: var(--size-14);
   font-weight: var(--weight-bold);
   line-height: var(--size-20);
+  margin: 0;
   padding: var(--size-8) var(--size-16);
   text-transform: uppercase;
+
+  &::-moz-focus-inner {
+    border-style: none;
+    padding: 0;
+  }
+
+  &:-moz-focusring {
+    outline: 1px dotted ButtonText;
+  }
 `;
 
 export const Button = styled.button.attrs({

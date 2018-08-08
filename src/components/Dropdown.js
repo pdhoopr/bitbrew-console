@@ -13,14 +13,15 @@ import {
 } from '../utils/keyCodes';
 import { createIdForA11y, nextTick } from '../utils/tools';
 import { Button } from './Buttons';
-import Card from './Card';
 
 const Wrapper = styled.div`
   margin-left: var(--size-16);
   position: relative;
 `;
 
-const Menu = styled(Card)`
+const Menu = styled.div`
+  background-color: var(--color-white);
+  border-radius: var(--corner-radius);
   box-shadow: var(--elevation-medium);
   margin-top: var(--size-2);
   padding-bottom: var(--size-8);
@@ -51,6 +52,7 @@ const Menu = styled(Card)`
 `;
 
 class Dropdown extends React.Component {
+  /* eslint-disable react/destructuring-assignment */
   buttonId = createIdForA11y(`${Dropdown.name}_button`);
 
   buttonRef = React.createRef();
@@ -74,14 +76,14 @@ class Dropdown extends React.Component {
 
   openMenu = () => {
     this.menuUi.open();
-    window.addEventListener('click', this.closeOnOuterClick);
-    window.addEventListener('keydown', this.closeOnEscOrTab);
+    document.addEventListener('click', this.closeOnOuterClick);
+    document.addEventListener('keydown', this.closeOnEscOrTab);
   };
 
   closeMenu = () => {
     this.menuUi.close();
-    window.removeEventListener('click', this.closeOnOuterClick);
-    window.removeEventListener('keydown', this.closeOnEscOrTab);
+    document.removeEventListener('click', this.closeOnOuterClick);
+    document.removeEventListener('keydown', this.closeOnEscOrTab);
   };
 
   toggleMenu = () => {
@@ -145,6 +147,7 @@ class Dropdown extends React.Component {
     }
   };
 
+  /* eslint-enable react/destructuring-assignment */
   render() {
     const { children, triggerButton } = this.props;
     return (

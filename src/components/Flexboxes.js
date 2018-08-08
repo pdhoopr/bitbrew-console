@@ -10,11 +10,6 @@ export const FlexBetween = styled.div`
   justify-content: space-between;
 `;
 
-export const FlexCenter = styled.div`
-  ${baseStyles};
-  justify-content: center;
-`;
-
 export const FlexEnd = styled.div`
   ${baseStyles};
   justify-content: flex-end;

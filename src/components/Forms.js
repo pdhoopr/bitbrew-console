@@ -1,15 +1,11 @@
-import { observer } from 'mobx-react';
-import React from 'react';
 import styled from 'styled-components';
-import Card from './Card';
 
-function FormImpl(props) {
-  return <form noValidate {...props} />;
-}
-
-const ReactiveForm = observer(FormImpl);
-
-export const Form = styled(Card.withComponent(ReactiveForm))`
+export const Form = styled.form.attrs({
+  noValidate: true,
+})`
+  background-color: var(--color-white);
+  border-radius: var(--corner-radius);
+  box-shadow: var(--elevation-low);
   padding: var(--size-16) var(--size-24);
 `;
 
@@ -29,6 +25,7 @@ export const Input = styled.input.attrs({
   font-family: var(--font-roboto);
   font-size: var(--size-14);
   line-height: var(--size-20);
+  margin: 0;
   padding: var(--size-7) var(--size-16);
   transition: border-color var(--duration-short);
   width: 100%;
@@ -39,6 +36,10 @@ export const Input = styled.input.attrs({
 
   ${/* sc-selector */ Label} & {
     margin-top: var(--size-8);
+  }
+
+  &:-moz-focusring {
+    outline: 1px dotted ButtonText;
   }
 
   &:hover,

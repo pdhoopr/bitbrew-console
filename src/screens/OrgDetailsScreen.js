@@ -35,6 +35,7 @@ const ProjectsHeader = styled(FlexBetween)`
 `;
 
 class OrgDetailsScreen extends React.Component {
+  /* eslint-disable react/destructuring-assignment */
   search = SearchStore.create();
 
   deleteOrgUi = UiStore.create();
@@ -45,6 +46,7 @@ class OrgDetailsScreen extends React.Component {
     this.props.viewOrg(this.props.orgId);
   }
 
+  /* eslint-enable react/destructuring-assignment */
   render() {
     const { getOrgWithId, orgId, signOut } = this.props;
     const org = getOrgWithId(orgId);

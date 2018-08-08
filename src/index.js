@@ -13,6 +13,7 @@ import './utils/variables';
 injectGlobal`
   html {
     box-sizing: border-box;
+    text-size-adjust: 100%;
   }
 
   *,
@@ -39,7 +40,7 @@ injectGlobal`
   #root {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
   }
 `;
 

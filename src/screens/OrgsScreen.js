@@ -7,7 +7,7 @@ import { FlexBetween } from '../components/Flexboxes';
 import { PageHeader } from '../components/Headers';
 import { DropdownIcon } from '../components/Icons';
 import { Link } from '../components/Links';
-import { Logomark } from '../components/Logos';
+import Logo from '../components/Logo';
 import ProjectList from '../components/ProjectList';
 import Search from '../components/Search';
 import { Section } from '../components/Sections';
@@ -43,6 +43,7 @@ const NewButtonIcon = styled(DropdownIcon)`
 `;
 
 class OrgsScreen extends React.Component {
+  /* eslint-disable react/destructuring-assignment */
   search = SearchStore.create();
 
   newOrgUi = UiStore.create();
@@ -53,6 +54,7 @@ class OrgsScreen extends React.Component {
     this.props.listOrgs();
   }
 
+  /* eslint-enable react/destructuring-assignment */
   render() {
     const { orgs, signOut } = this.props;
     return (
@@ -60,7 +62,7 @@ class OrgsScreen extends React.Component {
         <WelcomeHeader>
           <Width640>
             <FlexBetween>
-              <Logomark />
+              <Logo />
               <Button onClick={signOut}>Sign out</Button>
             </FlexBetween>
             <Title>Welcome!</Title>

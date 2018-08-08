@@ -6,6 +6,7 @@ import FormStore from '../stores/FormStore';
 import { connect } from '../utils/tools';
 
 class EditProjectScreen extends React.Component {
+  /* eslint-disable react/destructuring-assignment */
   form = FormStore
     // prettier-ignore
     .props({
@@ -22,6 +23,7 @@ class EditProjectScreen extends React.Component {
     this.props.close();
   };
 
+  /* eslint-enable react/destructuring-assignment */
   render() {
     const { close, project } = this.props;
     return (

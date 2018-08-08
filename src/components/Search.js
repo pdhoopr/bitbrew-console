@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { createIdForA11y } from '../utils/tools';
-import Card from './Card';
 import { Input } from './Forms';
 import { SearchIcon } from './Icons';
 
@@ -22,8 +21,11 @@ const Icon = styled(SearchIcon)`
   z-index: 1;
 `;
 
-const Field = styled(Card.withComponent(Input))`
+const Field = styled(Input)`
+  background-color: var(--color-white);
   border: none;
+  border-radius: var(--corner-radius);
+  box-shadow: var(--elevation-low);
   padding-bottom: var(--size-8);
   padding-left: var(--size-48);
   padding-top: var(--size-8);

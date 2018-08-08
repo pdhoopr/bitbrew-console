@@ -8,6 +8,7 @@ import { connect } from '../utils/tools';
 import { orgsPath } from '../utils/urls';
 
 class NewOrgScreen extends React.Component {
+  /* eslint-disable react/destructuring-assignment */
   form = FormStore
     // prettier-ignore
     .props({
@@ -22,6 +23,7 @@ class NewOrgScreen extends React.Component {
     navigate(orgsPath);
   };
 
+  /* eslint-enable react/destructuring-assignment */
   render() {
     const { close } = this.props;
     return (

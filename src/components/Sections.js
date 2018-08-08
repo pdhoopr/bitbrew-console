@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Card from './Card';
 
 export const Section = styled.section`
   &:not(:first-of-type) {
@@ -7,6 +6,9 @@ export const Section = styled.section`
   }
 `;
 
-export const Content = styled(Card.withComponent('section'))`
+export const Content = styled.section`
+  background-color: var(--color-white);
+  border-radius: var(--corner-radius);
+  box-shadow: var(--elevation-low);
   margin-top: var(--size-16);
 `;

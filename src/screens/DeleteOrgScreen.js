@@ -6,11 +6,13 @@ import { connect } from '../utils/tools';
 import { orgsPath } from '../utils/urls';
 
 class DeleteOrgScreen extends React.Component {
+  /* eslint-disable react/destructuring-assignment */
   tryToDeleteOrg = async () => {
     await this.props.deleteOrg(this.props.org);
     navigate(orgsPath);
   };
 
+  /* eslint-enable react/destructuring-assignment */
   render() {
     const { close, org } = this.props;
     return (

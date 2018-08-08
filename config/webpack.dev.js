@@ -9,6 +9,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const { name } = require('../package.json');
+const env = require('./env');
 const paths = require('./paths');
 
 const mode = 'development';
@@ -41,7 +42,7 @@ module.exports = {
           },
           'babel-loader',
         ],
-        include: [paths.srcFolder],
+        include: [paths.envFile, paths.srcFolder],
       },
       {
         test: /\.svg$/,
@@ -116,7 +117,7 @@ module.exports = {
     port,
     proxy: {
       '/api': {
-        target: 'http://localhost:9000/v2',
+        target: `${env.development.HOST}/v2`,
         pathRewrite: {
           '^/api': '',
         },

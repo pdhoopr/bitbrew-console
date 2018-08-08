@@ -14,6 +14,11 @@ const Field = styled(Input.withComponent('select'))`
   background: none;
   cursor: pointer;
   padding-right: var(--size-44);
+  text-transform: none;
+
+  &:-moz-focusring {
+    color: transparent;
+  }
 `;
 
 const Icon = styled(DropdownIcon)`
