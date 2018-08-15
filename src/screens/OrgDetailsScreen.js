@@ -18,6 +18,7 @@ import { connect, loadAsync, localizeDate, pluralize } from '../utils/tools';
 import { orgsPath } from '../utils/urls';
 
 const DeleteOrgScreen = loadAsync(() => import('./DeleteOrgScreen'));
+const EditOrgScreen = loadAsync(() => import('./EditOrgScreen'));
 const NewProjectScreen = loadAsync(() => import('./NewProjectScreen'));
 
 const Title = styled(PageTitle)`
@@ -26,7 +27,17 @@ const Title = styled(PageTitle)`
   margin-right: var(--size-16);
 `;
 
-const NewButton = styled(RaisedButton)`
+const OverviewTitle = styled(SectionTitle)`
+  flex: 1;
+  margin-right: var(--size-16);
+`;
+
+const EditOrgButton = styled(RaisedButton)`
+  background-color: var(--color-black);
+  margin-right: var(--size-16);
+`;
+
+const NewProjectButton = styled(RaisedButton)`
   margin-left: var(--size-16);
 `;
 
@@ -37,6 +48,8 @@ const ProjectsHeader = styled(FlexBetween)`
 class OrgDetailsScreen extends React.Component {
   /* eslint-disable react/destructuring-assignment */
   search = SearchStore.create();
+
+  editOrgUi = UiStore.create();
 
   deleteOrgUi = UiStore.create();
 
@@ -68,7 +81,10 @@ class OrgDetailsScreen extends React.Component {
             <Width640>
               <Section>
                 <FlexBetween>
-                  <SectionTitle>Overview</SectionTitle>
+                  <OverviewTitle>Overview</OverviewTitle>
+                  <EditOrgButton onClick={this.editOrgUi.open}>
+                    Edit
+                  </EditOrgButton>
                   <RaisedButton onClick={this.deleteOrgUi.open} red>
                     Delete
                   </RaisedButton>
@@ -91,11 +107,16 @@ class OrgDetailsScreen extends React.Component {
                     onChange={this.search.setQuery}
                     placeholder="Search by project name"
                   />
-                  <NewButton onClick={this.newProjectUi.open}>New</NewButton>
+                  <NewProjectButton onClick={this.newProjectUi.open}>
+                    New
+                  </NewProjectButton>
                 </FlexBetween>
                 <ProjectList projects={projects} />
               </Section>
             </Width640>
+            {this.editOrgUi.isOpen && (
+              <EditOrgScreen org={org} close={this.editOrgUi.close} />
+            )}
             {this.deleteOrgUi.isOpen && (
               <DeleteOrgScreen org={org} close={this.deleteOrgUi.close} />
             )}

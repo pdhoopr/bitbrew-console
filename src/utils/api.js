@@ -48,6 +48,10 @@ export function viewOrg(orgId) {
   return http.get(urls.orgDetailsPath(orgId));
 }
 
+export function updateOrg(orgId, data) {
+  return http.put(urls.orgDetailsPath(orgId), data);
+}
+
 export function deleteOrg(orgId) {
   return http.delete(urls.orgDetailsPath(orgId));
 }

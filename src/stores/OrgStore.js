@@ -95,6 +95,10 @@ export default types
         self.projectStore.replaceProjects(projectsResponse.items);
       }
     }),
+    updateOrg: flow(function* updateOrg(org, data) {
+      const response = yield self.api.updateOrg(org.id, data);
+      self.setOrg(response);
+    }),
     deleteOrg: flow(function* deleteOrg(org) {
       yield self.api.deleteOrg(org.id);
       self.projectStore.clearProjects(org.projects);
