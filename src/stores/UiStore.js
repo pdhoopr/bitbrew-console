@@ -3,7 +3,6 @@ import { types } from 'mobx-state-tree';
 export default types
   .model('UiStore', {
     isOpen: types.optional(types.boolean, false),
-    metadata: types.optional(types.frozen(), {}),
   })
   .views(self => ({
     get isClosed() {
@@ -11,12 +10,10 @@ export default types
     },
   }))
   .actions(self => ({
-    open(metadata = {}) {
-      self.metadata = metadata;
+    open() {
       self.isOpen = true;
     },
     close() {
       self.isOpen = false;
-      self.metadata = {};
     },
   }));

@@ -1,4 +1,3 @@
-import '@babel/polyfill';
 import { Provider } from 'mobx-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -41,26 +40,30 @@ injectGlobal`
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+
+    &.has-nav {
+      padding-left: var(--size-240);
+    }
   }
 `;
 
-const store = RootStore.create({}, { api });
+const stores = RootStore.create({}, { api });
 
-function renderToDom(Component) {
+function renderToDom() {
   const rootElement = document.getElementById('root');
   ReactModal.setAppElement(rootElement);
   ReactDOM.render(
-    <Provider store={store}>
-      <Component />
+    <Provider stores={stores}>
+      <RootScreen />
     </Provider>,
     rootElement,
   );
 }
 
-renderToDom(RootScreen);
+renderToDom();
 
 if (module.hot) {
   module.hot.accept('./screens/RootScreen', () => {
-    renderToDom(RootScreen);
+    renderToDom();
   });
 }

@@ -1,11 +1,9 @@
-import { navigate } from '@reach/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Input, Label } from '../components/Forms';
 import ModalForm from '../components/ModalForm';
 import FormStore from '../stores/FormStore';
 import { connect } from '../utils/tools';
-import { orgsPath } from '../utils/urls';
 
 class NewOrgScreen extends React.Component {
   /* eslint-disable react/destructuring-assignment */
@@ -20,7 +18,6 @@ class NewOrgScreen extends React.Component {
     event.preventDefault();
     await this.props.createOrg(this.form.serialized);
     this.props.signOut();
-    navigate(orgsPath);
   };
 
   /* eslint-enable react/destructuring-assignment */

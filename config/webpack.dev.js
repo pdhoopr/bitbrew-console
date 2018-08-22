@@ -8,14 +8,15 @@ const ip = require('ip');
 const path = require('path');
 const webpack = require('webpack');
 const ManifestPlugin = require('webpack-manifest-plugin');
-const { name } = require('../package.json');
-const env = require('./env');
+const app = require('../package.json');
+const { API_URL } = require('./env');
 const paths = require('./paths');
 
 const mode = 'development';
+const protocol = 'https';
 const port = 4321;
-const localUrl = `http://localhost:${port}`;
-const networkUrl = `http://${ip.address()}:${port}`;
+const localUrl = `${protocol}://localhost:${port}`;
+const networkUrl = `${protocol}://${ip.address()}:${port}`;
 
 module.exports = {
   mode,
@@ -77,7 +78,7 @@ module.exports = {
       compilationSuccessInfo: {
         messages: [
           [
-            `You can now view ${chalk.bold(name)} in the browser.\n`,
+            `You can now view ${chalk.bold(app.name)} in the browser.\n`,
             `\t${chalk.bold('Local:')} ${localUrl}`,
             `\t${chalk.bold('On your network:')} ${networkUrl}`,
           ].join('\n'),
@@ -110,6 +111,7 @@ module.exports = {
     historyApiFallback: true,
     host: '0.0.0.0',
     hot: true,
+    https: protocol === 'https',
     overlay: {
       warnings: true,
       errors: true,
@@ -117,7 +119,8 @@ module.exports = {
     port,
     proxy: {
       '/api': {
-        target: `${env.development.HOST}/v2`,
+        target: API_URL,
+        changeOrigin: true,
         pathRewrite: {
           '^/api': '',
         },

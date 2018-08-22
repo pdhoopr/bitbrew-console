@@ -35,12 +35,10 @@ export default types
     removeProject(project) {
       self.projectMap.delete(project.id);
     },
-    replaceProjects(projects) {
-      projects.forEach(self.setProject);
-    },
-    clearProjects(projects) {
-      projects.forEach(self.removeProject);
-    },
+    listProjects: flow(function* listProjects(org) {
+      const response = yield self.api.listProjects(org.id);
+      response.items.forEach(self.setProject);
+    }),
     createProject: flow(function* createProject(data) {
       const response = yield self.api.createProject(data);
       self.setProject(response);

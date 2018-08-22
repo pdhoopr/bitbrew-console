@@ -36,16 +36,16 @@ export function configureHttp(config) {
   http.request = newAxios(config);
 }
 
+export function viewSelf() {
+  return http.get(urls.selfDetailsPath);
+}
+
 export function listOrgs() {
   return http.get(urls.orgsPath);
 }
 
 export function createOrg(data) {
   return http.post(urls.orgsPath, data);
-}
-
-export function viewOrg(orgId) {
-  return http.get(urls.orgDetailsPath(orgId));
 }
 
 export function updateOrg(orgId, data) {
@@ -70,8 +70,4 @@ export function updateProject(projectId, data) {
 
 export function deleteProject(projectId) {
   return http.delete(urls.projectDetailsPath(projectId));
-}
-
-export function viewSelf() {
-  return http.get(urls.selfDetailsPath);
 }

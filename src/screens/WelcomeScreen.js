@@ -8,10 +8,10 @@ import { PageHeader } from '../components/Headers';
 import { DropdownIcon } from '../components/Icons';
 import { Link } from '../components/Links';
 import Logo from '../components/Logo';
-import ProjectList from '../components/ProjectList';
+import ProjectContent from '../components/ProjectContent';
 import Search from '../components/Search';
 import { Section } from '../components/Sections';
-import { PageTitle, SectionTitle, Subtitle, Text } from '../components/Texts';
+import { Heading, PageTitle, SectionTitle, Text } from '../components/Texts';
 import { Width640 } from '../components/Widths';
 import SearchStore from '../stores/SearchStore';
 import UiStore from '../stores/UiStore';
@@ -42,19 +42,13 @@ const NewButtonIcon = styled(DropdownIcon)`
   width: var(--size-16);
 `;
 
-class OrgsScreen extends React.Component {
-  /* eslint-disable react/destructuring-assignment */
+class WelcomeScreen extends React.Component {
   search = SearchStore.create();
 
   newOrgUi = UiStore.create();
 
   newProjectUi = UiStore.create();
 
-  componentDidMount() {
-    this.props.listOrgs();
-  }
-
-  /* eslint-enable react/destructuring-assignment */
   render() {
     const { orgs, signOut } = this.props;
     return (
@@ -66,9 +60,9 @@ class OrgsScreen extends React.Component {
               <Button onClick={signOut}>Sign out</Button>
             </FlexBetween>
             <Title>Welcome!</Title>
-            <Subtitle>
+            <Heading>
               Use the BitBrew Console to manage your data pipeline.
-            </Subtitle>
+            </Heading>
           </Width640>
         </WelcomeHeader>
         <Width640>
@@ -92,9 +86,9 @@ class OrgsScreen extends React.Component {
           </Actions>
           {orgs.map(org => {
             const projects = org.getProjectsWithName(this.search.query);
-            const showOrg = this.search.isEmpty || projects.length > 0;
+            const isVisible = this.search.isEmpty || projects.length > 0;
             return (
-              showOrg && (
+              isVisible && (
                 <Section key={org.id}>
                   <SectionTitle>
                     <Link to={orgDetailsPath(org.id)}>{org.name}</Link>
@@ -103,7 +97,9 @@ class OrgsScreen extends React.Component {
                     <Text gray>Created on {localizeDate(org.createdAt)}</Text>
                     <Text gray>{pluralize('project', projects.length)}</Text>
                   </FlexBetween>
-                  <ProjectList projects={projects} />
+                  {projects.map(project => (
+                    <ProjectContent key={project.id} project={project} />
+                  ))}
                 </Section>
               )
             );
@@ -118,8 +114,7 @@ class OrgsScreen extends React.Component {
   }
 }
 
-OrgsScreen.propTypes = {
-  listOrgs: PropTypes.func.isRequired,
+WelcomeScreen.propTypes = {
   orgs: PropTypes.arrayOf(
     PropTypes.shape({
       createdAt: PropTypes.string.isRequired,
@@ -132,9 +127,8 @@ OrgsScreen.propTypes = {
 };
 
 export default connect(
-  OrgsScreen,
+  WelcomeScreen,
   ({ authStore, orgStore }) => ({
-    listOrgs: orgStore.listOrgs,
     orgs: orgStore.orgs,
     signOut: authStore.signOut,
   }),

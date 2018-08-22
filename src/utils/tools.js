@@ -2,8 +2,8 @@ import { inject, observer } from 'mobx-react';
 import Loadable from 'react-loadable';
 import uniqid from 'uniqid';
 
-export function connect(Component, mapStoreToProps) {
-  return inject(({ store }) => mapStoreToProps(store))(observer(Component));
+export function connect(Component, mapStoresToProps) {
+  return inject(({ stores }) => mapStoresToProps(stores))(observer(Component));
 }
 
 export function createIdForA11y(displayName) {
@@ -31,7 +31,7 @@ export function localizeDate(dateString) {
 }
 
 export function matchesDate(value) {
-  return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value);
+  return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d+)?Z$/.test(value);
 }
 
 export function matchesUuid(value) {
@@ -40,6 +40,28 @@ export function matchesUuid(value) {
 
 export function nextTick() {
   return Promise.resolve();
+}
+
+export function removeUrlParam(paramName) {
+  const parsedParams = new URLSearchParams(window.location.search);
+  const param = {
+    value: parsedParams.get(paramName),
+    wasFound: parsedParams.has(paramName),
+  };
+  if (param.wasFound) {
+    parsedParams.delete(paramName);
+    const baseUrl = `${window.location.origin}${window.location.pathname}`;
+    const paramString = parsedParams.toString();
+    const queryString = paramString.length > 0 ? `?${paramString}` : '';
+    return {
+      param,
+      url: `${baseUrl}${queryString}`,
+    };
+  }
+  return {
+    param,
+    url: window.location.href,
+  };
 }
 
 export function pluralize(word, count) {

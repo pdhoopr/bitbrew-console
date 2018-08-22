@@ -2,12 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { Button, RaisedButton } from '../components/Buttons';
-import { FlexBetween, FlexStart } from '../components/Flexboxes';
+import { FlexBetween } from '../components/Flexboxes';
 import { PageHeader } from '../components/Headers';
-import { BackIcon } from '../components/Icons';
-import { IconLink } from '../components/Links';
 import List from '../components/List';
-import ProjectList from '../components/ProjectList';
+import ProjectContent from '../components/ProjectContent';
 import Search from '../components/Search';
 import { Content, Section } from '../components/Sections';
 import { PageTitle, SectionTitle, Text } from '../components/Texts';
@@ -15,25 +13,14 @@ import { Width640 } from '../components/Widths';
 import SearchStore from '../stores/SearchStore';
 import UiStore from '../stores/UiStore';
 import { connect, loadAsync, localizeDate, pluralize } from '../utils/tools';
-import { orgsPath } from '../utils/urls';
 
 const DeleteOrgScreen = loadAsync(() => import('./DeleteOrgScreen'));
 const EditOrgScreen = loadAsync(() => import('./EditOrgScreen'));
 const NewProjectScreen = loadAsync(() => import('./NewProjectScreen'));
 
-const Title = styled(PageTitle)`
-  flex: 1;
-  margin-left: var(--size-16);
-  margin-right: var(--size-16);
-`;
-
-const OverviewTitle = styled(SectionTitle)`
-  flex: 1;
-  margin-right: var(--size-16);
-`;
-
 const EditOrgButton = styled(RaisedButton)`
   background-color: var(--color-black);
+  margin-left: auto;
   margin-right: var(--size-16);
 `;
 
@@ -46,7 +33,6 @@ const ProjectsHeader = styled(FlexBetween)`
 `;
 
 class OrgDetailsScreen extends React.Component {
-  /* eslint-disable react/destructuring-assignment */
   search = SearchStore.create();
 
   editOrgUi = UiStore.create();
@@ -55,11 +41,6 @@ class OrgDetailsScreen extends React.Component {
 
   newProjectUi = UiStore.create();
 
-  componentDidMount() {
-    this.props.viewOrg(this.props.orgId);
-  }
-
-  /* eslint-enable react/destructuring-assignment */
   render() {
     const { getOrgWithId, orgId, signOut } = this.props;
     const org = getOrgWithId(orgId);
@@ -68,20 +49,17 @@ class OrgDetailsScreen extends React.Component {
     return (
       <React.Fragment>
         <PageHeader>
-          <FlexStart>
-            <IconLink to={orgsPath} title="Back to all organizations">
-              <BackIcon />
-            </IconLink>
-            <Title>{title}</Title>
+          <FlexBetween>
+            <PageTitle>{title}</PageTitle>
             <Button onClick={signOut}>Sign out</Button>
-          </FlexStart>
+          </FlexBetween>
         </PageHeader>
         {org && (
           <React.Fragment>
             <Width640>
               <Section>
                 <FlexBetween>
-                  <OverviewTitle>Overview</OverviewTitle>
+                  <SectionTitle>Overview</SectionTitle>
                   <EditOrgButton onClick={this.editOrgUi.open}>
                     Edit
                   </EditOrgButton>
@@ -111,7 +89,9 @@ class OrgDetailsScreen extends React.Component {
                     New
                   </NewProjectButton>
                 </FlexBetween>
-                <ProjectList projects={projects} />
+                {projects.map(project => (
+                  <ProjectContent key={project.id} project={project} />
+                ))}
               </Section>
             </Width640>
             {this.editOrgUi.isOpen && (
@@ -134,7 +114,6 @@ OrgDetailsScreen.propTypes = {
   getOrgWithId: PropTypes.func.isRequired,
   orgId: PropTypes.string.isRequired,
   signOut: PropTypes.func.isRequired,
-  viewOrg: PropTypes.func.isRequired,
 };
 
 export default connect(
@@ -142,6 +121,5 @@ export default connect(
   ({ authStore, orgStore }) => ({
     getOrgWithId: orgStore.getOrgWithId,
     signOut: authStore.signOut,
-    viewOrg: orgStore.viewOrg,
   }),
 );

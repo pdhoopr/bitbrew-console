@@ -41,6 +41,7 @@ injectGlobal`
     --size-48: 3rem;
     --size-56: 3.5rem;
     --size-128: 8rem;
+    --size-240: 15rem;
     --size-320: 20rem;
     --size-480: 30rem;
     --size-640: 40rem;

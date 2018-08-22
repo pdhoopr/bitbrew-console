@@ -39,16 +39,15 @@ export const Link = styled(ReactiveLink)`
   }
 `;
 
-export const IconLink = styled(ReactiveLink).attrs({
-  'aria-label': ({ title }) => title,
-})`
+export const ButtonLink = styled(ReactiveLink)`
   ${baseStyles};
+  display: inline-block;
   padding: var(--size-8);
   position: relative;
 
   &::before {
     background-color: currentColor;
-    border-radius: 50%;
+    border-radius: var(--corner-radius);
     bottom: 0;
     content: '';
     left: 0;
@@ -62,5 +61,28 @@ export const IconLink = styled(ReactiveLink).attrs({
   &:hover::before,
   &:focus::before {
     opacity: 0.08;
+  }
+`;
+
+export const IconLink = styled(ButtonLink).attrs({
+  'aria-label': ({ title }) => title,
+})`
+  &::before {
+    border-radius: 50%;
+  }
+`;
+
+export const NavLink = styled(ButtonLink)`
+  font-size: var(--size-16);
+  padding: var(--size-8) var(--size-24);
+  width: 100%;
+
+  &::before {
+    background-color: var(--color-white);
+    border-radius: 0;
+  }
+
+  &[aria-current='page'] {
+    color: var(--color-green);
   }
 `;

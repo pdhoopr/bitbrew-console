@@ -54,5 +54,4 @@ Once you've installed the dependencies, you can make use of the available npm sc
 - `check:js`: Runs ESLint on all the JavaScript in the project.
 - `ci`: Runs all checks and builds the app if they pass.
 - `format`: Runs Prettier on all project files supported by Prettier.
-- `precommit`: Automatically runs Prettier on all files staged in Git before committing.
 - `start`: Serves a development version of the app locally at the URLs listed in the terminal.

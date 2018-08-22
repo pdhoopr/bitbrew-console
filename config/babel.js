@@ -6,7 +6,7 @@ module.exports = function buildBabelPreset() {
         '@babel/preset-env',
         {
           modules: false,
-          useBuiltIns: 'entry',
+          useBuiltIns: 'usage',
         },
       ],
       [

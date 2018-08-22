@@ -24,7 +24,7 @@ export const ContentTitle = styled.h3`
   line-height: var(--size-28);
 `;
 
-export const Subtitle = styled.h4`
+export const Heading = styled.h4`
   ${baseStyles};
   color: ${({ gray }) => (gray ? 'var(--color-dark-gray)' : 'inherit')};
   font-size: var(--size-16);
@@ -36,4 +36,10 @@ export const Text = styled.p`
   color: ${({ gray }) => (gray ? 'var(--color-dark-gray)' : 'inherit')};
   font-size: var(--size-14);
   line-height: var(--size-20);
+`;
+
+export const Caption = styled.p`
+  ${baseStyles};
+  font-size: var(--size-12);
+  line-height: var(--size-16);
 `;

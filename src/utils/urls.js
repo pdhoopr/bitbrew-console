@@ -1,5 +1,7 @@
 export const rootPath = '/';
 
+export const selfDetailsPath = '/user';
+
 export const orgsPath = '/orgs';
 
 export function orgDetailsPath(orgId = ':orgId') {
@@ -12,4 +14,4 @@ export function projectDetailsPath(projectId = ':projectId') {
   return `${projectsPath}/${projectId}`;
 }
 
-export const selfDetailsPath = '/user';
+export const devicesPath = '/devices';
