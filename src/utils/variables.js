@@ -14,6 +14,7 @@ injectGlobal`
     --color-black: #333;
     --corner-radius: 3px;
     --duration-short: 0.15s;
+    --duration-long: 1.5s;
     --elevation-low: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
       0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
     --elevation-low-darker: 0 3px 1px -2px rgba(0, 0, 0, 0.28),

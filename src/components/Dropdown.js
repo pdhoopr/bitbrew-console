@@ -48,6 +48,16 @@ const Menu = styled.div`
     &::before {
       content: none;
     }
+
+    &[disabled] {
+      cursor: auto;
+      opacity: 0.32;
+
+      &:hover,
+      &:focus {
+        background-color: transparent;
+      }
+    }
   }
 `;
 

@@ -46,7 +46,11 @@ After cloning your repo, you'll want to navigate into the repository folder and 
 
 > **Note:** Yarn is a package for managing dependencies, much like npm. You could use npm instead, but then Yarn wouldn't track any changes to dependencies in the `yarn.lock` file. So, just go ahead and use Yarn for everything in this project. It's recommended to install Yarn using an OS-specific method (e.g., `brew install yarn`), but you can install it via npm, too (i.e., `npm install --global yarn`).
 
-Once you've installed the dependencies, you can make use of the available npm scripts to help you develop the app by running `yarn <SCRIPT_NAME>` in your terminal. You can always find the entire list of scripts in the [`package.json`](package.json) file, but some useful ones are:
+Once you've installed the dependencies, you can make use of the available npm scripts to help you develop the app by running `yarn <SCRIPT_NAME>` in your terminal. The one that is probably most immediately relevant is `yarn start`, which runs a development version of the app locally. Once the app is finished compiling, the URLs you can access it at will be listed in the terminal.
+
+> **Note:** For security-related reasons, the app needs to appear as though it's running on a subdomain of `bitbrew.com`. This is accomplished by editing your computer's `hosts` file, usually by running a command like `sudo nano /etc/hosts`. You might have to enter your password to open the file. Once it's open, add a new line to the file like `127.0.0.1 local.bitbrew.com`. Just make sure the domain you use for this line matches whatever domain is shown in the "Local" section of the terminal output.
+
+You can always find the entire list of scripts in the [`package.json`](package.json) file. Some other useful ones are:
 
 - `build`: Builds a production version of the app that is suitable for deployment.
 - `check:css`: Runs Stylelint on all the CSS (styled-components) in the project.
@@ -54,4 +58,3 @@ Once you've installed the dependencies, you can make use of the available npm sc
 - `check:js`: Runs ESLint on all the JavaScript in the project.
 - `ci`: Runs all checks and builds the app if they pass.
 - `format`: Runs Prettier on all project files supported by Prettier.
-- `start`: Serves a development version of the app locally at the URLs listed in the terminal.

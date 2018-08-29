@@ -9,13 +9,8 @@ function newAxios({ token } = {}) {
 
 const http = {
   request: newAxios(),
-  async get(url, queryParams) {
-    const response = await this.request.get(url, {
-      params: {
-        pageSize: 500,
-        ...queryParams,
-      },
-    });
+  async get(url, config) {
+    const response = await this.request.get(url, config);
     return response.data;
   },
   async post(url, data) {
@@ -36,12 +31,20 @@ export function configureHttp(config) {
   http.request = newAxios(config);
 }
 
-export function viewSelf() {
-  return http.get(urls.selfDetailsPath);
+export function viewSelf(token) {
+  return http.get(urls.selfDetailsPath, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }
 
 export function listOrgs() {
-  return http.get(urls.orgsPath);
+  return http.get(urls.orgsPath, {
+    params: {
+      pageSize: 500,
+    },
+  });
 }
 
 export function createOrg(data) {
@@ -57,7 +60,12 @@ export function deleteOrg(orgId) {
 }
 
 export function listProjects(orgId) {
-  return http.get(urls.projectsPath, { orgId });
+  return http.get(urls.projectsPath, {
+    params: {
+      orgId,
+      pageSize: 500,
+    },
+  });
 }
 
 export function createProject(data) {

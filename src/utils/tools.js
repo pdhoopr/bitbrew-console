@@ -42,29 +42,11 @@ export function nextTick() {
   return Promise.resolve();
 }
 
-export function removeUrlParam(paramName) {
-  const parsedParams = new URLSearchParams(window.location.search);
-  const param = {
-    value: parsedParams.get(paramName),
-    wasFound: parsedParams.has(paramName),
-  };
-  if (param.wasFound) {
-    parsedParams.delete(paramName);
-    const baseUrl = `${window.location.origin}${window.location.pathname}`;
-    const paramString = parsedParams.toString();
-    const queryString = paramString.length > 0 ? `?${paramString}` : '';
-    return {
-      param,
-      url: `${baseUrl}${queryString}`,
-    };
-  }
-  return {
-    param,
-    url: window.location.href,
-  };
-}
-
 export function pluralize(word, count) {
   const suffix = count !== 1 ? 's' : '';
   return `${count} ${word}${suffix}`;
+}
+
+export function wait(milliseconds) {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
 }

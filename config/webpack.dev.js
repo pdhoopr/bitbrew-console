@@ -14,8 +14,9 @@ const paths = require('./paths');
 
 const mode = 'development';
 const protocol = 'https';
+const domain = 'local.bitbrew.com';
 const port = 4321;
-const localUrl = `${protocol}://localhost:${port}`;
+const localUrl = `${protocol}://${domain}:${port}`;
 const networkUrl = `${protocol}://${ip.address()}:${port}`;
 
 module.exports = {
@@ -79,8 +80,8 @@ module.exports = {
         messages: [
           [
             `You can now view ${chalk.bold(app.name)} in the browser.\n`,
-            `\t${chalk.bold('Local:')} ${localUrl}`,
-            `\t${chalk.bold('On your network:')} ${networkUrl}`,
+            `\t${chalk.bold('Local:')} ${chalk.blue(localUrl)}`,
+            `\t${chalk.bold('On your network:')} ${chalk.blue(networkUrl)}`,
           ].join('\n'),
         ],
         notes: [
@@ -126,6 +127,7 @@ module.exports = {
         },
       },
     },
+    public: domain,
     publicPath: '/',
     quiet: true,
     watchContentBase: true,

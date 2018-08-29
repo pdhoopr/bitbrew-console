@@ -6,7 +6,7 @@ import { LOGIN_URL, LOGOUT_URL } from '../../config/env';
 import Footer from '../components/Footer';
 import OrgNav from '../components/OrgNav';
 import ProjectNav from '../components/ProjectNav';
-import { connect, loadAsync, removeUrlParam } from '../utils/tools';
+import { connect, loadAsync } from '../utils/tools';
 import * as urls from '../utils/urls';
 
 const DevicesScreen = loadAsync(() => import('./DevicesScreen'));
@@ -20,23 +20,17 @@ const Wrapper = styled.main`
 class RootScreen extends React.Component {
   /* eslint-disable react/destructuring-assignment */
   async componentDidMount() {
-    const { param, url } = removeUrlParam('access_token');
-    await this.props.checkToken(param.value);
-    this.loginIfRequired(url);
-    if (param.wasFound) {
-      navigate(url, {
-        replace: true,
-      });
-    }
+    await this.props.createToken();
+    this.loginIfRequired(window.location.href);
     await this.props.listOrgs();
     await Promise.all(this.props.orgsAtoZ.map(this.props.listProjects));
   }
 
   componentDidUpdate() {
-    this.loginIfRequired();
+    this.loginIfRequired(window.location.origin);
   }
 
-  loginIfRequired(referrer = window.location.origin) {
+  loginIfRequired(referrer) {
     if (!this.props.token) {
       const loginReferrer = `${LOGIN_URL}?redirect_uri=${referrer}`;
       navigate(`${LOGOUT_URL}?redirect_uri=${loginReferrer}`);
@@ -69,7 +63,7 @@ class RootScreen extends React.Component {
 }
 
 RootScreen.propTypes = {
-  checkToken: PropTypes.func.isRequired,
+  createToken: PropTypes.func.isRequired,
   listOrgs: PropTypes.func.isRequired,
   listProjects: PropTypes.func.isRequired,
   orgsAtoZ: PropTypes.array.isRequired,
@@ -83,7 +77,7 @@ RootScreen.defaultProps = {
 export default connect(
   RootScreen,
   ({ authStore, orgStore, projectStore }) => ({
-    checkToken: authStore.checkToken,
+    createToken: authStore.createToken,
     listOrgs: orgStore.listOrgs,
     listProjects: projectStore.listProjects,
     orgsAtoZ: orgStore.orgsAtoZ,

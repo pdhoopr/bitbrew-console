@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button, RaisedButton } from '../components/Buttons';
 import Dropdown from '../components/Dropdown';
-import { FlexBetween } from '../components/Flexboxes';
+import { FlexBetween, FlexCenter } from '../components/Flexboxes';
 import { PageHeader } from '../components/Headers';
 import { DropdownIcon } from '../components/Icons';
 import { Link } from '../components/Links';
@@ -11,6 +11,7 @@ import Logo from '../components/Logo';
 import ProjectContent from '../components/ProjectContent';
 import Search from '../components/Search';
 import { Section } from '../components/Sections';
+import Spinner from '../components/Spinner';
 import { Heading, PageTitle, SectionTitle, Text } from '../components/Texts';
 import { Width640 } from '../components/Widths';
 import SearchStore from '../stores/SearchStore';
@@ -42,6 +43,8 @@ const NewButtonIcon = styled(DropdownIcon)`
   width: var(--size-16);
 `;
 
+const LoadingSection = FlexCenter.withComponent(Section);
+
 class WelcomeScreen extends React.Component {
   search = SearchStore.create();
 
@@ -50,7 +53,7 @@ class WelcomeScreen extends React.Component {
   newProjectUi = UiStore.create();
 
   render() {
-    const { orgs, signOut } = this.props;
+    const { isLoading, orgs, signOut } = this.props;
     return (
       <React.Fragment>
         <WelcomeHeader>
@@ -80,10 +83,17 @@ class WelcomeScreen extends React.Component {
                 </RaisedButton>
               }
             >
-              <Button onClick={this.newOrgUi.open}>Organization</Button>
+              <Button onClick={this.newOrgUi.open} disabled={isLoading}>
+                Organization
+              </Button>
               <Button onClick={this.newProjectUi.open}>Project</Button>
             </Dropdown>
           </Actions>
+          {isLoading && (
+            <LoadingSection>
+              <Spinner />
+            </LoadingSection>
+          )}
           {orgs.map(org => {
             const projects = org.getProjectsWithName(this.search.query);
             const isVisible = this.search.isEmpty || projects.length > 0;
@@ -115,6 +125,7 @@ class WelcomeScreen extends React.Component {
 }
 
 WelcomeScreen.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
   orgs: PropTypes.arrayOf(
     PropTypes.shape({
       createdAt: PropTypes.string.isRequired,
@@ -129,6 +140,7 @@ WelcomeScreen.propTypes = {
 export default connect(
   WelcomeScreen,
   ({ authStore, orgStore }) => ({
+    isLoading: orgStore.isLoading,
     orgs: orgStore.orgs,
     signOut: authStore.signOut,
   }),

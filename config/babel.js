@@ -19,6 +19,7 @@ module.exports = function buildBabelPreset() {
     ],
     plugins: [
       '@babel/plugin-proposal-class-properties',
+      '@babel/plugin-proposal-optional-catch-binding',
       '@babel/plugin-syntax-dynamic-import',
       [
         'babel-plugin-styled-components',

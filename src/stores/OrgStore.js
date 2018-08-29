@@ -31,11 +31,15 @@ export const OrgImpl = types
 
 export default types
   .model('OrgStore', {
+    isLoading: types.optional(types.boolean, false),
     orgMap: types.optional(types.map(OrgImpl), {}),
   })
   .views(self => ({
     get api() {
       return getEnv(self).api;
+    },
+    get authStore() {
+      return getRoot(self).authStore;
     },
     get orgs() {
       return [...self.orgMap.values()].sort((a, b) =>
@@ -52,6 +56,9 @@ export default types
     },
   }))
   .actions(self => ({
+    setLoading(isLoading) {
+      self.isLoading = isLoading;
+    },
     setOrg(org) {
       self.orgMap.set(org.id, org);
     },
@@ -64,7 +71,12 @@ export default types
       response.items.forEach(self.setOrg);
     }),
     createOrg: flow(function* createOrg(data) {
-      yield self.api.createOrg(data);
+      const response = yield self.api.createOrg(data);
+      self.setLoading(true);
+      self.authStore.refreshToken(response.id, () => {
+        self.setOrg(response);
+        self.setLoading(false);
+      });
     }),
     updateOrg: flow(function* updateOrg(org, data) {
       const response = yield self.api.updateOrg(org.id, data);
