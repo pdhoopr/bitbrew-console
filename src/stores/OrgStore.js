@@ -1,5 +1,6 @@
+import jwtDecode from 'jwt-decode';
 import { flow, getEnv, getRoot, types } from 'mobx-state-tree';
-import { matchesDate, matchesUuid } from '../utils/tools';
+import { matchesDate, matchesUuid, wait } from '../utils/tools';
 
 export const OrgImpl = types
   .model('OrgImpl', {
@@ -41,15 +42,20 @@ export default types
     get authStore() {
       return getRoot(self).authStore;
     },
+    get orgsInToken() {
+      return self.authStore.token
+        ? Object.keys(jwtDecode(self.authStore.token).orgs)
+            .filter(orgId => self.orgMap.has(orgId))
+            .map(orgId => self.orgMap.get(orgId))
+        : [];
+    },
     get orgs() {
-      return [...self.orgMap.values()].sort((a, b) =>
+      return [...self.orgsInToken].sort((a, b) =>
         b.createdAt.localeCompare(a.createdAt),
       );
     },
     get orgsAtoZ() {
-      return [...self.orgMap.values()].sort((a, b) =>
-        a.name.localeCompare(b.name),
-      );
+      return [...self.orgsInToken].sort((a, b) => a.name.localeCompare(b.name));
     },
     getOrgWithId(orgId) {
       return self.orgMap.get(orgId) || null;
@@ -72,11 +78,8 @@ export default types
     }),
     createOrg: flow(function* createOrg(data) {
       const response = yield self.api.createOrg(data);
-      self.setLoading(true);
-      self.authStore.refreshToken(response.id, () => {
-        self.setOrg(response);
-        self.setLoading(false);
-      });
+      self.setOrg(response);
+      return self.getOrgWithId(response.id);
     }),
     updateOrg: flow(function* updateOrg(org, data) {
       const response = yield self.api.updateOrg(org.id, data);
@@ -85,5 +88,23 @@ export default types
     deleteOrg: flow(function* deleteOrg(org) {
       yield self.api.deleteOrg(org.id);
       self.removeOrg(org);
+    }),
+    refreshTokenUntilHasOrg: flow(function* refreshTokenUntilHasOrg(org) {
+      self.setLoading(true);
+      yield wait(1000);
+      try {
+        const token = yield self.api.refreshToken();
+        if (jwtDecode(token).orgs[org.id]) {
+          yield self.authStore.signIn(token);
+        } else {
+          yield self.refreshTokenUntilHasOrg(org);
+        }
+      } catch {
+        self.authStore.signOut({
+          redirectUrl: window.location.href,
+        });
+      } finally {
+        self.setLoading(false);
+      }
     }),
   }));

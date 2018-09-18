@@ -45,7 +45,7 @@ class OrgDetailsScreen extends React.Component {
     const { getOrgWithId, orgId, signOut } = this.props;
     const org = getOrgWithId(orgId);
     const title = org ? org.name : '';
-    const projects = org ? org.getProjectsWithName(this.search.query) : [];
+    const projects = org ? org.getProjectsWithName(this.search.term) : [];
     return (
       <React.Fragment>
         <PageHeader>
@@ -80,9 +80,9 @@ class OrgDetailsScreen extends React.Component {
                 </ProjectsHeader>
                 <FlexBetween>
                   <Search
-                    description="The list of projects below will change to show only those with names matching the search query."
-                    value={this.search.query}
-                    onChange={this.search.setQuery}
+                    description="The list of projects below will change to show only those with names matching the search term."
+                    value={this.search.term}
+                    onChange={this.search.setTerm}
                     placeholder="Search by project name"
                   />
                   <NewProjectButton onClick={this.newProjectUi.open}>

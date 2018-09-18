@@ -9,7 +9,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const app = require('../package.json');
-const { API_URL } = require('./env');
+const { apiUrl } = require('./env');
 const paths = require('./paths');
 
 const mode = 'development';
@@ -120,7 +120,7 @@ module.exports = {
     port,
     proxy: {
       '/api': {
-        target: API_URL,
+        target: apiUrl,
         changeOrigin: true,
         pathRewrite: {
           '^/api': '',

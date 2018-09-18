@@ -1,8 +1,7 @@
-import { navigate, Redirect, Router } from '@reach/router';
+import { Redirect, Router } from '@reach/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { LOGIN_URL, LOGOUT_URL } from '../../config/env';
 import Footer from '../components/Footer';
 import OrgNav from '../components/OrgNav';
 import ProjectNav from '../components/ProjectNav';
@@ -21,20 +20,8 @@ class RootScreen extends React.Component {
   /* eslint-disable react/destructuring-assignment */
   async componentDidMount() {
     await this.props.createToken();
-    this.loginIfRequired(window.location.href);
     await this.props.listOrgs();
     await Promise.all(this.props.orgsAtoZ.map(this.props.listProjects));
-  }
-
-  componentDidUpdate() {
-    this.loginIfRequired(window.location.origin);
-  }
-
-  loginIfRequired(referrer) {
-    if (!this.props.token) {
-      const loginReferrer = `${LOGIN_URL}?redirect_uri=${referrer}`;
-      navigate(`${LOGOUT_URL}?redirect_uri=${loginReferrer}`);
-    }
   }
 
   /* eslint-enable react/destructuring-assignment */

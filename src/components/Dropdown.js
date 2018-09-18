@@ -63,7 +63,7 @@ const Menu = styled.div`
 
 class Dropdown extends React.Component {
   /* eslint-disable react/destructuring-assignment */
-  buttonId = createIdForA11y(`${Dropdown.name}_button`);
+  buttonId = createIdForA11y(`${Dropdown.name}__button`);
 
   buttonRef = React.createRef();
 

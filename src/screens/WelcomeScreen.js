@@ -71,9 +71,9 @@ class WelcomeScreen extends React.Component {
         <Width640>
           <Actions>
             <Search
-              description="The list of organizations below will change to show only those with project names matching the search query."
-              value={this.search.query}
-              onChange={this.search.setQuery}
+              description="The list of organizations below will change to show only those with project names matching the search term."
+              value={this.search.term}
+              onChange={this.search.setTerm}
               placeholder="Search by project name"
             />
             <Dropdown
@@ -95,7 +95,7 @@ class WelcomeScreen extends React.Component {
             </LoadingSection>
           )}
           {orgs.map(org => {
-            const projects = org.getProjectsWithName(this.search.query);
+            const projects = org.getProjectsWithName(this.search.term);
             const isVisible = this.search.isEmpty || projects.length > 0;
             return (
               isVisible && (

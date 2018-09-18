@@ -44,10 +44,10 @@ class Search extends React.Component {
     const { description, onChange, placeholder, value } = this.props;
     return (
       <Wrapper>
-        <label htmlFor="query">
+        <label htmlFor="term">
           <Icon aria-hidden />
           <Field
-            id="query"
+            id="term"
             value={value}
             onChange={onChange}
             placeholder={placeholder}
