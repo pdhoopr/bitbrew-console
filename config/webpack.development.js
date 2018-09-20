@@ -7,12 +7,10 @@ const HtmlPlugin = require('html-webpack-plugin');
 const ip = require('ip');
 const path = require('path');
 const webpack = require('webpack');
-const ManifestPlugin = require('webpack-manifest-plugin');
 const app = require('../package.json');
 const { apiUrl } = require('./env');
 const paths = require('./paths');
 
-const mode = 'development';
 const protocol = 'https';
 const domain = 'local.bitbrew.com';
 const port = 4321;
@@ -20,9 +18,8 @@ const localUrl = `${protocol}://${domain}:${port}`;
 const networkUrl = `${protocol}://${ip.address()}:${port}`;
 
 module.exports = {
-  mode,
+  mode: 'development',
   output: {
-    chunkFilename: 'js/[name].js',
     devtoolModuleFilenameTemplate(info) {
       return path.resolve(info.absoluteResourcePath).replace(/\\/g, '/');
     },
@@ -53,13 +50,6 @@ module.exports = {
       },
     ],
     strictExportPresence: true,
-  },
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-      name: 'vendors',
-    },
-    runtimeChunk: 'single',
   },
   plugins: [
     new CaseSensitivePathsPlugin(),
@@ -96,12 +86,6 @@ module.exports = {
     }),
     new HtmlPlugin({
       template: paths.htmlFile,
-    }),
-    new ManifestPlugin({
-      fileName: 'asset-manifest.json',
-    }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || mode),
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],

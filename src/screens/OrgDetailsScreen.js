@@ -12,11 +12,10 @@ import { PageTitle, SectionTitle, Text } from '../components/Texts';
 import { Width640 } from '../components/Widths';
 import SearchStore from '../stores/SearchStore';
 import UiStore from '../stores/UiStore';
-import { connect, loadAsync, localizeDate, pluralize } from '../utils/tools';
-
-const DeleteOrgScreen = loadAsync(() => import('./DeleteOrgScreen'));
-const EditOrgScreen = loadAsync(() => import('./EditOrgScreen'));
-const NewProjectScreen = loadAsync(() => import('./NewProjectScreen'));
+import { connect, localizeDate, pluralize } from '../utils/tools';
+import DeleteOrgScreen from './DeleteOrgScreen';
+import EditOrgScreen from './EditOrgScreen';
+import NewProjectScreen from './NewProjectScreen';
 
 const EditOrgButton = styled(RaisedButton)`
   background-color: var(--color-black);

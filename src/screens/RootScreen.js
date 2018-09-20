@@ -5,12 +5,11 @@ import styled from 'styled-components';
 import Footer from '../components/Footer';
 import OrgNav from '../components/OrgNav';
 import ProjectNav from '../components/ProjectNav';
-import { connect, loadAsync } from '../utils/tools';
+import { connect } from '../utils/tools';
 import * as urls from '../utils/urls';
-
-const DevicesScreen = loadAsync(() => import('./DevicesScreen'));
-const OrgDetailsScreen = loadAsync(() => import('./OrgDetailsScreen'));
-const WelcomeScreen = loadAsync(() => import('./WelcomeScreen'));
+import DevicesScreen from './DevicesScreen';
+import OrgDetailsScreen from './OrgDetailsScreen';
+import WelcomeScreen from './WelcomeScreen';
 
 const Wrapper = styled.main`
   flex: 1;

@@ -1,5 +1,4 @@
 import { inject, observer } from 'mobx-react';
-import Loadable from 'react-loadable';
 import uniqid from 'uniqid';
 
 export function connect(Component, mapStoresToProps) {
@@ -7,15 +6,8 @@ export function connect(Component, mapStoresToProps) {
 }
 
 export function createIdForA11y(displayName) {
-  const prefix = process.env.NODE_ENV === 'production' ? 'a11y' : displayName;
-  return `${prefix}-${uniqid()}`;
-}
-
-export function loadAsync(loader) {
-  return Loadable({
-    loader,
-    loading: () => null,
-  });
+  const id = `a11y-${uniqid()}`;
+  return process.env.NODE_ENV === 'development' ? `${displayName}-${id}` : id;
 }
 
 export function localizeDate(dateString) {
@@ -43,8 +35,8 @@ export function nextTick() {
 }
 
 export function pluralize(word, count) {
-  const suffix = count !== 1 ? 's' : '';
-  return `${count} ${word}${suffix}`;
+  const phrase = `${count} ${word}`;
+  return count === 1 ? phrase : `${phrase}s`;
 }
 
 export function wait(milliseconds) {

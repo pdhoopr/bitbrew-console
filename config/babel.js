@@ -1,5 +1,6 @@
 module.exports = function buildBabelPreset() {
-  const isProd = process.env.NODE_ENV === 'production';
+  const isDevelopmentEnv = process.env.NODE_ENV === 'development';
+  const isProductionEnv = process.env.NODE_ENV === 'production';
   return {
     presets: [
       [
@@ -12,7 +13,7 @@ module.exports = function buildBabelPreset() {
       [
         '@babel/preset-react',
         {
-          development: !isProd,
+          development: isDevelopmentEnv,
           useBuiltIns: true,
         },
       ],
@@ -20,14 +21,14 @@ module.exports = function buildBabelPreset() {
     plugins: [
       '@babel/plugin-proposal-class-properties',
       '@babel/plugin-proposal-optional-catch-binding',
-      '@babel/plugin-syntax-dynamic-import',
       [
         'babel-plugin-styled-components',
         {
-          displayName: !isProd,
+          displayName: isDevelopmentEnv,
+          pure: true,
         },
       ],
-      isProd && [
+      isProductionEnv && [
         'babel-plugin-transform-react-remove-prop-types',
         {
           removeImport: true,

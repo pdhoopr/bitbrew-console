@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from '../utils/tools';
 import { Button } from '../components/Buttons';
 import { FlexBetween } from '../components/Flexboxes';
 import { PageHeader } from '../components/Headers';
 import { PageTitle } from '../components/Texts';
+import { connect } from '../utils/tools';
 
 function DevicesScreen({ signOut }) {
   return (

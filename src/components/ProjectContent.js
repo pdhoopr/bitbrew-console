@@ -1,8 +1,10 @@
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import DeleteProjectScreen from '../screens/DeleteProjectScreen';
+import EditProjectScreen from '../screens/EditProjectScreen';
 import UiStore from '../stores/UiStore';
-import { loadAsync, localizeDate } from '../utils/tools';
+import { localizeDate } from '../utils/tools';
 import { devicesPath } from '../utils/urls';
 import { Button, IconButton } from './Buttons';
 import Dropdown from './Dropdown';
@@ -13,13 +15,6 @@ import { Link } from './Links';
 import List from './List';
 import { Content } from './Sections';
 import { ContentTitle, Text } from './Texts';
-
-const DeleteProjectScreen = loadAsync(() =>
-  import('../screens/DeleteProjectScreen'),
-);
-const EditProjectScreen = loadAsync(() =>
-  import('../screens/EditProjectScreen'),
-);
 
 class ProjectContent extends React.Component {
   editProjectUi = UiStore.create();

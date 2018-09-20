@@ -3,23 +3,18 @@ const CleanPlugin = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlPlugin = require('html-webpack-plugin');
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const webpack = require('webpack');
-const ManifestPlugin = require('webpack-manifest-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const paths = require('./paths');
 
-const mode = 'production';
-
 module.exports = {
-  mode,
+  mode: 'production',
   output: {
-    chunkFilename: 'js/[name].[chunkhash:8].js',
     devtoolModuleFilenameTemplate(info) {
       return path
         .relative(paths.srcFolder, info.absoluteResourcePath)
         .replace(/\\/g, '/');
     },
-    filename: 'js/[name].[chunkhash:8].js',
+    filename: 'js/[name].[contenthash].js',
     path: paths.distFolder,
     pathinfo: true,
     publicPath: '/',
@@ -41,35 +36,23 @@ module.exports = {
   },
   optimization: {
     minimizer: [
-      new UglifyJsPlugin({
+      new TerserPlugin({
         cache: true,
         parallel: true,
         sourceMap: true,
-        uglifyOptions: {
-          parse: {
-            ecma: 8,
-          },
+        terserOptions: {
           compress: {
-            ecma: 5,
-            warnings: false,
             comparisons: false,
           },
           mangle: {
             safari10: true,
           },
           output: {
-            ecma: 5,
-            comments: false,
             ascii_only: true,
           },
         },
       }),
     ],
-    splitChunks: {
-      chunks: 'all',
-      name: 'vendors',
-    },
-    runtimeChunk: 'single',
   },
   plugins: [
     new CaseSensitivePathsPlugin(),
@@ -99,12 +82,6 @@ module.exports = {
         removeStyleLinkTypeAttributes: true,
         useShortDoctype: true,
       },
-    }),
-    new ManifestPlugin({
-      fileName: 'asset-manifest.json',
-    }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || mode),
     }),
   ],
   devtool: 'source-map',

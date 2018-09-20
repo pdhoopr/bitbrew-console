@@ -16,11 +16,10 @@ import { Heading, PageTitle, SectionTitle, Text } from '../components/Texts';
 import { Width640 } from '../components/Widths';
 import SearchStore from '../stores/SearchStore';
 import UiStore from '../stores/UiStore';
-import { connect, loadAsync, localizeDate, pluralize } from '../utils/tools';
+import { connect, localizeDate, pluralize } from '../utils/tools';
 import { orgDetailsPath } from '../utils/urls';
-
-const NewOrgScreen = loadAsync(() => import('./NewOrgScreen'));
-const NewProjectScreen = loadAsync(() => import('./NewProjectScreen'));
+import NewOrgScreen from './NewOrgScreen';
+import NewProjectScreen from './NewProjectScreen';
 
 const WelcomeHeader = styled(PageHeader)`
   background-color: var(--color-black);
