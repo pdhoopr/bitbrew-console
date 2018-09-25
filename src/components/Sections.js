@@ -6,7 +6,7 @@ export const Section = styled.section`
   }
 `;
 
-export const Content = styled.section`
+export const Content = styled.div`
   background-color: var(--color-white);
   border-radius: var(--corner-radius);
   box-shadow: var(--elevation-low);

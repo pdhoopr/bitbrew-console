@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { rootPath } from '../utils/urls';
 import { FlexCenter } from './Flexboxes';
-import { IconLink, NavLink } from './Links';
+import { IconLink } from './Links';
 import Logo from './Logo';
 import { Caption } from './Texts';
 
@@ -36,7 +36,7 @@ const Heading = styled(Caption)`
   text-transform: uppercase;
 `;
 
-const List = styled.ul`
+const Links = styled.ul`
   list-style-type: none;
   margin-bottom: 0;
   margin-top: 0;
@@ -53,7 +53,7 @@ class Nav extends React.Component {
   }
 
   render() {
-    const { heading, links } = this.props;
+    const { children, heading } = this.props;
     return (
       <Wrapper aria-label={heading}>
         <FlexCenter>
@@ -65,26 +65,22 @@ class Nav extends React.Component {
           </OrgsAndProjectsLink>
         </FlexCenter>
         <Heading>{heading}</Heading>
-        <List>
-          {links.map(link => (
-            <li key={link.to}>
-              <NavLink to={link.to}>{link.text}</NavLink>
-            </li>
+        <Links>
+          {React.Children.map(children, navLink => (
+            <li>{navLink}</li>
           ))}
-        </List>
+        </Links>
       </Wrapper>
     );
   }
 }
 
 Nav.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
   heading: PropTypes.string.isRequired,
-  links: PropTypes.arrayOf(
-    PropTypes.shape({
-      text: PropTypes.string.isRequired,
-      to: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
 };
 
 export default observer(Nav);

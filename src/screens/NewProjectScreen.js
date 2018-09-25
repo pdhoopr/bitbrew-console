@@ -89,7 +89,7 @@ NewProjectScreen.propTypes = {
 };
 
 NewProjectScreen.defaultProps = {
-  org: undefined,
+  org: null,
 };
 
 export default connect(

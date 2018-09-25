@@ -54,7 +54,7 @@ class WelcomeScreen extends React.Component {
   render() {
     const { isLoading, orgs, signOut } = this.props;
     return (
-      <React.Fragment>
+      <main>
         <WelcomeHeader>
           <Width640>
             <FlexBetween>
@@ -87,6 +87,12 @@ class WelcomeScreen extends React.Component {
               </Button>
               <Button onClick={this.newProjectUi.open}>Project</Button>
             </Dropdown>
+            {this.newOrgUi.isOpen && (
+              <NewOrgScreen close={this.newOrgUi.close} />
+            )}
+            {this.newProjectUi.isOpen && (
+              <NewProjectScreen close={this.newProjectUi.close} />
+            )}
           </Actions>
           {isLoading && (
             <LoadingSection>
@@ -114,11 +120,7 @@ class WelcomeScreen extends React.Component {
             );
           })}
         </Width640>
-        {this.newOrgUi.isOpen && <NewOrgScreen close={this.newOrgUi.close} />}
-        {this.newProjectUi.isOpen && (
-          <NewProjectScreen close={this.newProjectUi.close} />
-        )}
-      </React.Fragment>
+      </main>
     );
   }
 }

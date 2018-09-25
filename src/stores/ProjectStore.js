@@ -1,15 +1,29 @@
-import { flow, getEnv, types } from 'mobx-state-tree';
+import { flow, getEnv, getRoot, types } from 'mobx-state-tree';
 import { matchesDate, matchesUuid } from '../utils/tools';
 import { OrgImpl } from './OrgStore';
 
-export const ProjectImpl = types.model('ProjectImpl', {
-  id: types.refinement(types.identifier, matchesUuid),
-  org: types.reference(OrgImpl),
-  name: types.string,
-  description: types.string,
-  usesSimulatedDevices: types.boolean,
-  createdAt: types.refinement(types.string, matchesDate),
-});
+export const ProjectImpl = types
+  .model('ProjectImpl', {
+    id: types.refinement(types.identifier, matchesUuid),
+    name: types.string,
+    description: types.string,
+    usesSimulatedDevices: types.boolean,
+    createdAt: types.refinement(types.string, matchesDate),
+    org: types.reference(OrgImpl),
+  })
+  .views(self => ({
+    get deviceStore() {
+      return getRoot(self).deviceStore;
+    },
+    get devices() {
+      return self.deviceStore.devices.filter(device => device.project === self);
+    },
+  }))
+  .actions(self => ({
+    removeReferences() {
+      self.devices.forEach(self.deviceStore.removeDevice);
+    },
+  }));
 
 export default types
   .model('ProjectStore', {
@@ -24,6 +38,9 @@ export default types
         b.createdAt.localeCompare(a.createdAt),
       );
     },
+    getProjectWithId(projectId) {
+      return self.projectMap.get(projectId) || null;
+    },
   }))
   .actions(self => ({
     setProject({ orgId, ...project }) {
@@ -33,6 +50,7 @@ export default types
       });
     },
     removeProject(project) {
+      project.removeReferences();
       self.projectMap.delete(project.id);
     },
     listProjects: flow(function* listProjects(org) {

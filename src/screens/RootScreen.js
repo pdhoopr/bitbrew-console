@@ -3,15 +3,22 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import Footer from '../components/Footer';
-import OrgNav from '../components/OrgNav';
-import ProjectNav from '../components/ProjectNav';
 import { connect } from '../utils/tools';
-import * as urls from '../utils/urls';
+import {
+  devicesPath,
+  orgDetailsPath,
+  orgsPath,
+  projectDetailsPath,
+  projectsPath,
+  rootPath,
+} from '../utils/urls';
 import DevicesScreen from './DevicesScreen';
 import OrgDetailsScreen from './OrgDetailsScreen';
+import OrgScreens from './OrgScreens';
+import ProjectScreens from './ProjectScreens';
 import WelcomeScreen from './WelcomeScreen';
 
-const Wrapper = styled.main`
+const Screens = styled(Router)`
   flex: 1;
 `;
 
@@ -20,27 +27,32 @@ class RootScreen extends React.Component {
   async componentDidMount() {
     await this.props.createToken();
     await this.props.listOrgs();
-    await Promise.all(this.props.orgsAtoZ.map(this.props.listProjects));
+    await Promise.all(this.props.orgs.map(this.props.listProjects));
+    await Promise.all(this.props.projects.map(this.props.listDevices));
   }
 
   /* eslint-enable react/destructuring-assignment */
   render() {
-    const { orgsAtoZ, token } = this.props;
+    const { token } = this.props;
     return (
       token && (
         <React.Fragment>
-          <Router primary={false} component={React.Fragment}>
-            <OrgNav path={`${urls.orgsPath}/*`} orgs={orgsAtoZ} />
-            <ProjectNav path={urls.devicesPath} />
-          </Router>
-          <Wrapper>
-            <Router component="article">
-              <WelcomeScreen path={urls.rootPath} />
-              <Redirect from={urls.orgsPath} to={urls.rootPath} noThrow />
-              <OrgDetailsScreen path={urls.orgDetailsPath()} />
-              <DevicesScreen path={urls.devicesPath} />
-            </Router>
-          </Wrapper>
+          <Screens>
+            <WelcomeScreen path={rootPath} />
+            <Redirect from={orgsPath} to={rootPath} noThrow />
+            <OrgScreens path={orgDetailsPath()}>
+              <OrgDetailsScreen path={rootPath} />
+            </OrgScreens>
+            <Redirect from={projectsPath} to={rootPath} noThrow />
+            <Redirect
+              from={projectDetailsPath()}
+              to={`${projectDetailsPath()}${devicesPath}`}
+              noThrow
+            />
+            <ProjectScreens path={projectDetailsPath()}>
+              <DevicesScreen path={devicesPath} />
+            </ProjectScreens>
+          </Screens>
           <Footer />
         </React.Fragment>
       )
@@ -50,9 +62,11 @@ class RootScreen extends React.Component {
 
 RootScreen.propTypes = {
   createToken: PropTypes.func.isRequired,
+  listDevices: PropTypes.func.isRequired,
   listOrgs: PropTypes.func.isRequired,
   listProjects: PropTypes.func.isRequired,
-  orgsAtoZ: PropTypes.array.isRequired,
+  orgs: PropTypes.array.isRequired,
+  projects: PropTypes.array.isRequired,
   token: PropTypes.string,
 };
 
@@ -62,11 +76,13 @@ RootScreen.defaultProps = {
 
 export default connect(
   RootScreen,
-  ({ authStore, orgStore, projectStore }) => ({
+  ({ authStore, deviceStore, orgStore, projectStore }) => ({
     createToken: authStore.createToken,
+    listDevices: deviceStore.listDevices,
     listOrgs: orgStore.listOrgs,
     listProjects: projectStore.listProjects,
-    orgsAtoZ: orgStore.orgsAtoZ,
+    orgs: orgStore.orgs,
+    projects: projectStore.projects,
     token: authStore.token,
   }),
 );

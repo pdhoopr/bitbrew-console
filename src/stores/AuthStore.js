@@ -1,4 +1,3 @@
-import { navigate } from '@reach/router';
 import { flow, getEnv, types } from 'mobx-state-tree';
 import { loginUrl, logoutUrl, serviceUrl } from '../../config/env';
 
@@ -29,7 +28,7 @@ export default types
     }),
     signOut({ redirectUrl = window.location.origin } = {}) {
       self.removeToken();
-      navigate(
+      window.location.assign(
         `${logoutUrl}?redirect_uri=${loginUrl}?redirect_uri=${redirectUrl}`,
       );
     },
@@ -41,9 +40,7 @@ export default types
         params.delete(accessTokenParam);
         const url = `${window.location.origin}${window.location.pathname}`;
         const query = `?${params}`.replace(/\?$/, '');
-        navigate(`${url}${query}`, {
-          replace: true,
-        });
+        window.history.replaceState(null, null, `${url}${query}`);
       }
       if (document.referrer.startsWith(serviceUrl) && token) {
         try {

@@ -8,7 +8,7 @@ const Wrapper = styled.footer`
   margin-top: var(--size-128);
 `;
 
-const List = styled.ul`
+const Resources = styled.ul`
   color: var(--color-dark-gray);
   list-style-type: none;
   margin-bottom: 0;
@@ -17,7 +17,7 @@ const List = styled.ul`
   text-align: center;
 `;
 
-const ListItem = styled.li`
+const Item = styled.li`
   display: inline-block;
 
   &:not(:last-of-type) {
@@ -28,22 +28,22 @@ const ListItem = styled.li`
 function Footer() {
   return (
     <Wrapper>
-      <List>
-        <ListItem>&copy; 2018 BitBrew, Inc.</ListItem>
-        <ListItem>
+      <Resources>
+        <Item>&copy; 2018 BitBrew, Inc.</Item>
+        <Item>
           <Link to="http://docs.hub.bitbrew.com/v1.3/reference#authentication">
             API Documentation
           </Link>
-        </ListItem>
-        <ListItem>
+        </Item>
+        <Item>
           <Link to="http://docs.hub.bitbrew.com/v1.3/reference">
             Event Catalog
           </Link>
-        </ListItem>
-        <ListItem>
+        </Item>
+        <Item>
           <Link to="https://help.bitbrew.com/">Help</Link>
-        </ListItem>
-      </List>
+        </Item>
+      </Resources>
     </Wrapper>
   );
 }

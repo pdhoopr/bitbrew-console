@@ -1,6 +1,10 @@
 import { inject, observer } from 'mobx-react';
 import uniqid from 'uniqid';
 
+export function capitalize(string) {
+  return string.replace(/^[a-z]/, letter => letter.toUpperCase());
+}
+
 export function connect(Component, mapStoresToProps) {
   return inject(({ stores }) => mapStoresToProps(stores))(observer(Component));
 }

@@ -9,9 +9,6 @@ export const OrgImpl = types
     createdAt: types.refinement(types.string, matchesDate),
   })
   .views(self => ({
-    get api() {
-      return getEnv(self).api;
-    },
     get projectStore() {
       return getRoot(self).projectStore;
     },

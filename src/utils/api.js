@@ -1,6 +1,13 @@
 import axios from 'axios';
 import { refreshUrl } from '../../config/env';
-import * as urls from './urls';
+import {
+  devicesPath,
+  orgDetailsPath,
+  orgsPath,
+  projectDetailsPath,
+  projectsPath,
+  selfDetailsPath,
+} from './urls';
 
 function createClient(config) {
   return axios.create({
@@ -43,7 +50,7 @@ export function init(options) {
         await options.refreshToken();
         const response = await client.request({
           ...error.config,
-          baseURL: undefined,
+          baseURL: null,
         });
         return response;
       }
@@ -91,7 +98,7 @@ export function refreshToken() {
 }
 
 export function viewSelf(token) {
-  return http.get(urls.selfDetailsPath, {
+  return http.get(selfDetailsPath, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -99,7 +106,7 @@ export function viewSelf(token) {
 }
 
 export function listOrgs() {
-  return http.get(urls.orgsPath, {
+  return http.get(orgsPath, {
     params: {
       pageSize: 500,
     },
@@ -107,19 +114,19 @@ export function listOrgs() {
 }
 
 export function createOrg(data) {
-  return http.post(urls.orgsPath, data);
+  return http.post(orgsPath, data);
 }
 
 export function updateOrg(orgId, data) {
-  return http.put(urls.orgDetailsPath(orgId), data);
+  return http.put(orgDetailsPath(orgId), data);
 }
 
 export function deleteOrg(orgId) {
-  return http.delete(urls.orgDetailsPath(orgId));
+  return http.delete(orgDetailsPath(orgId));
 }
 
 export function listProjects(orgId) {
-  return http.get(urls.projectsPath, {
+  return http.get(projectsPath, {
     params: {
       orgId,
       pageSize: 500,
@@ -128,13 +135,22 @@ export function listProjects(orgId) {
 }
 
 export function createProject(data) {
-  return http.post(urls.projectsPath, data);
+  return http.post(projectsPath, data);
 }
 
 export function updateProject(projectId, data) {
-  return http.put(urls.projectDetailsPath(projectId), data);
+  return http.put(projectDetailsPath(projectId), data);
 }
 
 export function deleteProject(projectId) {
-  return http.delete(urls.projectDetailsPath(projectId));
+  return http.delete(projectDetailsPath(projectId));
+}
+
+export function listDevices(projectId) {
+  return http.get(devicesPath, {
+    params: {
+      projectId,
+      pageSize: 500,
+    },
+  });
 }

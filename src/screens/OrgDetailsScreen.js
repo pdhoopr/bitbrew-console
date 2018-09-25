@@ -46,7 +46,7 @@ class OrgDetailsScreen extends React.Component {
     const title = org ? org.name : '';
     const projects = org ? org.getProjectsWithName(this.search.term) : [];
     return (
-      <React.Fragment>
+      <main>
         <PageHeader>
           <FlexBetween>
             <PageTitle>{title}</PageTitle>
@@ -54,57 +54,53 @@ class OrgDetailsScreen extends React.Component {
           </FlexBetween>
         </PageHeader>
         {org && (
-          <React.Fragment>
-            <Width640>
-              <Section>
-                <FlexBetween>
-                  <SectionTitle>Overview</SectionTitle>
-                  <EditOrgButton onClick={this.editOrgUi.open}>
-                    Edit
-                  </EditOrgButton>
-                  <RaisedButton onClick={this.deleteOrgUi.open} red>
-                    Delete
-                  </RaisedButton>
-                </FlexBetween>
-                <Content>
-                  <List
-                    items={[['Date Created', localizeDate(org.createdAt)]]}
-                  />
-                </Content>
-              </Section>
-              <Section>
-                <ProjectsHeader>
-                  <SectionTitle>Projects</SectionTitle>
-                  <Text gray>{pluralize('project', projects.length)}</Text>
-                </ProjectsHeader>
-                <FlexBetween>
-                  <Search
-                    description="The list of projects below will change to show only those with names matching the search term."
-                    value={this.search.term}
-                    onChange={this.search.setTerm}
-                    placeholder="Search by project name"
-                  />
-                  <NewProjectButton onClick={this.newProjectUi.open}>
-                    New
-                  </NewProjectButton>
-                </FlexBetween>
-                {projects.map(project => (
-                  <ProjectContent key={project.id} project={project} />
-                ))}
-              </Section>
-            </Width640>
-            {this.editOrgUi.isOpen && (
-              <EditOrgScreen org={org} close={this.editOrgUi.close} />
-            )}
-            {this.deleteOrgUi.isOpen && (
-              <DeleteOrgScreen org={org} close={this.deleteOrgUi.close} />
-            )}
-            {this.newProjectUi.isOpen && (
-              <NewProjectScreen org={org} close={this.newProjectUi.close} />
-            )}
-          </React.Fragment>
+          <Width640>
+            <Section>
+              <FlexBetween>
+                <SectionTitle>Overview</SectionTitle>
+                <EditOrgButton onClick={this.editOrgUi.open}>
+                  Edit
+                </EditOrgButton>
+                {this.editOrgUi.isOpen && (
+                  <EditOrgScreen org={org} close={this.editOrgUi.close} />
+                )}
+                <RaisedButton onClick={this.deleteOrgUi.open} red>
+                  Delete
+                </RaisedButton>
+                {this.deleteOrgUi.isOpen && (
+                  <DeleteOrgScreen org={org} close={this.deleteOrgUi.close} />
+                )}
+              </FlexBetween>
+              <Content>
+                <List items={[['Date Created', localizeDate(org.createdAt)]]} />
+              </Content>
+            </Section>
+            <Section>
+              <ProjectsHeader>
+                <SectionTitle>Projects</SectionTitle>
+                <Text gray>{pluralize('project', projects.length)}</Text>
+              </ProjectsHeader>
+              <FlexBetween>
+                <Search
+                  description="The list of projects below will change to show only those with names matching the search term."
+                  value={this.search.term}
+                  onChange={this.search.setTerm}
+                  placeholder="Search by project name"
+                />
+                <NewProjectButton onClick={this.newProjectUi.open}>
+                  New
+                </NewProjectButton>
+                {this.newProjectUi.isOpen && (
+                  <NewProjectScreen org={org} close={this.newProjectUi.close} />
+                )}
+              </FlexBetween>
+              {projects.map(project => (
+                <ProjectContent key={project.id} project={project} />
+              ))}
+            </Section>
+          </Width640>
         )}
-      </React.Fragment>
+      </main>
     );
   }
 }
