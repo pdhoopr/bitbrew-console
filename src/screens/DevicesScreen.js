@@ -1,12 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '../components/Buttons';
+import { Button, IconButton } from '../components/Buttons';
 import { FlexBetween } from '../components/Flexboxes';
 import { PageHeader } from '../components/Headers';
+import { AddIcon } from '../components/Icons';
 import { PageTitle } from '../components/Texts';
 import { Width640 } from '../components/Widths';
+import UiStore from '../stores/UiStore';
 import { capitalize, connect, localizeDate } from '../utils/tools';
+import NewDeviceScreen from './NewDeviceScreen';
 
 const Table = styled.table`
   background-color: var(--color-white);
@@ -35,6 +38,12 @@ const TableCell = styled.td`
 
 const TableHeaderCell = styled(TableCell.withComponent('th'))`
   font-weight: var(--weight-bold);
+  padding-bottom: var(--size-8);
+  padding-top: var(--size-8);
+
+  &:last-of-type {
+    text-align: right;
+  }
 `;
 
 const EmptyState = styled(TableCell)`
@@ -42,52 +51,72 @@ const EmptyState = styled(TableCell)`
   text-align: center;
 `;
 
-function DevicesScreen({ getProjectWithId, projectId, signOut }) {
-  const project = getProjectWithId(projectId);
-  const devices = project ? project.devices : [];
-  return (
-    <main>
-      <PageHeader>
-        <FlexBetween>
-          <PageTitle>Devices</PageTitle>
-          <Button onClick={signOut}>Sign out</Button>
-        </FlexBetween>
-      </PageHeader>
-      {project && (
-        <Width640>
-          <Table>
-            <thead>
-              <tr>
-                <TableHeaderCell>Codename</TableHeaderCell>
-                <TableHeaderCell>Date Created</TableHeaderCell>
-                <TableHeaderCell>Type</TableHeaderCell>
-              </tr>
-            </thead>
-            <tbody>
-              {devices.length > 0 ? (
-                devices.map(device => (
-                  <TableRow key={device.id} disabled={!device.enabled}>
-                    <TableCell>
-                      {device.codename}
-                      {!device.enabled && ' (disabled)'}
-                    </TableCell>
-                    <TableCell>{localizeDate(device.createdAt)}</TableCell>
-                    <TableCell>{capitalize(device.type)}</TableCell>
+class DevicesScreen extends React.Component {
+  newDeviceUi = UiStore.create();
+
+  render() {
+    const { getProjectWithId, projectId, signOut } = this.props;
+    const project = getProjectWithId(projectId);
+    const devices = project ? project.devices : [];
+    return (
+      <main>
+        <PageHeader>
+          <FlexBetween>
+            <PageTitle>Devices</PageTitle>
+            <Button onClick={signOut}>Sign out</Button>
+          </FlexBetween>
+        </PageHeader>
+        {project && (
+          <Width640>
+            <Table>
+              <thead>
+                <tr>
+                  <TableHeaderCell>Codename</TableHeaderCell>
+                  <TableHeaderCell>Date Created</TableHeaderCell>
+                  <TableHeaderCell>Type</TableHeaderCell>
+                  <TableHeaderCell>
+                    <IconButton
+                      onClick={this.newDeviceUi.open}
+                      title="Open new device form"
+                    >
+                      <AddIcon />
+                    </IconButton>
+                    {this.newDeviceUi.isOpen && (
+                      <NewDeviceScreen
+                        project={project}
+                        close={this.newDeviceUi.close}
+                      />
+                    )}
+                  </TableHeaderCell>
+                </tr>
+              </thead>
+              <tbody>
+                {devices.length > 0 ? (
+                  devices.map(device => (
+                    <TableRow key={device.id} disabled={!device.enabled}>
+                      <TableCell>
+                        {device.codename}
+                        {!device.enabled && ' (disabled)'}
+                      </TableCell>
+                      <TableCell>{localizeDate(device.createdAt)}</TableCell>
+                      <TableCell>{capitalize(device.type)}</TableCell>
+                      <TableCell />
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <EmptyState colSpan={4}>
+                      There are no devices in this project yet.
+                    </EmptyState>
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <EmptyState colSpan={3}>
-                    There are no devices in this project yet.
-                  </EmptyState>
-                </TableRow>
-              )}
-            </tbody>
-          </Table>
-        </Width640>
-      )}
-    </main>
-  );
+                )}
+              </tbody>
+            </Table>
+          </Width640>
+        )}
+      </main>
+    );
+  }
 }
 
 DevicesScreen.propTypes = {

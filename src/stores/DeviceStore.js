@@ -39,4 +39,8 @@ export default types
       const response = yield self.api.listDevices(project.id);
       response.items.forEach(self.setDevice);
     }),
+    createDevice: flow(function* createDevice(data) {
+      const response = yield self.api.createDevice(data);
+      self.setDevice(response);
+    }),
   }));

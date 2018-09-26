@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
+import AddSvg from '../images/add.svg';
 import BackSvg from '../images/back.svg';
+import CheckedRadioButtonSvg from '../images/checked-radio-button.svg';
 import CloseSvg from '../images/close.svg';
 import DropdownSvg from '../images/dropdown.svg';
 import MoreSvg from '../images/more.svg';
@@ -12,8 +14,17 @@ const baseStyles = css`
   width: var(--size-20);
 `;
 
+export const AddIcon = styled(AddSvg)`
+  ${baseStyles};
+`;
+
 export const BackIcon = styled(BackSvg)`
   ${baseStyles};
+`;
+
+export const CheckedRadioButtonIcon = styled(CheckedRadioButtonSvg)`
+  ${baseStyles};
+  fill: var(--color-green);
 `;
 
 export const CloseIcon = styled(CloseSvg)`

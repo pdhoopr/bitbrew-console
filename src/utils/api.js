@@ -154,3 +154,7 @@ export function listDevices(projectId) {
     },
   });
 }
+
+export function createDevice(data) {
+  return http.post(devicesPath, data);
+}
