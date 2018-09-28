@@ -8,6 +8,8 @@ export const DeviceImpl = types.model('DeviceImpl', {
   createdAt: types.refinement(types.string, matchesDate),
   enabled: types.boolean,
   type: types.string,
+  serialNumber: types.string,
+  imei: types.string,
   project: types.reference(ProjectImpl),
 });
 
@@ -23,6 +25,9 @@ export default types
       return [...self.deviceMap.values()].sort((a, b) =>
         b.createdAt.localeCompare(a.createdAt),
       );
+    },
+    getDeviceWithId(deviceId) {
+      return self.deviceMap.get(deviceId) || null;
     },
   }))
   .actions(self => ({

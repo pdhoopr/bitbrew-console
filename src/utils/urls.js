@@ -15,3 +15,15 @@ export function projectDetailsPath(projectId = ':projectId') {
 }
 
 export const devicesPath = '/devices';
+
+export function projectDevicesPath(projectId) {
+  return `${projectDetailsPath(projectId)}${devicesPath}`;
+}
+
+export function deviceDetailsPath(deviceId = ':deviceId') {
+  return `${devicesPath}/${deviceId}`;
+}
+
+export function projectDeviceDetailsPath(projectId, deviceId) {
+  return `${projectDetailsPath(projectId)}${deviceDetailsPath(deviceId)}`;
+}

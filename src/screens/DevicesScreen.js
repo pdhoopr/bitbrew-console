@@ -5,10 +5,12 @@ import { Button, IconButton } from '../components/Buttons';
 import { FlexBetween } from '../components/Flexboxes';
 import { PageHeader } from '../components/Headers';
 import { AddIcon } from '../components/Icons';
+import { Link } from '../components/Links';
 import { PageTitle } from '../components/Texts';
 import { Width640 } from '../components/Widths';
 import UiStore from '../stores/UiStore';
 import { capitalize, connect, localizeDate } from '../utils/tools';
+import { projectDeviceDetailsPath } from '../utils/urls';
 import NewDeviceScreen from './NewDeviceScreen';
 
 const Table = styled.table`
@@ -30,10 +32,6 @@ const TableCell = styled.td`
   padding: var(--size-16) var(--size-24);
   text-align: left;
   white-space: nowrap;
-
-  &:last-of-type {
-    width: 100%;
-  }
 `;
 
 const TableHeaderCell = styled(TableCell.withComponent('th'))`
@@ -95,8 +93,12 @@ class DevicesScreen extends React.Component {
                   devices.map(device => (
                     <TableRow key={device.id} disabled={!device.enabled}>
                       <TableCell>
-                        {device.codename}
-                        {!device.enabled && ' (disabled)'}
+                        <Link
+                          to={projectDeviceDetailsPath(project.id, device.id)}
+                        >
+                          {device.codename}
+                          {!device.enabled && ' (disabled)'}
+                        </Link>
                       </TableCell>
                       <TableCell>{localizeDate(device.createdAt)}</TableCell>
                       <TableCell>{capitalize(device.type)}</TableCell>

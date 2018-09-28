@@ -45,11 +45,11 @@ const Links = styled.ul`
 
 class Nav extends React.Component {
   componentDidMount() {
-    document.getElementById('root').classList.add('has-nav');
+    document.getElementById('root').dataset.nav = '';
   }
 
   componentWillUnmount() {
-    document.getElementById('root').classList.remove('has-nav');
+    delete document.getElementById('root').dataset.nav;
   }
 
   render() {

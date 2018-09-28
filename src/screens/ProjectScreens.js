@@ -1,17 +1,15 @@
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { NavLink } from '../components/Links';
 import Nav from '../components/Nav';
-import { devicesPath, projectDetailsPath } from '../utils/urls';
+import NavLink from '../components/NavLink';
+import { projectDevicesPath } from '../utils/urls';
 
 function ProjectScreens({ children, projectId }) {
   return (
     <React.Fragment>
       <Nav heading="Project Resources">
-        <NavLink to={`${projectDetailsPath(projectId)}${devicesPath}`}>
-          Devices
-        </NavLink>
+        <NavLink to={projectDevicesPath(projectId)}>Devices</NavLink>
       </Nav>
       {children}
     </React.Fragment>
@@ -19,7 +17,10 @@ function ProjectScreens({ children, projectId }) {
 }
 
 ProjectScreens.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
   projectId: PropTypes.string,
 };
 

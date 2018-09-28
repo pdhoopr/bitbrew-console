@@ -1,4 +1,4 @@
-import { Link as RouterLink } from '@reach/router';
+import { Link as ReachLink } from '@reach/router';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -7,7 +7,7 @@ import styled, { css } from 'styled-components';
 function LinkImpl({ to, ...props }) {
   const isInternal = /^\/(?!\/)/.test(to);
   return isInternal ? (
-    <RouterLink to={to} {...props} />
+    <ReachLink to={to} {...props} />
   ) : (
     // eslint-disable-next-line jsx-a11y/anchor-has-content
     <a href={to} rel="noopener noreferrer" target="_blank" {...props} />
@@ -69,20 +69,5 @@ export const IconLink = styled(ButtonLink).attrs({
 })`
   &::before {
     border-radius: 50%;
-  }
-`;
-
-export const NavLink = styled(ButtonLink)`
-  font-size: var(--size-16);
-  padding: var(--size-8) var(--size-24);
-  width: 100%;
-
-  &::before {
-    background-color: var(--color-white);
-    border-radius: 0;
-  }
-
-  &[aria-current='page'] {
-    color: var(--color-green);
   }
 `;

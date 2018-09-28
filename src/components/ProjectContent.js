@@ -5,7 +5,7 @@ import DeleteProjectScreen from '../screens/DeleteProjectScreen';
 import EditProjectScreen from '../screens/EditProjectScreen';
 import UiStore from '../stores/UiStore';
 import { localizeDate } from '../utils/tools';
-import { projectDetailsPath } from '../utils/urls';
+import { projectDevicesPath } from '../utils/urls';
 import { Button, IconButton } from './Buttons';
 import Dropdown from './Dropdown';
 import { FlexBetween } from './Flexboxes';
@@ -31,7 +31,7 @@ class ProjectContent extends React.Component {
           <FlexBetween>
             <div>
               <ContentTitle>
-                <Link to={projectDetailsPath(project.id)}>{project.name}</Link>
+                <Link to={projectDevicesPath(project.id)}>{project.name}</Link>
               </ContentTitle>
               <Text gray>{project.description}</Text>
             </div>
@@ -59,7 +59,12 @@ class ProjectContent extends React.Component {
             )}
           </FlexBetween>
         </ContentHeader>
-        <List items={[['Date Created', localizeDate(project.createdAt)]]} />
+        <List
+          items={[
+            ['ID', project.id],
+            ['Date Created', localizeDate(project.createdAt)],
+          ]}
+        />
       </Wrapper>
     );
   }

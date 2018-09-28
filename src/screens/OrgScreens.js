@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { NavLink } from '../components/Links';
 import Nav from '../components/Nav';
+import NavLink from '../components/NavLink';
 import { connect } from '../utils/tools';
 import { orgDetailsPath } from '../utils/urls';
 

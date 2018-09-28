@@ -41,7 +41,7 @@ injectGlobal`
     flex-direction: column;
     min-height: 100vh;
 
-    &.has-nav {
+    &[data-nav] {
       padding-left: var(--size-240);
     }
   }

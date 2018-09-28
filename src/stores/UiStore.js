@@ -2,6 +2,7 @@ import { types } from 'mobx-state-tree';
 
 export default types
   .model('UiStore', {
+    isLoading: types.optional(types.boolean, false),
     isOpen: types.optional(types.boolean, false),
   })
   .views(self => ({
@@ -10,6 +11,9 @@ export default types
     },
   }))
   .actions(self => ({
+    setLoading(isLoading) {
+      self.isLoading = isLoading;
+    },
     open() {
       self.isOpen = true;
     },

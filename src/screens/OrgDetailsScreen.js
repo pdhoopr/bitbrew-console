@@ -72,7 +72,12 @@ class OrgDetailsScreen extends React.Component {
                 )}
               </FlexBetween>
               <Content>
-                <List items={[['Date Created', localizeDate(org.createdAt)]]} />
+                <List
+                  items={[
+                    ['ID', org.id],
+                    ['Date Created', localizeDate(org.createdAt)],
+                  ]}
+                />
               </Content>
             </Section>
             <Section>
