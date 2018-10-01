@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import DeleteModal from '../components/DeleteModal';
+import Panel from '../components/Panel';
+import { Text } from '../components/Texts';
 import { connect } from '../utils/tools';
 
 class DeleteProjectScreen extends React.Component {
@@ -19,10 +21,14 @@ class DeleteProjectScreen extends React.Component {
         onDelete={this.tryToDeleteProject}
         close={close}
       >
-        Are you sure you want to delete the <strong>{project.name}</strong>{' '}
-        project from the <strong>{project.org.name}</strong> organization? All
-        devices and other data associated with this project will be permanently
-        deleted.
+        <Text>The following project will be permanently deleted:</Text>
+        <Panel
+          items={[
+            ['Project', project.name],
+            ['Organization', project.org.name],
+          ]}
+        />
+        <Text>Are you sure you want to continue?</Text>
       </DeleteModal>
     );
   }

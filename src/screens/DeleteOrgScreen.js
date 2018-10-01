@@ -2,6 +2,8 @@ import { navigate } from '@reach/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import DeleteModal from '../components/DeleteModal';
+import Panel from '../components/Panel';
+import { Text } from '../components/Texts';
 import { connect } from '../utils/tools';
 import { orgsPath } from '../utils/urls';
 
@@ -9,6 +11,7 @@ class DeleteOrgScreen extends React.Component {
   /* eslint-disable react/destructuring-assignment */
   tryToDeleteOrg = async () => {
     await this.props.deleteOrg(this.props.org);
+    this.props.close();
     navigate(orgsPath);
   };
 
@@ -21,9 +24,9 @@ class DeleteOrgScreen extends React.Component {
         onDelete={this.tryToDeleteOrg}
         close={close}
       >
-        Are you sure you want to delete the <strong>{org.name}</strong>{' '}
-        organization? All projects and other data associated with this
-        organization will be permanently deleted.{' '}
+        <Text>The following organization will be permanently deleted:</Text>
+        <Panel items={[['Organization', org.name]]} />
+        <Text>Are you sure you want to continue?</Text>
       </DeleteModal>
     );
   }

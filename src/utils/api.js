@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { refreshUrl } from '../../config/env';
 import {
+  deviceDetailsPath,
   devicesPath,
   orgDetailsPath,
   orgsPath,
@@ -157,4 +158,8 @@ export function listDevices(projectId) {
 
 export function createDevice(data) {
   return http.post(devicesPath, data);
+}
+
+export function deleteDevice(deviceId) {
+  return http.delete(deviceDetailsPath(deviceId));
 }

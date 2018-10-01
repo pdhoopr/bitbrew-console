@@ -65,6 +65,7 @@ export const Dialog = styled(ReactiveModal).attrs({
 
   &__Content {
     background: var(--color-white);
+    border-radius: var(--corner-radius);
   }
 
   &__Overlay {

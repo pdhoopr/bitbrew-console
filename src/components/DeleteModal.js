@@ -6,7 +6,7 @@ import { Button, RaisedButton } from './Buttons';
 import { FlexEnd } from './Flexboxes';
 import { ContentHeader } from './Headers';
 import { Dialog } from './Modals';
-import { ContentTitle, Text } from './Texts';
+import { ContentTitle } from './Texts';
 
 const Title = ContentTitle.withComponent('h2');
 
@@ -16,7 +16,7 @@ const padding = css`
   padding-right: var(--size-24);
 `;
 
-const Message = styled(Text)`
+const Message = styled.div`
   ${padding};
 `;
 
