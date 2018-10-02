@@ -30,8 +30,8 @@ class ProjectContent extends React.Component {
         <ContentHeader>
           <FlexBetween>
             <div>
-              <ContentTitle>
-                <Link to={projectDevicesPath(project.id)}>{project.name}</Link>
+              <ContentTitle gray={!project.hasName}>
+                <Link to={projectDevicesPath(project.id)}>{project.title}</Link>
               </ContentTitle>
               <Text gray>{project.description}</Text>
             </div>

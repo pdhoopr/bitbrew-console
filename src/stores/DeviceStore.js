@@ -2,16 +2,25 @@ import { flow, getEnv, types } from 'mobx-state-tree';
 import { matchesDate, matchesUuid } from '../utils/tools';
 import { ProjectImpl } from './ProjectStore';
 
-export const DeviceImpl = types.model('DeviceImpl', {
-  id: types.refinement(types.identifier, matchesUuid),
-  codename: types.string,
-  createdAt: types.refinement(types.string, matchesDate),
-  enabled: types.boolean,
-  type: types.string,
-  serialNumber: types.string,
-  imei: types.string,
-  project: types.reference(ProjectImpl),
-});
+export const DeviceImpl = types
+  .model('DeviceImpl', {
+    id: types.refinement(types.identifier, matchesUuid),
+    codename: types.string,
+    createdAt: types.refinement(types.string, matchesDate),
+    enabled: types.boolean,
+    type: types.string,
+    serialNumber: types.string,
+    imei: types.string,
+    project: types.reference(ProjectImpl),
+  })
+  .views(self => ({
+    get hasName() {
+      return !!self.codename.trim();
+    },
+    get title() {
+      return self.hasName ? self.codename : 'Untitled device';
+    },
+  }));
 
 export default types
   .model('DeviceStore', {

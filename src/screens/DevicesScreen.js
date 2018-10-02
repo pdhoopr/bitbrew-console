@@ -29,6 +29,7 @@ const TableRow = styled.tr`
 `;
 
 const TableCell = styled.td`
+  color: ${({ gray }) => (gray ? 'var(--color-dark-gray)' : 'inherit')};
   padding: var(--size-16) var(--size-24);
   text-align: left;
   white-space: nowrap;
@@ -91,11 +92,11 @@ class DevicesScreen extends React.Component {
                 {devices.length > 0 ? (
                   devices.map(device => (
                     <TableRow key={device.id} disabled={!device.enabled}>
-                      <TableCell>
+                      <TableCell gray={!device.hasName}>
                         <Link
                           to={projectDeviceDetailsPath(project.id, device.id)}
                         >
-                          {device.codename}
+                          {device.title}
                           {!device.enabled && ' (disabled)'}
                         </Link>
                       </TableCell>

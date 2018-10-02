@@ -31,7 +31,8 @@ class DeviceDetailsScreen extends React.Component {
   render() {
     const { deviceId, getDeviceWithId, projectId } = this.props;
     const device = getDeviceWithId(deviceId);
-    const title = device ? device.codename : '';
+    const hasName = device ? device.hasName : false;
+    const title = device ? device.title : '';
     return (
       <main>
         <PageHeader>
@@ -42,7 +43,7 @@ class DeviceDetailsScreen extends React.Component {
             >
               <BackIcon />
             </IconLink>
-            <Title>{title}</Title>
+            <Title gray={!hasName}>{title}</Title>
           </AppBar>
         </PageHeader>
         {device && (
