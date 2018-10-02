@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Form = styled.form.attrs({
+  autocomplete: 'off',
   noValidate: true,
 })`
   background-color: var(--color-white);
@@ -16,6 +17,7 @@ export const Label = styled.label`
 `;
 
 export const Input = styled.input.attrs({
+  autocomplete: 'off',
   type: 'text',
 })`
   border: 1px solid var(--color-medium-gray);
