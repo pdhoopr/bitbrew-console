@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { Button, RaisedButton } from '../components/Buttons';
+import AppBar from '../components/AppBar';
+import { RaisedButton } from '../components/Buttons';
 import { FlexBetween } from '../components/Flexboxes';
 import { PageHeader } from '../components/Headers';
 import {
@@ -28,13 +29,13 @@ class DeviceDetailsScreen extends React.Component {
   deleteDeviceUi = UiStore.create();
 
   render() {
-    const { deviceId, getDeviceWithId, projectId, signOut } = this.props;
+    const { deviceId, getDeviceWithId, projectId } = this.props;
     const device = getDeviceWithId(deviceId);
     const title = device ? device.codename : '';
     return (
       <main>
         <PageHeader>
-          <FlexBetween>
+          <AppBar>
             <IconLink
               to={projectDevicesPath(projectId)}
               title="View all devices for this project"
@@ -42,8 +43,7 @@ class DeviceDetailsScreen extends React.Component {
               <BackIcon />
             </IconLink>
             <Title>{title}</Title>
-            <Button onClick={signOut}>Sign out</Button>
-          </FlexBetween>
+          </AppBar>
         </PageHeader>
         {device && (
           <Width640>
@@ -114,13 +114,11 @@ DeviceDetailsScreen.propTypes = {
   deviceId: PropTypes.string.isRequired,
   getDeviceWithId: PropTypes.func.isRequired,
   projectId: PropTypes.string.isRequired,
-  signOut: PropTypes.func.isRequired,
 };
 
 export default connect(
   DeviceDetailsScreen,
-  ({ authStore, deviceStore }) => ({
+  ({ deviceStore }) => ({
     getDeviceWithId: deviceStore.getDeviceWithId,
-    signOut: authStore.signOut,
   }),
 );

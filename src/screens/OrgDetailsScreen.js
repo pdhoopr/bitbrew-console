@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { Button, RaisedButton } from '../components/Buttons';
+import AppBar from '../components/AppBar';
+import { RaisedButton } from '../components/Buttons';
 import { FlexBetween } from '../components/Flexboxes';
 import { PageHeader } from '../components/Headers';
 import List from '../components/List';
@@ -41,17 +42,16 @@ class OrgDetailsScreen extends React.Component {
   newProjectUi = UiStore.create();
 
   render() {
-    const { getOrgWithId, orgId, signOut } = this.props;
+    const { getOrgWithId, orgId } = this.props;
     const org = getOrgWithId(orgId);
     const title = org ? org.name : '';
     const projects = org ? org.getProjectsWithName(this.search.term) : [];
     return (
       <main>
         <PageHeader>
-          <FlexBetween>
+          <AppBar>
             <PageTitle>{title}</PageTitle>
-            <Button onClick={signOut}>Sign out</Button>
-          </FlexBetween>
+          </AppBar>
         </PageHeader>
         {org && (
           <Width640>
@@ -113,13 +113,11 @@ class OrgDetailsScreen extends React.Component {
 OrgDetailsScreen.propTypes = {
   getOrgWithId: PropTypes.func.isRequired,
   orgId: PropTypes.string.isRequired,
-  signOut: PropTypes.func.isRequired,
 };
 
 export default connect(
   OrgDetailsScreen,
-  ({ authStore, orgStore }) => ({
+  ({ orgStore }) => ({
     getOrgWithId: orgStore.getOrgWithId,
-    signOut: authStore.signOut,
   }),
 );

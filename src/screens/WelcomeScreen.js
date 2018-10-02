@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import AppBar from '../components/AppBar';
 import { Button, RaisedButton } from '../components/Buttons';
 import Dropdown from '../components/Dropdown';
 import { FlexBetween, FlexCenter } from '../components/Flexboxes';
@@ -52,15 +53,14 @@ class WelcomeScreen extends React.Component {
   newProjectUi = UiStore.create();
 
   render() {
-    const { isLoading, orgs, signOut } = this.props;
+    const { isLoading, orgs } = this.props;
     return (
       <main>
         <WelcomeHeader>
           <Width640>
-            <FlexBetween>
+            <AppBar>
               <Logo />
-              <Button onClick={signOut}>Sign out</Button>
-            </FlexBetween>
+            </AppBar>
             <Title>Welcome!</Title>
             <Heading>
               Use the BitBrew Console to manage your data pipeline.
@@ -135,14 +135,12 @@ WelcomeScreen.propTypes = {
       name: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  signOut: PropTypes.func.isRequired,
 };
 
 export default connect(
   WelcomeScreen,
-  ({ authStore, orgStore }) => ({
+  ({ orgStore }) => ({
     isLoading: orgStore.isLoading,
     orgs: orgStore.orgs,
-    signOut: authStore.signOut,
   }),
 );

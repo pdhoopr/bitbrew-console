@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { Button, IconButton } from '../components/Buttons';
-import { FlexBetween } from '../components/Flexboxes';
+import AppBar from '../components/AppBar';
+import { IconButton } from '../components/Buttons';
 import { PageHeader } from '../components/Headers';
 import { AddIcon } from '../components/Icons';
 import { Link } from '../components/Links';
@@ -53,16 +53,15 @@ class DevicesScreen extends React.Component {
   newDeviceUi = UiStore.create();
 
   render() {
-    const { getProjectWithId, projectId, signOut } = this.props;
+    const { getProjectWithId, projectId } = this.props;
     const project = getProjectWithId(projectId);
     const devices = project ? project.devices : [];
     return (
       <main>
         <PageHeader>
-          <FlexBetween>
+          <AppBar>
             <PageTitle>Devices</PageTitle>
-            <Button onClick={signOut}>Sign out</Button>
-          </FlexBetween>
+          </AppBar>
         </PageHeader>
         {project && (
           <Width640>
@@ -124,13 +123,11 @@ class DevicesScreen extends React.Component {
 DevicesScreen.propTypes = {
   getProjectWithId: PropTypes.func.isRequired,
   projectId: PropTypes.string.isRequired,
-  signOut: PropTypes.func.isRequired,
 };
 
 export default connect(
   DevicesScreen,
-  ({ authStore, projectStore }) => ({
+  ({ projectStore }) => ({
     getProjectWithId: projectStore.getProjectWithId,
-    signOut: authStore.signOut,
   }),
 );

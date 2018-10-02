@@ -23,6 +23,7 @@ const Menu = styled.div`
   background-color: var(--color-white);
   border-radius: var(--corner-radius);
   box-shadow: var(--elevation-medium);
+  color: var(--color-black);
   margin-top: var(--size-2);
   padding-bottom: var(--size-8);
   padding-top: var(--size-8);
@@ -149,9 +150,9 @@ class Dropdown extends React.Component {
 
   closeOnOuterClick = event => {
     if (
+      event.target !== this.menuRef.current &&
       event.target !== this.buttonRef.current &&
-      !this.buttonRef.current.contains(event.target) &&
-      event.target !== this.menuRef.current
+      (this.buttonRef.current && !this.buttonRef.current.contains(event.target))
     ) {
       this.closeMenu();
     }

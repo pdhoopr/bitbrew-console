@@ -1,9 +1,14 @@
 import { flow, getEnv, types } from 'mobx-state-tree';
 import { loginUrl, logoutUrl, serviceUrl } from '../../config/env';
 
+export const UserImpl = types.model('UserImpl', {
+  email: types.string,
+});
+
 export default types
   .model('AuthStore', {
     token: types.maybeNull(types.string),
+    user: types.maybeNull(UserImpl),
   })
   .views(self => ({
     get api() {
@@ -23,11 +28,13 @@ export default types
       self.token = null;
     },
     signIn: flow(function* signIn(token) {
-      yield self.api.viewSelf(token);
+      const response = yield self.api.viewSelf(token);
       self.setToken(token);
+      self.user = response;
     }),
     signOut({ redirectUrl = window.location.origin } = {}) {
       self.removeToken();
+      self.user = null;
       window.location.assign(
         `${logoutUrl}?redirect_uri=${loginUrl}?redirect_uri=${redirectUrl}`,
       );
