@@ -18,12 +18,6 @@ export const ProjectImpl = types
     get devices() {
       return self.deviceStore.devices.filter(device => device.project === self);
     },
-    get hasName() {
-      return !!self.name.trim();
-    },
-    get title() {
-      return self.hasName ? self.name : 'Untitled project';
-    },
   }))
   .actions(self => ({
     removeReferences() {

@@ -35,7 +35,10 @@ class RootScreen extends React.Component {
   async componentDidMount() {
     await this.props.createToken();
     await this.props.listOrgs();
-    await Promise.all(this.props.orgs.map(this.props.listProjects));
+    await Promise.all([
+      ...this.props.orgs.map(org => org.listMembers()),
+      ...this.props.orgs.map(this.props.listProjects),
+    ]);
     await Promise.all(this.props.projects.map(this.props.listDevices));
     this.rootUi.setLoading(false);
   }

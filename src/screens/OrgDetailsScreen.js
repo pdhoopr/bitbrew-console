@@ -9,11 +9,12 @@ import List from '../components/List';
 import ProjectContent from '../components/ProjectContent';
 import Search from '../components/Search';
 import { Content, Section } from '../components/Sections';
+import Table, { Cell, Row } from '../components/Table';
 import { PageTitle, SectionTitle, Text } from '../components/Texts';
 import { Width640 } from '../components/Widths';
 import SearchStore from '../stores/SearchStore';
 import UiStore from '../stores/UiStore';
-import { connect, localizeDate, pluralize } from '../utils/tools';
+import { capitalize, connect, localizeDate, pluralize } from '../utils/tools';
 import DeleteOrgScreen from './DeleteOrgScreen';
 import EditOrgScreen from './EditOrgScreen';
 import NewProjectScreen from './NewProjectScreen';
@@ -28,7 +29,7 @@ const NewProjectButton = styled(RaisedButton)`
   margin-left: var(--size-16);
 `;
 
-const ProjectsHeader = styled(FlexBetween)`
+const SectionHeader = styled(FlexBetween)`
   margin-bottom: var(--size-16);
 `;
 
@@ -44,13 +45,12 @@ class OrgDetailsScreen extends React.Component {
   render() {
     const { getOrgWithId, orgId } = this.props;
     const org = getOrgWithId(orgId);
-    const title = org ? org.name : '';
     const projects = org ? org.getProjectsWithName(this.search.term) : [];
     return (
       <main>
         <PageHeader>
           <AppBar>
-            <PageTitle>{title}</PageTitle>
+            <PageTitle>{org ? org.name : ''}</PageTitle>
           </AppBar>
         </PageHeader>
         {org && (
@@ -81,10 +81,24 @@ class OrgDetailsScreen extends React.Component {
               </Content>
             </Section>
             <Section>
-              <ProjectsHeader>
+              <SectionHeader>
+                <SectionTitle>Members</SectionTitle>
+              </SectionHeader>
+              <Table columns={['Name', 'Email', 'Role']}>
+                {org.members.map(member => (
+                  <Row key={member.id}>
+                    <Cell>{member.name}</Cell>
+                    <Cell>{member.email}</Cell>
+                    <Cell>{capitalize(member.role)}</Cell>
+                  </Row>
+                ))}
+              </Table>
+            </Section>
+            <Section>
+              <SectionHeader>
                 <SectionTitle>Projects</SectionTitle>
                 <Text gray>{pluralize('project', projects.length)}</Text>
-              </ProjectsHeader>
+              </SectionHeader>
               <FlexBetween>
                 <Search
                   description="The list of projects below will change to show only those with names matching the search term."

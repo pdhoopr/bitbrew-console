@@ -25,13 +25,16 @@ class ProjectContent extends React.Component {
 
   render() {
     const { project } = this.props;
+    const name = project.name.trim();
     return (
       <Wrapper>
         <ContentHeader>
           <FlexBetween>
             <div>
-              <ContentTitle gray={!project.hasName}>
-                <Link to={projectDevicesPath(project.id)}>{project.title}</Link>
+              <ContentTitle gray={!name}>
+                <Link to={projectDevicesPath(project.id)}>
+                  {name || 'Untitled project'}
+                </Link>
               </ContentTitle>
               <Text gray>{project.description}</Text>
             </div>

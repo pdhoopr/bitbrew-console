@@ -126,6 +126,12 @@ export function deleteOrg(orgId) {
   return http.delete(orgDetailsPath(orgId));
 }
 
+export function listMembers(orgId) {
+  return http.get(`${orgDetailsPath(orgId)}/members`, {
+    params: { pageSize: 500 },
+  });
+}
+
 export function listProjects(orgId) {
   return http.get(projectsPath, {
     params: {
