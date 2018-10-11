@@ -57,10 +57,12 @@ class NewDeviceScreen extends React.Component {
     })
     .create();
 
-  tryToCreateDevice = async event => {
+  tryToCreateDevice = event => {
     event.preventDefault();
-    await this.props.createDevice(this.form.serialized);
-    this.props.close();
+    this.props.errorBoundary(async () => {
+      await this.props.createDevice(this.form.serialized);
+      this.props.close();
+    });
   };
 
   /* eslint-enable react/destructuring-assignment */
@@ -118,6 +120,7 @@ class NewDeviceScreen extends React.Component {
 NewDeviceScreen.propTypes = {
   close: PropTypes.func.isRequired,
   createDevice: PropTypes.func.isRequired,
+  errorBoundary: PropTypes.func.isRequired,
   project: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }).isRequired,
@@ -125,7 +128,8 @@ NewDeviceScreen.propTypes = {
 
 export default connect(
   NewDeviceScreen,
-  ({ deviceStore }) => ({
+  ({ deviceStore, uiStore }) => ({
     createDevice: deviceStore.createDevice,
+    errorBoundary: uiStore.errorBoundary,
   }),
 );

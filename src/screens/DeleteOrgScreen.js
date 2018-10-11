@@ -9,10 +9,12 @@ import { orgsPath } from '../utils/urls';
 
 class DeleteOrgScreen extends React.Component {
   /* eslint-disable react/destructuring-assignment */
-  tryToDeleteOrg = async () => {
-    await this.props.deleteOrg(this.props.org);
-    this.props.close();
-    navigate(orgsPath);
+  tryToDeleteOrg = () => {
+    this.props.errorBoundary(async () => {
+      await this.props.deleteOrg(this.props.org);
+      this.props.close();
+      navigate(orgsPath);
+    });
   };
 
   /* eslint-enable react/destructuring-assignment */
@@ -35,6 +37,7 @@ class DeleteOrgScreen extends React.Component {
 DeleteOrgScreen.propTypes = {
   close: PropTypes.func.isRequired,
   deleteOrg: PropTypes.func.isRequired,
+  errorBoundary: PropTypes.func.isRequired,
   org: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }).isRequired,
@@ -42,7 +45,8 @@ DeleteOrgScreen.propTypes = {
 
 export default connect(
   DeleteOrgScreen,
-  ({ orgStore }) => ({
+  ({ orgStore, uiStore }) => ({
     deleteOrg: orgStore.deleteOrg,
+    errorBoundary: uiStore.errorBoundary,
   }),
 );

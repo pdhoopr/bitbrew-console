@@ -6,6 +6,7 @@ import CloseSvg from '../images/close.svg';
 import DisabledSyncSvg from '../images/disabled-sync.svg';
 import DropdownSvg from '../images/dropdown.svg';
 import EnabledSyncSvg from '../images/enabled-sync.svg';
+import ErrorSvg from '../images/error.svg';
 import MoreSvg from '../images/more.svg';
 import SearchSvg from '../images/search.svg';
 
@@ -44,6 +45,11 @@ export const DropdownIcon = styled(DropdownSvg)`
 export const EnabledSyncIcon = styled(EnabledSyncSvg)`
   ${baseStyles};
   fill: var(--color-green);
+`;
+
+export const ErrorIcon = styled(ErrorSvg)`
+  ${baseStyles};
+  fill: var(--color-red);
 `;
 
 export const MoreIcon = styled(MoreSvg)`

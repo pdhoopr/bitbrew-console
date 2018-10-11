@@ -7,9 +7,11 @@ import { connect } from '../utils/tools';
 
 class DeleteProjectScreen extends React.Component {
   /* eslint-disable react/destructuring-assignment */
-  tryToDeleteProject = async () => {
-    await this.props.deleteProject(this.props.project);
-    this.props.close();
+  tryToDeleteProject = () => {
+    this.props.errorBoundary(async () => {
+      await this.props.deleteProject(this.props.project);
+      this.props.close();
+    });
   };
 
   /* eslint-enable react/destructuring-assignment */
@@ -37,6 +39,7 @@ class DeleteProjectScreen extends React.Component {
 DeleteProjectScreen.propTypes = {
   close: PropTypes.func.isRequired,
   deleteProject: PropTypes.func.isRequired,
+  errorBoundary: PropTypes.func.isRequired,
   project: PropTypes.shape({
     name: PropTypes.string.isRequired,
     org: PropTypes.shape({
@@ -47,7 +50,8 @@ DeleteProjectScreen.propTypes = {
 
 export default connect(
   DeleteProjectScreen,
-  ({ projectStore }) => ({
+  ({ projectStore, uiStore }) => ({
     deleteProject: projectStore.deleteProject,
+    errorBoundary: uiStore.errorBoundary,
   }),
 );

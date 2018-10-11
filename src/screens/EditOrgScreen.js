@@ -14,10 +14,12 @@ class EditOrgScreen extends React.Component {
     })
     .create();
 
-  tryToUpdateOrg = async event => {
+  tryToUpdateOrg = event => {
     event.preventDefault();
-    await this.props.updateOrg(this.props.org, this.form.serialized);
-    this.props.close();
+    this.props.errorBoundary(async () => {
+      await this.props.updateOrg(this.props.org, this.form.serialized);
+      this.props.close();
+    });
   };
 
   /* eslint-enable react/destructuring-assignment */
@@ -45,6 +47,7 @@ class EditOrgScreen extends React.Component {
 
 EditOrgScreen.propTypes = {
   close: PropTypes.func.isRequired,
+  errorBoundary: PropTypes.func.isRequired,
   org: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }).isRequired,
@@ -53,7 +56,8 @@ EditOrgScreen.propTypes = {
 
 export default connect(
   EditOrgScreen,
-  ({ orgStore }) => ({
+  ({ orgStore, uiStore }) => ({
+    errorBoundary: uiStore.errorBoundary,
     updateOrg: orgStore.updateOrg,
   }),
 );

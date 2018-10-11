@@ -2,6 +2,7 @@ import { Redirect, Router as ReachRouter } from '@reach/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import Banner from '../components/Banner';
 import Footer from '../components/Footer';
 import UiStore from '../stores/UiStore';
 import { connect } from '../utils/tools';
@@ -32,15 +33,17 @@ class RootScreen extends React.Component {
     isLoading: true,
   });
 
-  async componentDidMount() {
-    await this.props.createToken();
-    await this.props.listOrgs();
-    await Promise.all([
-      ...this.props.orgs.map(org => org.listMembers()),
-      ...this.props.orgs.map(this.props.listProjects),
-    ]);
-    await Promise.all(this.props.projects.map(this.props.listDevices));
-    this.rootUi.setLoading(false);
+  componentDidMount() {
+    this.props.errorBoundary(async () => {
+      await this.props.createToken();
+      await this.props.listOrgs();
+      await Promise.all([
+        ...this.props.orgs.map(org => org.listMembers()),
+        ...this.props.orgs.map(this.props.listProjects),
+      ]);
+      await Promise.all(this.props.projects.map(this.props.listDevices));
+      this.rootUi.setLoading(false);
+    });
   }
 
   /* eslint-enable react/destructuring-assignment */
@@ -48,34 +51,38 @@ class RootScreen extends React.Component {
     const { token } = this.props;
     const isVisible = !this.rootUi.isLoading && token;
     return (
-      isVisible && (
-        <React.Fragment>
-          <Router>
-            <WelcomeScreen path={rootPath} />
-            <Redirect from={orgsPath} to={rootPath} noThrow />
-            <OrgScreens path={orgDetailsPath()}>
-              <OrgDetailsScreen path={rootPath} />
-            </OrgScreens>
-            <Redirect from={projectsPath} to={rootPath} noThrow />
-            <Redirect
-              from={projectDetailsPath()}
-              to={projectDevicesPath()}
-              noThrow
-            />
-            <ProjectScreens path={projectDetailsPath()}>
-              <DevicesScreen path={devicesPath} />
-              <DeviceDetailsScreen path={deviceDetailsPath()} />
-            </ProjectScreens>
-          </Router>
-          <Footer />
-        </React.Fragment>
-      )
+      <React.Fragment>
+        {isVisible && (
+          <React.Fragment>
+            <Router>
+              <WelcomeScreen path={rootPath} />
+              <Redirect from={orgsPath} to={rootPath} noThrow />
+              <OrgScreens path={orgDetailsPath()}>
+                <OrgDetailsScreen path={rootPath} />
+              </OrgScreens>
+              <Redirect from={projectsPath} to={rootPath} noThrow />
+              <Redirect
+                from={projectDetailsPath()}
+                to={projectDevicesPath()}
+                noThrow
+              />
+              <ProjectScreens path={projectDetailsPath()}>
+                <DevicesScreen path={devicesPath} />
+                <DeviceDetailsScreen path={deviceDetailsPath()} />
+              </ProjectScreens>
+            </Router>
+            <Footer />
+          </React.Fragment>
+        )}
+        <Banner />
+      </React.Fragment>
     );
   }
 }
 
 RootScreen.propTypes = {
   createToken: PropTypes.func.isRequired,
+  errorBoundary: PropTypes.func.isRequired,
   listDevices: PropTypes.func.isRequired,
   listOrgs: PropTypes.func.isRequired,
   listProjects: PropTypes.func.isRequired,
@@ -90,8 +97,9 @@ RootScreen.defaultProps = {
 
 export default connect(
   RootScreen,
-  ({ authStore, deviceStore, orgStore, projectStore }) => ({
+  ({ authStore, deviceStore, orgStore, projectStore, uiStore }) => ({
     createToken: authStore.createToken,
+    errorBoundary: uiStore.errorBoundary,
     listDevices: deviceStore.listDevices,
     listOrgs: orgStore.listOrgs,
     listProjects: projectStore.listProjects,

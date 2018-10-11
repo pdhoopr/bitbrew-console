@@ -18,10 +18,12 @@ class NewProjectScreen extends React.Component {
     })
     .create();
 
-  tryToCreateProject = async event => {
+  tryToCreateProject = event => {
     event.preventDefault();
-    await this.props.createProject(this.form.serialized);
-    this.props.close();
+    this.props.errorBoundary(async () => {
+      await this.props.createProject(this.form.serialized);
+      this.props.close();
+    });
   };
 
   /* eslint-enable react/destructuring-assignment */
@@ -76,6 +78,7 @@ class NewProjectScreen extends React.Component {
 NewProjectScreen.propTypes = {
   close: PropTypes.func.isRequired,
   createProject: PropTypes.func.isRequired,
+  errorBoundary: PropTypes.func.isRequired,
   org: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -94,8 +97,9 @@ NewProjectScreen.defaultProps = {
 
 export default connect(
   NewProjectScreen,
-  ({ orgStore, projectStore }) => ({
+  ({ orgStore, projectStore, uiStore }) => ({
     createProject: projectStore.createProject,
+    errorBoundary: uiStore.errorBoundary,
     orgsAtoZ: orgStore.orgsAtoZ,
   }),
 );

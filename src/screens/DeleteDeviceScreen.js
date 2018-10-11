@@ -9,11 +9,13 @@ import { projectDevicesPath } from '../utils/urls';
 
 class DeleteDeviceScreen extends React.Component {
   /* eslint-disable react/destructuring-assignment */
-  tryToDeleteDevice = async () => {
+  tryToDeleteDevice = () => {
     const projectId = this.props.device.project.id;
-    await this.props.deleteDevice(this.props.device);
-    this.props.close();
-    navigate(projectDevicesPath(projectId));
+    this.props.errorBoundary(async () => {
+      await this.props.deleteDevice(this.props.device);
+      this.props.close();
+      navigate(projectDevicesPath(projectId));
+    });
   };
 
   /* eslint-enable react/destructuring-assignment */
@@ -55,11 +57,13 @@ DeleteDeviceScreen.propTypes = {
       }).isRequired,
     }).isRequired,
   }).isRequired,
+  errorBoundary: PropTypes.func.isRequired,
 };
 
 export default connect(
   DeleteDeviceScreen,
-  ({ deviceStore }) => ({
+  ({ deviceStore, uiStore }) => ({
     deleteDevice: deviceStore.deleteDevice,
+    errorBoundary: uiStore.errorBoundary,
   }),
 );

@@ -14,11 +14,13 @@ class NewOrgScreen extends React.Component {
     })
     .create();
 
-  tryToCreateOrg = async event => {
+  tryToCreateOrg = event => {
     event.preventDefault();
-    const org = await this.props.createOrg(this.form.serialized);
-    this.props.close();
-    this.props.refreshTokenUntilHasOrg(org);
+    this.props.errorBoundary(async () => {
+      const org = await this.props.createOrg(this.form.serialized);
+      this.props.close();
+      this.props.refreshTokenUntilHasOrg(org);
+    });
   };
 
   /* eslint-enable react/destructuring-assignment */
@@ -47,13 +49,15 @@ class NewOrgScreen extends React.Component {
 NewOrgScreen.propTypes = {
   close: PropTypes.func.isRequired,
   createOrg: PropTypes.func.isRequired,
+  errorBoundary: PropTypes.func.isRequired,
   refreshTokenUntilHasOrg: PropTypes.func.isRequired,
 };
 
 export default connect(
   NewOrgScreen,
-  ({ orgStore }) => ({
+  ({ orgStore, uiStore }) => ({
     createOrg: orgStore.createOrg,
+    errorBoundary: uiStore.errorBoundary,
     refreshTokenUntilHasOrg: orgStore.refreshTokenUntilHasOrg,
   }),
 );

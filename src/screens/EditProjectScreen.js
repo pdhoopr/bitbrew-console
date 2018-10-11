@@ -17,10 +17,12 @@ class EditProjectScreen extends React.Component {
     })
     .create();
 
-  tryToUpdateProject = async event => {
+  tryToUpdateProject = event => {
     event.preventDefault();
-    await this.props.updateProject(this.props.project, this.form.serialized);
-    this.props.close();
+    this.props.errorBoundary(async () => {
+      await this.props.updateProject(this.props.project, this.form.serialized);
+      this.props.close();
+    });
   };
 
   /* eslint-enable react/destructuring-assignment */
@@ -60,6 +62,7 @@ class EditProjectScreen extends React.Component {
 
 EditProjectScreen.propTypes = {
   close: PropTypes.func.isRequired,
+  errorBoundary: PropTypes.func.isRequired,
   project: PropTypes.shape({
     description: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -74,7 +77,8 @@ EditProjectScreen.propTypes = {
 
 export default connect(
   EditProjectScreen,
-  ({ projectStore }) => ({
+  ({ projectStore, uiStore }) => ({
+    errorBoundary: uiStore.errorBoundary,
     updateProject: projectStore.updateProject,
   }),
 );
