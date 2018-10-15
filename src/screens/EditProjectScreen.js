@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Input, Label, ReadOnlyInput } from '../components/Forms';
 import ModalForm from '../components/ModalForm';
+import ProjectFields from '../components/ProjectFields';
 import FormStore from '../stores/FormStore';
 import { connect } from '../utils/tools';
 
@@ -35,26 +35,7 @@ class EditProjectScreen extends React.Component {
         onSubmit={this.tryToUpdateProject}
         close={close}
       >
-        <Label htmlFor="orgId">
-          Organization
-          <ReadOnlyInput id="orgId" value={project.org.name} />
-        </Label>
-        <Label htmlFor="name">
-          Name
-          <Input
-            id="name"
-            value={this.form.name}
-            onChange={this.form.setValue}
-          />
-        </Label>
-        <Label htmlFor="description">
-          Description
-          <Input
-            id="description"
-            value={this.form.description}
-            onChange={this.form.setValue}
-          />
-        </Label>
+        <ProjectFields form={this.form} org={project.org} />
       </ModalForm>
     );
   }
@@ -68,7 +49,6 @@ EditProjectScreen.propTypes = {
     name: PropTypes.string.isRequired,
     org: PropTypes.shape({
       id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
     }).isRequired,
     usesSimulatedDevices: PropTypes.bool.isRequired,
   }).isRequired,

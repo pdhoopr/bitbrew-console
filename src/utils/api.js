@@ -128,7 +128,9 @@ export function deleteOrg(orgId) {
 
 export function listMembers(orgId) {
   return http.get(`${orgDetailsPath(orgId)}/members`, {
-    params: { pageSize: 500 },
+    params: {
+      pageSize: 500,
+    },
   });
 }
 
@@ -164,6 +166,10 @@ export function listDevices(projectId) {
 
 export function createDevice(data) {
   return http.post(devicesPath, data);
+}
+
+export function updateDevice(deviceId, data) {
+  return http.put(deviceDetailsPath(deviceId), data);
 }
 
 export function deleteDevice(deviceId) {

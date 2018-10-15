@@ -48,6 +48,10 @@ export default types
       const response = yield self.api.createDevice(data);
       self.setDevice(response);
     }),
+    updateDevice: flow(function* updateDevice(device, data) {
+      const response = yield self.api.updateDevice(device.id, data);
+      self.setDevice(response);
+    }),
     deleteDevice: flow(function* deleteDevice(device) {
       yield self.api.deleteDevice(device.id);
       self.removeDevice(device);

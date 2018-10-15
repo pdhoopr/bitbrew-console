@@ -47,13 +47,13 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "babel-plugin-styled-components": "^1.8.0",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.18",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.19",
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
     "chalk": "^2.4.1",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.3",
     "cross-env": "^5.2.0",
-    "eslint": "^5.6.1",
+    "eslint": "^5.7.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-compat": "^2.6.2",
@@ -62,7 +62,7 @@
     "eslint-plugin-react": "^7.11.1",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^3.2.0",
-    "husky": "^1.1.1",
+    "husky": "^1.1.2",
     "ip": "^1.1.5",
     "lint-staged": "^7.3.0",
     "npm-run-all": "^4.1.3",
@@ -174,12 +174,14 @@
         "error",
         {
           "labelComponents": [
-            "Label"
+            "Label",
+            "ControlLabel"
           ],
           "labelAttributes": [],
           "controlComponents": [
             "Input",
             "ReadOnlyInput",
+            "ControlInput",
             "Select",
             "Field"
           ],

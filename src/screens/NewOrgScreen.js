@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Input, Label } from '../components/Forms';
 import ModalForm from '../components/ModalForm';
+import OrgFields from '../components/OrgFields';
 import FormStore from '../stores/FormStore';
 import { connect } from '../utils/tools';
 
@@ -33,14 +33,7 @@ class NewOrgScreen extends React.Component {
         onSubmit={this.tryToCreateOrg}
         close={close}
       >
-        <Label htmlFor="name">
-          Name
-          <Input
-            id="name"
-            value={this.form.name}
-            onChange={this.form.setValue}
-          />
-        </Label>
+        <OrgFields form={this.form} />
       </ModalForm>
     );
   }

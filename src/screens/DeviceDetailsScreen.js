@@ -19,13 +19,22 @@ import UiStore from '../stores/UiStore';
 import { capitalize, connect, localizeDate } from '../utils/tools';
 import { projectDevicesPath } from '../utils/urls';
 import DeleteDeviceScreen from './DeleteDeviceScreen';
+import EditDeviceScreen from './EditDeviceScreen';
 
 const Title = styled(PageTitle)`
   margin-left: var(--size-16);
   margin-right: auto;
 `;
 
+const EditDeviceButton = styled(RaisedButton)`
+  background-color: var(--color-black);
+  margin-left: auto;
+  margin-right: var(--size-16);
+`;
+
 class DeviceDetailsScreen extends React.Component {
+  editDeviceUi = UiStore.create();
+
   deleteDeviceUi = UiStore.create();
 
   render() {
@@ -49,6 +58,15 @@ class DeviceDetailsScreen extends React.Component {
             <Section>
               <FlexBetween>
                 <SectionTitle>Overview</SectionTitle>
+                <EditDeviceButton onClick={this.editDeviceUi.open}>
+                  Edit
+                </EditDeviceButton>
+                {this.editDeviceUi.isOpen && (
+                  <EditDeviceScreen
+                    device={device}
+                    close={this.editDeviceUi.close}
+                  />
+                )}
                 <RaisedButton onClick={this.deleteDeviceUi.open} red>
                   Delete
                 </RaisedButton>

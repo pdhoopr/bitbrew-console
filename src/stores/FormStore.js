@@ -9,7 +9,7 @@ export default types
   }))
   .actions(self => ({
     setValue(event) {
-      const { id, value } = event.currentTarget;
-      self[id] = value;
+      const { checked, id, type, value } = event.currentTarget;
+      self[id] = type === 'checkbox' ? checked : value;
     },
   }));
