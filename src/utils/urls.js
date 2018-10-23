@@ -1,11 +1,17 @@
 export const rootPath = '/';
 
-export const selfDetailsPath = '/user';
+export const userDetailsPath = '/user';
 
 export const orgsPath = '/orgs';
 
 export function orgDetailsPath(orgId = ':orgId') {
   return `${orgsPath}/${orgId}`;
+}
+
+export const membersPath = '/members';
+
+export function orgMembersPath(orgId) {
+  return `${orgDetailsPath(orgId)}${membersPath}`;
 }
 
 export const projectsPath = '/projects';
