@@ -1,7 +1,7 @@
-import { observer } from 'mobx-react';
-import React from 'react';
-import styled from 'styled-components';
-import { ButtonLink } from './Links';
+import PropTypes from "prop-types";
+import React from "react";
+import styled from "styled-components";
+import { ButtonLink } from "./Links";
 
 const Wrapper = styled(ButtonLink)`
   font-size: var(--size-16);
@@ -18,15 +18,23 @@ const Wrapper = styled(ButtonLink)`
   }
 `;
 
-function NavLink(props) {
+export default function NavLink({ exact, ...props }) {
   return (
     <Wrapper
-      getProps={({ isPartiallyCurrent }) =>
-        isPartiallyCurrent ? { 'data-active': '' } : null
+      getProps={({ isCurrent, isPartiallyCurrent }) =>
+        (exact && isCurrent) || (!exact && isPartiallyCurrent)
+          ? { "data-active": "" }
+          : null
       }
       {...props}
     />
   );
 }
 
-export default observer(NavLink);
+NavLink.propTypes = {
+  exact: PropTypes.bool,
+};
+
+NavLink.defaultProps = {
+  exact: false,
+};

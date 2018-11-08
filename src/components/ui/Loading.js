@@ -1,5 +1,5 @@
-import styled, { keyframes } from 'styled-components';
-import CircleSvg from './images/circle.svg';
+import styled, { keyframes } from "styled-components";
+import CircleSvg from "../../icons/circle.svg";
 
 const rotateAnimation = keyframes`
   100% {

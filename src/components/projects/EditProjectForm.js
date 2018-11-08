@@ -1,49 +1,50 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import FormState from '../../models/ui/FormState';
-import { connect } from '../../utils/helpers';
-import FormDrawer from '../ui/FormDrawer';
-import ProjectFormFields from './ProjectFormFields';
+import PropTypes from "prop-types";
+import React from "react";
+import { listProjects, updateProject } from "../../api";
+import { poll } from "../../utils";
+import useForm from "../hooks/useForm";
+import FormDrawer from "../ui/FormDrawer";
+import ProjectFormFields from "./ProjectFormFields";
 
-class EditProjectForm extends React.Component {
-  /* eslint-disable react/destructuring-assignment */
-  form = FormState.props({
-    orgId: this.props.project.org.id,
-    name: this.props.project.name,
-    description: this.props.project.description,
-    usesSimulatedDevices: this.props.project.usesSimulatedDevices,
-  }).create();
+export default function EditProjectForm({ onUpdate, project }) {
+  const [values, setValue] = useForm({
+    orgId: project.orgId,
+    name: project.name,
+    description: project.description,
+    usesSimulatedDevices: project.usesSimulatedDevices,
+  });
 
-  /* eslint-enable react/destructuring-assignment */
-  render() {
-    const { project, updateProject } = this.props;
-    return (
-      <FormDrawer
-        title="Edit Project"
-        buttonText="Save"
-        onSubmit={() => updateProject(project, this.form.serialized)}
-      >
-        <ProjectFormFields form={this.form} org={project.org} />
-      </FormDrawer>
-    );
-  }
+  return (
+    <FormDrawer
+      title="Edit Project"
+      buttonText="Save"
+      onSubmit={async () => {
+        const data = await updateProject(project.id, values);
+        await poll(async () => {
+          const { items } = await listProjects(data.orgId);
+          const found = items.find(item => item.id === data.id);
+          return !found || found.updatedAt === data.updatedAt;
+        });
+        await onUpdate();
+      }}
+    >
+      <ProjectFormFields
+        org={project.orgName}
+        values={values}
+        setValue={setValue}
+      />
+    </FormDrawer>
+  );
 }
 
 EditProjectForm.propTypes = {
+  onUpdate: PropTypes.func.isRequired,
   project: PropTypes.shape({
     description: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    org: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    }).isRequired,
+    orgId: PropTypes.string.isRequired,
+    orgName: PropTypes.string.isRequired,
     usesSimulatedDevices: PropTypes.bool.isRequired,
   }).isRequired,
-  updateProject: PropTypes.func.isRequired,
 };
-
-export default connect(
-  EditProjectForm,
-  ({ projectStore }) => ({
-    updateProject: projectStore.updateProject,
-  }),
-);

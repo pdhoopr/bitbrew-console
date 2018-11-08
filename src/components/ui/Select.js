@@ -1,9 +1,8 @@
-import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled from 'styled-components';
-import { Input } from './Forms';
-import { ArrowDownIcon } from './Icons';
+import PropTypes from "prop-types";
+import React from "react";
+import styled from "styled-components";
+import { Input } from "./Forms";
+import { ArrowDownIcon } from "./Icons";
 
 const Wrapper = styled.div`
   position: relative;
@@ -30,7 +29,7 @@ const Icon = styled(ArrowDownIcon)`
   z-index: 1;
 `;
 
-function Select({ children, id, onChange, value }) {
+export default function Select({ children, id, onChange, value }) {
   return (
     <Wrapper>
       <Field as="select" id={id} value={value} onChange={onChange}>
@@ -51,5 +50,3 @@ Select.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
 };
-
-export default observer(Select);

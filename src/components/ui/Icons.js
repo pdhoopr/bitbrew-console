@@ -1,16 +1,16 @@
-import styled, { css } from 'styled-components';
-import AddSvg from './images/add.svg';
-import ArrowDownSvg from './images/arrow-down.svg';
-import BackSvg from './images/back.svg';
-import CheckboxSelectedSvg from './images/checkbox-selected.svg';
-import CheckboxSvg from './images/checkbox.svg';
-import CloseSvg from './images/close.svg';
-import ErrorSvg from './images/error.svg';
-import MoreSvg from './images/more.svg';
-import RadioButtonSelectedSvg from './images/radio-button-selected.svg';
-import SearchSvg from './images/search.svg';
-import SyncDisabledSvg from './images/sync-disabled.svg';
-import SyncSvg from './images/sync.svg';
+import styled, { css } from "styled-components";
+import AddSvg from "../../icons/add.svg";
+import ArrowDownSvg from "../../icons/arrow-down.svg";
+import BackSvg from "../../icons/back.svg";
+import CheckboxSelectedSvg from "../../icons/checkbox-selected.svg";
+import CheckboxSvg from "../../icons/checkbox.svg";
+import CloseSvg from "../../icons/close.svg";
+import ErrorSvg from "../../icons/error.svg";
+import MoreSvg from "../../icons/more.svg";
+import RadioButtonSelectedSvg from "../../icons/radio-button-selected.svg";
+import SearchSvg from "../../icons/search.svg";
+import SyncDisabledSvg from "../../icons/sync-disabled.svg";
+import SyncSvg from "../../icons/sync.svg";
 
 const baseStyles = css`
   fill: var(--color-dark-gray);

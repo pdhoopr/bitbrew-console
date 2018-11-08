@@ -1,12 +1,10 @@
-import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled from 'styled-components';
-import { rootPath } from '../../utils/urls';
-import { FlexCenter } from './Flexboxes';
-import { IconLink } from './Links';
-import Logo from './Logo';
-import { Caption } from './Texts';
+import PropTypes from "prop-types";
+import React, { useLayoutEffect } from "react";
+import styled from "styled-components";
+import { FlexCenter } from "./Flexboxes";
+import { IconLink } from "./Links";
+import Logo from "./Logo";
+import { Caption } from "./Texts";
 
 const Wrapper = styled.nav`
   background-color: var(--color-black);
@@ -43,36 +41,29 @@ const Links = styled.ul`
   padding-left: 0;
 `;
 
-class Nav extends React.Component {
-  componentDidMount() {
-    document.getElementById('app').dataset.nav = '';
-  }
+export default function Nav({ children, heading }) {
+  useLayoutEffect(() => {
+    document.getElementById("app").dataset.nav = "";
+    return () => {
+      delete document.getElementById("app").dataset.nav;
+    };
+  });
 
-  componentWillUnmount() {
-    delete document.getElementById('app').dataset.nav;
-  }
-
-  render() {
-    const { children, heading } = this.props;
-    return (
-      <Wrapper aria-label={heading}>
-        <FlexCenter>
-          <OrgsAndProjectsLink
-            to={rootPath}
-            title="View all organizations and projects"
-          >
-            <Logo />
-          </OrgsAndProjectsLink>
-        </FlexCenter>
-        <Heading>{heading}</Heading>
-        <Links>
-          {React.Children.map(children, navLink => (
-            <li>{navLink}</li>
-          ))}
-        </Links>
-      </Wrapper>
-    );
-  }
+  return (
+    <Wrapper aria-label={heading}>
+      <FlexCenter>
+        <OrgsAndProjectsLink to="/" title="View all organizations and projects">
+          <Logo />
+        </OrgsAndProjectsLink>
+      </FlexCenter>
+      <Heading>{heading}</Heading>
+      <Links>
+        {React.Children.map(children, navLink => (
+          <li>{navLink}</li>
+        ))}
+      </Links>
+    </Wrapper>
+  );
 }
 
 Nav.propTypes = {
@@ -82,5 +73,3 @@ Nav.propTypes = {
   ]).isRequired,
   heading: PropTypes.string.isRequired,
 };
-
-export default observer(Nav);

@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
 const baseStyles = css`
   appearance: button;
@@ -25,7 +25,7 @@ const baseStyles = css`
 `;
 
 export const Button = styled.button.attrs({
-  type: 'button',
+  type: "button",
 })`
   ${baseStyles};
   color: inherit;
@@ -36,7 +36,7 @@ export const Button = styled.button.attrs({
     background-color: currentColor;
     border-radius: var(--corner-radius);
     bottom: 0;
-    content: '';
+    content: "";
     left: 0;
     opacity: 0;
     position: absolute;
@@ -52,7 +52,7 @@ export const Button = styled.button.attrs({
 `;
 
 export const IconButton = styled(Button).attrs({
-  'aria-label': ({ title }) => title,
+  "aria-label": ({ title }) => title,
 })`
   &::before {
     border-radius: 50%;
@@ -60,11 +60,11 @@ export const IconButton = styled(Button).attrs({
 `;
 
 export const RaisedButton = styled.button.attrs({
-  type: 'button',
+  type: "button",
 })`
   ${baseStyles};
   background-color: ${({ red }) =>
-    red ? 'var(--color-red)' : 'var(--color-green)'};
+    red ? "var(--color-red)" : "var(--color-green)"};
   box-shadow: var(--elevation-low);
   color: var(--color-white);
   transition: opacity var(--duration-short);

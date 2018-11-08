@@ -1,7 +1,7 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
 const baseStyles = css`
-  color: ${({ gray }) => (gray ? 'var(--color-dark-gray)' : 'inherit')};
+  color: ${({ gray }) => (gray ? "var(--color-dark-gray)" : "inherit")};
   font-weight: var(--weight-regular);
   margin-bottom: 0;
   margin-top: 0;

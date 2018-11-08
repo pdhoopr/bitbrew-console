@@ -1,19 +1,21 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { connect } from '../../utils/helpers';
-import { orgDetailsPath } from '../../utils/urls';
-import Nav from '../ui/Nav';
-import NavLink from '../ui/NavLink';
+import PropTypes from "prop-types";
+import React from "react";
+import Nav from "../ui/Nav";
+import NavLink from "../ui/NavLink";
 
-function WithOrgNav({ children, orgsAtoZ }) {
+export default function WithOrgNav({ children, orgId }) {
   return (
     <React.Fragment>
-      <Nav heading="Organizations">
-        {orgsAtoZ.map(org => (
-          <NavLink key={org.id} to={orgDetailsPath(org.id)}>
-            {org.name}
-          </NavLink>
-        ))}
+      <Nav heading="Organization Resources">
+        <NavLink to={`/orgs/${orgId}`} exact>
+          Overview
+        </NavLink>
+        <NavLink to={`/orgs/${orgId}/members`} exact>
+          Members
+        </NavLink>
+        <NavLink to={`/orgs/${orgId}/projects`} exact>
+          Projects
+        </NavLink>
       </Nav>
       {children}
     </React.Fragment>
@@ -21,18 +23,13 @@ function WithOrgNav({ children, orgsAtoZ }) {
 }
 
 WithOrgNav.propTypes = {
-  children: PropTypes.element.isRequired,
-  orgsAtoZ: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
+  orgId: PropTypes.string,
 };
 
-export default connect(
-  WithOrgNav,
-  ({ orgStore }) => ({
-    orgsAtoZ: orgStore.orgsAtoZ,
-  }),
-);
+WithOrgNav.defaultProps = {
+  orgId: null,
+};

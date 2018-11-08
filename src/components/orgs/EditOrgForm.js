@@ -1,41 +1,39 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import FormState from '../../models/ui/FormState';
-import { connect } from '../../utils/helpers';
-import FormDrawer from '../ui/FormDrawer';
-import OrgFormFields from './OrgFormFields';
+import PropTypes from "prop-types";
+import React from "react";
+import { listOrgs, updateOrg } from "../../api";
+import { poll } from "../../utils";
+import useForm from "../hooks/useForm";
+import FormDrawer from "../ui/FormDrawer";
+import OrgFormFields from "./OrgFormFields";
 
-class EditOrgForm extends React.Component {
-  /* eslint-disable react/destructuring-assignment */
-  form = FormState.props({
-    name: this.props.org.name,
-  }).create();
+export default function EditOrgForm({ onUpdate, org }) {
+  const [values, setValue] = useForm({
+    name: org.name,
+  });
 
-  /* eslint-enable react/destructuring-assignment */
-  render() {
-    const { org, updateOrg } = this.props;
-    return (
-      <FormDrawer
-        title="Edit Organization"
-        buttonText="Save"
-        onSubmit={() => updateOrg(org, this.form.serialized)}
-      >
-        <OrgFormFields form={this.form} />
-      </FormDrawer>
-    );
-  }
+  return (
+    <FormDrawer
+      title="Edit Organization"
+      buttonText="Save"
+      onSubmit={async () => {
+        const data = await updateOrg(org.id, values);
+        await poll(async () => {
+          const { items } = await listOrgs();
+          const found = items.find(item => item.id === data.id);
+          return !found || found.updatedAt === data.updatedAt;
+        });
+        await onUpdate();
+      }}
+    >
+      <OrgFormFields values={values} setValue={setValue} />
+    </FormDrawer>
+  );
 }
 
 EditOrgForm.propTypes = {
+  onUpdate: PropTypes.func.isRequired,
   org: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
-  updateOrg: PropTypes.func.isRequired,
 };
-
-export default connect(
-  EditOrgForm,
-  ({ orgStore }) => ({
-    updateOrg: orgStore.updateOrg,
-  }),
-);

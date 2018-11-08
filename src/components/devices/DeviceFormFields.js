@@ -1,13 +1,12 @@
-import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled from 'styled-components';
-import { Input, Label } from '../ui/Forms';
+import PropTypes from "prop-types";
+import React from "react";
+import styled from "styled-components";
+import { Input, Label } from "../ui/Forms";
 import {
   CheckboxIcon,
   CheckboxSelectedIcon,
   RadioButtonSelectedIcon,
-} from '../ui/Icons';
+} from "../ui/Icons";
 
 const Fieldset = styled.fieldset`
   border: none;
@@ -36,7 +35,7 @@ const ControlLabel = styled(Label)`
 `;
 
 const ControlInput = styled.input`
-  cursor: ${({ disabled }) => (disabled ? 'deafult' : 'pointer')};
+  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
   height: 100%;
   left: 0;
   margin: 0;
@@ -46,12 +45,12 @@ const ControlInput = styled.input`
   width: 100%;
 `;
 
-function DeviceFormFields({ form }) {
+export default function DeviceFormFields({ setValue, values }) {
   return (
     <React.Fragment>
       <Label htmlFor="codename">
         Codename
-        <Input id="codename" value={form.codename} onChange={form.setValue} />
+        <Input id="codename" value={values.codename} onChange={setValue} />
       </Label>
       <Fieldset>
         <Legend>Type</Legend>
@@ -59,7 +58,7 @@ function DeviceFormFields({ form }) {
           <ControlInput
             type="radio"
             id="datalogger"
-            checked={form.type === 'Datalogger'}
+            checked={values.type === "Datalogger"}
             name="type"
             disabled
           />
@@ -71,22 +70,22 @@ function DeviceFormFields({ form }) {
         Serial Number
         <Input
           id="serialNumber"
-          value={form.serialNumber}
-          onChange={form.setValue}
+          value={values.serialNumber}
+          onChange={setValue}
         />
       </Label>
       <Label htmlFor="imei">
         IMEI
-        <Input id="imei" value={form.imei} onChange={form.setValue} />
+        <Input id="imei" value={values.imei} onChange={setValue} />
       </Label>
       <ControlLabel htmlFor="enabled">
         <ControlInput
           type="checkbox"
           id="enabled"
-          checked={form.enabled}
-          onChange={form.setValue}
+          checked={values.enabled}
+          onChange={setValue}
         />
-        {form.enabled ? (
+        {values.enabled ? (
           <CheckboxSelectedIcon aria-hidden />
         ) : (
           <CheckboxIcon aria-hidden />
@@ -98,13 +97,11 @@ function DeviceFormFields({ form }) {
 }
 
 DeviceFormFields.propTypes = {
-  form: PropTypes.shape({
+  setValue: PropTypes.func.isRequired,
+  values: PropTypes.shape({
     codename: PropTypes.string.isRequired,
     imei: PropTypes.string.isRequired,
     serialNumber: PropTypes.string.isRequired,
-    setValue: PropTypes.func.isRequired,
     type: PropTypes.string.isRequired,
   }).isRequired,
 };
-
-export default observer(DeviceFormFields);

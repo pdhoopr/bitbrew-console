@@ -1,11 +1,10 @@
-import { Link as ReachLink } from '@reach/router';
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled, { css } from 'styled-components';
-import { isRelativeLink } from '../../utils/validators';
+import { Link as ReachLink } from "@reach/router";
+import PropTypes from "prop-types";
+import React from "react";
+import styled, { css } from "styled-components";
 
 const LinkImpl = ({ to, ...props }) =>
-  isRelativeLink(to) ? (
+  /^\/(?!\/)/.test(to) ? (
     <ReachLink to={to} {...props} />
   ) : (
     // eslint-disable-next-line jsx-a11y/anchor-has-content
@@ -45,7 +44,7 @@ export const ButtonLink = styled(LinkImpl)`
     background-color: currentColor;
     border-radius: var(--corner-radius);
     bottom: 0;
-    content: '';
+    content: "";
     left: 0;
     opacity: 0;
     position: absolute;
@@ -61,7 +60,7 @@ export const ButtonLink = styled(LinkImpl)`
 `;
 
 export const IconLink = styled(ButtonLink).attrs({
-  'aria-label': ({ title }) => title,
+  "aria-label": ({ title }) => title,
 })`
   &::before {
     border-radius: 50%;

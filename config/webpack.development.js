@@ -1,32 +1,31 @@
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const chalk = require('chalk');
-const CleanPlugin = require('clean-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-const HtmlPlugin = require('html-webpack-plugin');
-const ip = require('ip');
-const path = require('path');
-const webpack = require('webpack');
-const app = require('../package.json');
-const { apiUrl } = require('./env');
-const paths = require('./paths');
+const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
+const chalk = require("chalk");
+const CleanPlugin = require("clean-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
+const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
+const HtmlPlugin = require("html-webpack-plugin");
+const ip = require("ip");
+const path = require("path");
+const webpack = require("webpack");
+const app = require("../package.json");
+const paths = require("./paths");
 
-const protocol = 'https';
-const domain = 'local.bitbrew.com';
+const protocol = "https";
+const domain = "local.bitbrew.com";
 const port = 4321;
 const localUrl = `${protocol}://${domain}:${port}`;
 const networkUrl = `${protocol}://${ip.address()}:${port}`;
 
 module.exports = {
-  mode: 'development',
+  mode: "development",
   output: {
     devtoolModuleFilenameTemplate(info) {
-      return path.resolve(info.absoluteResourcePath).replace(/\\/g, '/');
+      return path.resolve(info.absoluteResourcePath).replace(/\\/g, "/");
     },
-    filename: 'js/[name].js',
+    filename: "js/[name].js",
     path: paths.distFolder,
     pathinfo: true,
-    publicPath: '/',
+    publicPath: "/",
   },
   module: {
     rules: [
@@ -34,18 +33,18 @@ module.exports = {
         test: /\.js$/,
         use: [
           {
-            loader: 'thread-loader',
+            loader: "thread-loader",
             options: {
               poolTimeout: Infinity,
             },
           },
-          'babel-loader',
+          "babel-loader",
         ],
         include: [paths.envFile, paths.srcFolder],
       },
       {
         test: /\.svg$/,
-        use: ['@svgr/webpack'],
+        use: ["@svgr/webpack"],
         include: [paths.srcFolder],
       },
     ],
@@ -61,7 +60,7 @@ module.exports = {
       {
         from: paths.staticFolder,
         to: paths.distFolder,
-        ignore: 'index.html',
+        ignore: "index.html",
         flatten: true,
       },
     ]),
@@ -70,17 +69,17 @@ module.exports = {
         messages: [
           [
             `You can now view ${chalk.bold(app.name)} in the browser.\n`,
-            `\t${chalk.bold('Local:')} ${chalk.blue(localUrl)}`,
-            `\t${chalk.bold('On your network:')} ${chalk.blue(networkUrl)}`,
-          ].join('\n'),
+            `\t${chalk.bold("Local:")} ${chalk.blue(localUrl)}`,
+            `\t${chalk.bold("On your network:")} ${chalk.blue(networkUrl)}`,
+          ].join("\n"),
         ],
         notes: [
           [
-            'Note that the development build is not optimized.',
+            "Note that the development build is not optimized.",
             `    To create a production build, use ${chalk.cyan(
-              'yarn build',
+              "yarn build",
             )}.`,
-          ].join('\n'),
+          ].join("\n"),
         ],
       },
     }),
@@ -90,31 +89,31 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
   ],
   devServer: {
-    clientLogLevel: 'none',
+    clientLogLevel: "none",
     compress: true,
     contentBase: paths.staticFolder,
     historyApiFallback: true,
-    host: '0.0.0.0',
+    host: "0.0.0.0",
     hot: true,
-    https: protocol === 'https',
+    https: protocol === "https",
     overlay: {
       warnings: true,
       errors: true,
     },
     port,
     proxy: {
-      '/api': {
-        target: apiUrl,
+      "/api": {
+        target: "https://service.bitbrew.com/v2",
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '',
+          "^/api": "",
         },
       },
     },
     public: domain,
-    publicPath: '/',
+    publicPath: "/",
     quiet: true,
     watchContentBase: true,
   },
-  devtool: 'cheap-module-source-map',
+  devtool: "cheap-module-source-map",
 };

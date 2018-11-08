@@ -1,7 +1,6 @@
-import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled from 'styled-components';
+import PropTypes from "prop-types";
+import React from "react";
+import styled from "styled-components";
 
 const Wrapper = styled.table`
   background-color: var(--color-white);
@@ -15,11 +14,11 @@ const Wrapper = styled.table`
 
 export const Row = styled.tr`
   border-top: 1px solid var(--color-medium-gray);
-  font-style: ${({ italic }) => (italic ? 'italic' : 'normal')};
+  font-style: ${({ italic }) => (italic ? "italic" : "normal")};
 `;
 
 export const Cell = styled.td`
-  color: ${({ gray }) => (gray ? 'var(--color-dark-gray)' : 'inherit')};
+  color: ${({ gray }) => (gray ? "var(--color-dark-gray)" : "inherit")};
   padding: var(--size-16) var(--size-24);
   text-align: left;
   white-space: nowrap;
@@ -34,7 +33,7 @@ const EmptyCell = styled(Cell)`
   text-align: center;
 `;
 
-function Table({ children, columns, emptyState }) {
+export default function Table({ children, columns, emptyState }) {
   return (
     <Wrapper>
       <thead>
@@ -47,7 +46,7 @@ function Table({ children, columns, emptyState }) {
         </tr>
       </thead>
       <tbody>
-        {children.length > 0
+        {React.Children.count(children) > 0
           ? children
           : emptyState && (
               <Row>
@@ -60,7 +59,10 @@ function Table({ children, columns, emptyState }) {
 }
 
 Table.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
   columns: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   ).isRequired,
@@ -70,5 +72,3 @@ Table.propTypes = {
 Table.defaultProps = {
   emptyState: null,
 };
-
-export default observer(Table);

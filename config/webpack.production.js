@@ -1,34 +1,34 @@
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const CleanPlugin = require('clean-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-const HtmlPlugin = require('html-webpack-plugin');
-const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
-const paths = require('./paths');
+const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
+const CleanPlugin = require("clean-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
+const HtmlPlugin = require("html-webpack-plugin");
+const path = require("path");
+const TerserPlugin = require("terser-webpack-plugin");
+const paths = require("./paths");
 
 module.exports = {
-  mode: 'production',
+  mode: "production",
   output: {
     devtoolModuleFilenameTemplate(info) {
       return path
         .relative(paths.srcFolder, info.absoluteResourcePath)
-        .replace(/\\/g, '/');
+        .replace(/\\/g, "/");
     },
-    filename: 'js/[name].[contenthash].js',
+    filename: "js/[name].[contenthash].js",
     path: paths.distFolder,
     pathinfo: true,
-    publicPath: '/',
+    publicPath: "/",
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        use: ['thread-loader', 'babel-loader'],
+        use: ["thread-loader", "babel-loader"],
         include: [paths.envFile, paths.srcFolder],
       },
       {
         test: /\.svg$/,
-        use: ['@svgr/webpack'],
+        use: ["@svgr/webpack"],
         include: [paths.srcFolder],
       },
     ],
@@ -64,7 +64,7 @@ module.exports = {
       {
         from: paths.staticFolder,
         to: paths.distFolder,
-        ignore: 'index.html',
+        ignore: "index.html",
         flatten: true,
       },
     ]),
@@ -84,6 +84,6 @@ module.exports = {
       },
     }),
   ],
-  devtool: 'source-map',
+  devtool: "source-map",
   bail: true,
 };

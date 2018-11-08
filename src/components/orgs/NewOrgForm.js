@@ -1,41 +1,46 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import FormState from '../../models/ui/FormState';
-import { connect } from '../../utils/helpers';
-import FormDrawer from '../ui/FormDrawer';
-import OrgFormFields from './OrgFormFields';
+import jwtDecode from "jwt-decode";
+import PropTypes from "prop-types";
+import React, { useContext } from "react";
+import { createOrg } from "../../api";
+import { poll, silentRefresh } from "../../utils";
+import Context from "../Context";
+import useForm from "../hooks/useForm";
+import FormDrawer from "../ui/FormDrawer";
+import OrgFormFields from "./OrgFormFields";
 
-class NewOrgForm extends React.Component {
-  form = FormState.props({
-    name: '',
-  }).create();
+export default function NewOrgForm({ onCreate }) {
+  const { signInWithToken, signOut } = useContext(Context);
 
-  render() {
-    const { createOrg, refreshTokenUntilHasOrg } = this.props;
-    return (
-      <FormDrawer
-        title="New Organization"
-        buttonText="Create"
-        onSubmit={async () => {
-          const org = await createOrg(this.form.serialized);
-          refreshTokenUntilHasOrg(org);
-        }}
-      >
-        <OrgFormFields form={this.form} />
-      </FormDrawer>
-    );
-  }
+  const [values, setValue] = useForm({
+    name: "",
+  });
+
+  return (
+    <FormDrawer
+      title="New Organization"
+      buttonText="Create"
+      onSubmit={async () => {
+        const data = await createOrg(values);
+        await poll(async () => {
+          try {
+            const token = await silentRefresh();
+            if (jwtDecode(token).orgs[data.id]) {
+              signInWithToken(token);
+              return true;
+            }
+          } catch {
+            signOut();
+          }
+          return false;
+        });
+        await onCreate();
+      }}
+    >
+      <OrgFormFields values={values} setValue={setValue} />
+    </FormDrawer>
+  );
 }
 
 NewOrgForm.propTypes = {
-  createOrg: PropTypes.func.isRequired,
-  refreshTokenUntilHasOrg: PropTypes.func.isRequired,
+  onCreate: PropTypes.func.isRequired,
 };
-
-export default connect(
-  NewOrgForm,
-  ({ orgStore }) => ({
-    createOrg: orgStore.createOrg,
-    refreshTokenUntilHasOrg: orgStore.refreshTokenUntilHasOrg,
-  }),
-);

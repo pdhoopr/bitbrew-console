@@ -1,8 +1,7 @@
-import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled from 'styled-components';
-import { FlexStart } from './Flexboxes';
+import PropTypes from "prop-types";
+import React from "react";
+import styled from "styled-components";
+import { FlexStart } from "./Flexboxes";
 
 const Wrapper = styled.dl`
   margin-bottom: 0;
@@ -24,7 +23,7 @@ const Description = styled.dd`
   flex: 1.5;
 `;
 
-function List({ items }) {
+export default function List({ items }) {
   return (
     <Wrapper>
       {items.map(([term, description]) => (
@@ -40,5 +39,3 @@ function List({ items }) {
 List.propTypes = {
   items: PropTypes.arrayOf(PropTypes.array).isRequired,
 };
-
-export default observer(List);

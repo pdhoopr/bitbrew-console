@@ -1,18 +1,19 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled from 'styled-components';
-import { capitalize, localize } from '../../utils/formatters';
-import { connect } from '../../utils/helpers';
-import { projectDeviceDetailsPath } from '../../utils/urls';
-import AppBar from '../ui/AppBar';
-import { IconButton } from '../ui/Buttons';
-import { PageHeader } from '../ui/Headers';
-import { AddIcon } from '../ui/Icons';
-import { Link } from '../ui/Links';
-import Table, { Cell, Row } from '../ui/Table';
-import { PageTitle } from '../ui/Texts';
-import { Width640 } from '../ui/Widths';
-import NewDeviceForm from './NewDeviceForm';
+import PropTypes from "prop-types";
+import React, { useContext, useState } from "react";
+import styled from "styled-components";
+import { listDevices } from "../../api";
+import { capitalize, localize } from "../../utils";
+import Context from "../Context";
+import useLoading from "../hooks/useLoading";
+import AppBar from "../ui/AppBar";
+import { IconButton } from "../ui/Buttons";
+import { PageHeader } from "../ui/Headers";
+import { AddIcon } from "../ui/Icons";
+import { Link } from "../ui/Links";
+import Table, { Cell, Row } from "../ui/Table";
+import { PageTitle } from "../ui/Texts";
+import { Width640 } from "../ui/Widths";
+import NewDeviceForm from "./NewDeviceForm";
 
 const AddIconWrapper = styled.span`
   display: block;
@@ -21,9 +22,18 @@ const AddIconWrapper = styled.span`
   text-align: right;
 `;
 
-function DevicesPage({ getProjectWithId, openDrawer, projectId }) {
-  const project = getProjectWithId(projectId);
-  const devices = project ? project.devices : [];
+export default function DevicesPage({ orgId, projectId }) {
+  const { openDrawer } = useContext(Context);
+
+  const [devices, setDevices] = useState([]);
+
+  async function loadDevices() {
+    const { items } = await listDevices(projectId);
+    setDevices(items);
+  }
+
+  const isLoading = useLoading(loadDevices, [projectId]);
+
   return (
     <main>
       <PageHeader>
@@ -31,17 +41,22 @@ function DevicesPage({ getProjectWithId, openDrawer, projectId }) {
           <PageTitle>Devices</PageTitle>
         </AppBar>
       </PageHeader>
-      {project && (
+      {!isLoading && (
         <Width640>
           <Table
             columns={[
-              'Codename',
-              'Date Created',
-              'Type',
+              "Codename",
+              "Date Created",
+              "Type",
               <AddIconWrapper key="New Device">
                 <IconButton
                   onClick={() => {
-                    openDrawer(<NewDeviceForm project={project} />);
+                    openDrawer(
+                      <NewDeviceForm
+                        project={projectId}
+                        onCreate={loadDevices}
+                      />,
+                    );
                   }}
                   title="Open new device form"
                 >
@@ -53,12 +68,15 @@ function DevicesPage({ getProjectWithId, openDrawer, projectId }) {
           >
             {devices.map(device => {
               const codename = device.codename.trim();
+              const { id: deviceId } = device;
               return (
                 <Row key={device.id} italic={!device.enabled}>
                   <Cell gray={!codename}>
-                    <Link to={projectDeviceDetailsPath(project.id, device.id)}>
-                      {codename || 'Untitled device'}
-                      {!device.enabled && ' (disabled)'}
+                    <Link
+                      to={`/orgs/${orgId}/projects/${projectId}/devices/${deviceId}`}
+                    >
+                      {codename || "Untitled device"}
+                      {!device.enabled && " (disabled)"}
                     </Link>
                   </Cell>
                   <Cell>{localize(device.createdAt)}</Cell>
@@ -75,15 +93,11 @@ function DevicesPage({ getProjectWithId, openDrawer, projectId }) {
 }
 
 DevicesPage.propTypes = {
-  getProjectWithId: PropTypes.func.isRequired,
-  openDrawer: PropTypes.func.isRequired,
-  projectId: PropTypes.string.isRequired,
+  orgId: PropTypes.string,
+  projectId: PropTypes.string,
 };
 
-export default connect(
-  DevicesPage,
-  ({ projectStore, uiStore }) => ({
-    getProjectWithId: projectStore.getProjectWithId,
-    openDrawer: uiStore.openDrawer,
-  }),
-);
+DevicesPage.defaultProps = {
+  orgId: null,
+  projectId: null,
+};

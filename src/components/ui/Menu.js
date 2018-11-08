@@ -1,10 +1,8 @@
-import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled from 'styled-components';
-import MenuState from '../../models/ui/MenuState';
-import { createIdForA11y, wait } from '../../utils/helpers';
-import { Button } from './Buttons';
+import PropTypes from "prop-types";
+import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import { generateId, wait } from "../../utils";
+import { Button } from "./Buttons";
 
 const Wrapper = styled.div`
   margin-left: var(--size-16);
@@ -54,42 +52,51 @@ const Items = styled.div`
   }
 `;
 
-class Menu extends React.Component {
-  /* eslint-disable react/destructuring-assignment */
-  buttonId = createIdForA11y(`${Menu.name}__button`);
+export default function Menu({ children, control }) {
+  const buttonElement = useRef(null);
+  const buttonId = useRef(generateId(`${Menu.name}__button`));
+  const menuElement = useRef(generateId(`${Menu.name}__items`));
+  const menuId = useRef(null);
+  const menuItemElements = useRef([]);
 
-  buttonRef = React.createRef();
+  const [isOpen, setOpen] = useState(false);
 
-  menu = MenuState.create();
-
-  menuId = createIdForA11y(`${Menu.name}__items`);
-
-  menuRef = React.createRef();
-
-  menuItemRefs = React.Children.map(this.props.children, React.createRef);
-
-  componentDidUpdate(previousProps) {
-    if (this.props.children !== previousProps.children) {
-      this.menuItemRefs = React.Children.map(
-        this.props.children,
-        React.createRef,
-      );
+  function closeOnEscOrTab(event) {
+    const isTab = event.keyCode === 9;
+    const isEsc = event.keyCode === 27;
+    if (isTab || isEsc) {
+      // eslint-disable-next-line no-use-before-define
+      closeMenu();
+      if (isEsc) {
+        buttonElement.current.focus();
+      }
     }
   }
 
-  openMenu = () => {
-    this.menu.open();
-    document.addEventListener('click', this.closeOnOuterClick);
-    document.addEventListener('keydown', this.closeOnEscOrTab);
-  };
+  function closeOnOuterClick(event) {
+    if (
+      event.target !== menuElement.current &&
+      event.target !== buttonElement.current &&
+      (buttonElement.current && !buttonElement.current.contains(event.target))
+    ) {
+      // eslint-disable-next-line no-use-before-define
+      closeMenu();
+    }
+  }
 
-  closeMenu = () => {
-    this.menu.close();
-    document.removeEventListener('click', this.closeOnOuterClick);
-    document.removeEventListener('keydown', this.closeOnEscOrTab);
-  };
+  function openMenu() {
+    document.addEventListener("click", closeOnOuterClick);
+    document.addEventListener("keydown", closeOnEscOrTab);
+    setOpen(true);
+  }
 
-  focusOnSomeKeyPresses = async event => {
+  function closeMenu() {
+    document.removeEventListener("click", closeOnOuterClick);
+    document.removeEventListener("keydown", closeOnEscOrTab);
+    setOpen(false);
+  }
+
+  async function focusOnSomeKeyPresses(event) {
     const isEnd = event.keyCode === 35;
     const isHome = event.keyCode === 36;
     const isUp = event.keyCode === 38;
@@ -98,7 +105,7 @@ class Menu extends React.Component {
       event.preventDefault();
       const { index } = event.currentTarget.dataset;
       const firstItemIndex = 0;
-      const lastItemIndex = this.menuItemRefs.length - 1;
+      const lastItemIndex = menuItemElements.current.length - 1;
       let itemIndexToFocus;
       if (isEnd) {
         itemIndexToFocus = lastItemIndex;
@@ -113,79 +120,61 @@ class Menu extends React.Component {
         const isLastItem = itemIndex === lastItemIndex;
         itemIndexToFocus = isLastItem ? firstItemIndex : itemIndex + 1;
       }
-      if (this.menu.isClosed) {
-        this.openMenu();
+      if (!isOpen) {
+        openMenu();
         await wait();
       }
-      this.menuItemRefs[itemIndexToFocus].current.focus();
+      menuItemElements.current[itemIndexToFocus].current.focus();
     }
-  };
-
-  closeOnEscOrTab = event => {
-    const isTab = event.keyCode === 9;
-    const isEsc = event.keyCode === 27;
-    if (isTab || isEsc) {
-      this.closeMenu();
-      if (isEsc) {
-        this.buttonRef.current.focus();
-      }
-    }
-  };
-
-  closeOnOuterClick = event => {
-    if (
-      event.target !== this.menuRef.current &&
-      event.target !== this.buttonRef.current &&
-      (this.buttonRef.current && !this.buttonRef.current.contains(event.target))
-    ) {
-      this.closeMenu();
-    }
-  };
-
-  /* eslint-enable react/destructuring-assignment */
-  render() {
-    const { children, control } = this.props;
-    return (
-      <Wrapper>
-        {React.cloneElement(control, {
-          id: this.buttonId,
-          onClick: () => {
-            if (this.menu.isOpen) {
-              this.closeMenu();
-            } else {
-              this.openMenu();
-            }
-          },
-          onKeyDown: this.focusOnSomeKeyPresses,
-          'aria-controls': this.menuId,
-          'aria-expanded': this.menu.isOpen,
-          'aria-haspopup': true,
-          ref: this.buttonRef,
-        })}
-        <Items
-          id={this.menuId}
-          hidden={this.menu.isClosed}
-          aria-labelledby={this.buttonId}
-          role="menu"
-          ref={this.menuRef}
-        >
-          {React.Children.map(children, (menuItem, index) =>
-            React.cloneElement(menuItem, {
-              onClick: () => {
-                this.buttonRef.current.focus();
-                menuItem.props.onClick();
-              },
-              onKeyDown: this.focusOnSomeKeyPresses,
-              'data-index': index,
-              tabIndex: -1,
-              role: 'menuitem',
-              ref: this.menuItemRefs[index],
-            }),
-          )}
-        </Items>
-      </Wrapper>
-    );
   }
+
+  useEffect(
+    () => {
+      menuItemElements.current = React.Children.map(children, React.createRef);
+    },
+    [children],
+  );
+
+  return (
+    <Wrapper>
+      {React.cloneElement(control, {
+        id: buttonId.current,
+        onClick() {
+          if (isOpen) {
+            closeMenu();
+          } else {
+            openMenu();
+          }
+        },
+        onKeyDown: focusOnSomeKeyPresses,
+        "aria-controls": menuId.current,
+        "aria-expanded": isOpen,
+        "aria-haspopup": true,
+        ref: buttonElement,
+      })}
+      <Items
+        id={menuId.current}
+        hidden={!isOpen}
+        aria-labelledby={buttonId.current}
+        role="menu"
+        ref={menuElement}
+      >
+        {React.Children.map(children, (menuItem, index) =>
+          React.cloneElement(menuItem, {
+            onClick() {
+              buttonElement.current.focus();
+              menuItem.props.onClick();
+            },
+            onKeyDown: focusOnSomeKeyPresses,
+            "data-index": index,
+            tabIndex: -1,
+            role: "menuitem",
+            ref: menuItemElements.current[index],
+          }),
+        )}
+      </Items>
+    </Wrapper>
+  );
 }
 
 Menu.propTypes = {
@@ -195,5 +184,3 @@ Menu.propTypes = {
   ]).isRequired,
   control: PropTypes.element.isRequired,
 };
-
-export default observer(Menu);

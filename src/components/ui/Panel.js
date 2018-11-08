@@ -1,8 +1,7 @@
-import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled from 'styled-components';
-import { FlexStart } from './Flexboxes';
+import PropTypes from "prop-types";
+import React from "react";
+import styled from "styled-components";
+import { FlexStart } from "./Flexboxes";
 
 const Wrapper = styled.dl`
   background-color: var(--color-light-gray);
@@ -28,7 +27,7 @@ const Description = styled.dd`
   flex: 2;
 `;
 
-function Panel({ items }) {
+export default function Panel({ items }) {
   return (
     <Wrapper>
       {items.map(([term, description]) => (
@@ -44,5 +43,3 @@ function Panel({ items }) {
 Panel.propTypes = {
   items: PropTypes.arrayOf(PropTypes.array).isRequired,
 };
-
-export default observer(Panel);

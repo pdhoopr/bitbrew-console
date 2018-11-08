@@ -1,54 +1,48 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import FormState from '../../models/ui/FormState';
-import { connect } from '../../utils/helpers';
-import FormDrawer from '../ui/FormDrawer';
-import ProjectFormFields from './ProjectFormFields';
+import PropTypes from "prop-types";
+import React from "react";
+import { createProject, listProjects } from "../../api";
+import { poll } from "../../utils";
+import useForm from "../hooks/useForm";
+import FormDrawer from "../ui/FormDrawer";
+import ProjectFormFields from "./ProjectFormFields";
 
-class NewProjectForm extends React.Component {
-  /* eslint-disable react/destructuring-assignment */
-  form = FormState.props({
-    orgId: this.props.org ? this.props.org.id : '',
-    name: '',
-    description: '',
+export default function NewProjectForm({ onCreate, org }) {
+  const [values, setValue] = useForm({
+    orgId: org.id || "",
+    name: "",
+    description: "",
     usesSimulatedDevices: false,
-  }).create();
+  });
 
-  /* eslint-enable react/destructuring-assignment */
-  render() {
-    const { createProject, org, orgsAtoZ } = this.props;
-    return (
-      <FormDrawer
-        title="New Project"
-        buttonText="Create"
-        onSubmit={() => createProject(this.form.serialized)}
-      >
-        <ProjectFormFields
-          form={this.form}
-          org={org}
-          selectOrgFrom={orgsAtoZ}
-        />
-      </FormDrawer>
-    );
-  }
+  return (
+    <FormDrawer
+      title="New Project"
+      buttonText="Create"
+      onSubmit={async () => {
+        const data = await createProject(values);
+        await poll(async () => {
+          const { items } = await listProjects(data.orgId);
+          return items.some(item => item.id === data.id);
+        });
+        await onCreate();
+      }}
+    >
+      <ProjectFormFields
+        org={org.name || org}
+        values={values}
+        setValue={setValue}
+      />
+    </FormDrawer>
+  );
 }
 
 NewProjectForm.propTypes = {
-  createProject: PropTypes.func.isRequired,
-  org: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-  }),
-  orgsAtoZ: PropTypes.array.isRequired,
+  onCreate: PropTypes.func.isRequired,
+  org: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ]).isRequired,
 };
-
-NewProjectForm.defaultProps = {
-  org: null,
-};
-
-export default connect(
-  NewProjectForm,
-  ({ orgStore, projectStore }) => ({
-    createProject: projectStore.createProject,
-    orgsAtoZ: orgStore.orgsAtoZ,
-  }),
-);

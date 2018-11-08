@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import ReactModal from 'react-modal';
-import styled, { css } from 'styled-components';
+import PropTypes from "prop-types";
+import React from "react";
+import ReactModal from "react-modal";
+import styled, { css } from "styled-components";
 
 const ModalImpl = ({ className, role, ...props }) => (
   <ReactModal
@@ -25,20 +25,12 @@ ModalImpl.propTypes = {
 };
 
 ModalImpl.defaultProps = {
-  role: 'dialog',
+  role: "dialog",
 };
 
 const baseStyles = css`
   &__Body--open {
     overflow: hidden;
-  }
-
-  &__Content {
-    box-shadow: var(--elevation-high);
-    max-width: var(--size-480);
-    outline: none;
-    overflow: auto;
-    width: 100%;
   }
 
   &__Backdrop {
@@ -50,34 +42,43 @@ const baseStyles = css`
     right: 0;
     top: 0;
   }
+
+  &__Content {
+    box-shadow: var(--elevation-high);
+    max-width: var(--size-480);
+    outline: none;
+    overflow: auto;
+    position: relative;
+    width: 100%;
+  }
 `;
 
 export const Dialog = styled(ModalImpl).attrs({
-  role: 'alertdialog',
+  role: "alertdialog",
 })`
   ${baseStyles};
-
-  &__Content {
-    background: var(--color-white);
-    border-radius: var(--corner-radius);
-  }
 
   &__Backdrop {
     align-items: center;
     justify-content: center;
     z-index: 4;
   }
+
+  &__Content {
+    background: var(--color-white);
+    border-radius: var(--corner-radius);
+  }
 `;
 
 export const Drawer = styled(ModalImpl)`
   ${baseStyles};
 
-  &__Content {
-    background: var(--color-blue-gray);
-  }
-
   &__Backdrop {
     justify-content: flex-end;
     z-index: 3;
+  }
+
+  &__Content {
+    background: var(--color-blue-gray);
   }
 `;

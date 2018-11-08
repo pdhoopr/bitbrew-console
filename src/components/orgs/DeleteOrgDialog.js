@@ -1,38 +1,35 @@
-import { navigate } from '@reach/router';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { connect } from '../../utils/helpers';
-import { orgsPath } from '../../utils/urls';
-import DeleteDialog from '../ui/DeleteDialog';
-import Panel from '../ui/Panel';
-import { Text } from '../ui/Texts';
+import PropTypes from "prop-types";
+import React from "react";
+import { deleteOrg, listOrgs } from "../../api";
+import { poll } from "../../utils";
+import DeleteDialog from "../ui/DeleteDialog";
+import Panel from "../ui/Panel";
+import { Text } from "../ui/Texts";
 
-function DeleteOrgDialog({ deleteOrg, org }) {
+export default function DeleteOrgDialog({ onDelete, org }) {
   return (
     <DeleteDialog
       title="Delete Organization"
       onDelete={async () => {
-        await deleteOrg(org);
-        navigate(orgsPath);
+        await deleteOrg(org.id);
+        await poll(async () => {
+          const { items } = await listOrgs();
+          return items.every(item => item.id !== org.id);
+        });
+        await onDelete();
       }}
     >
       <Text>The following organization will be permanently deleted:</Text>
-      <Panel items={[['Organization', org.name]]} />
+      <Panel items={[["Organization", org.name]]} />
       <Text>Are you sure you want to continue?</Text>
     </DeleteDialog>
   );
 }
 
 DeleteOrgDialog.propTypes = {
-  deleteOrg: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
   org: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
 };
-
-export default connect(
-  DeleteOrgDialog,
-  ({ orgStore }) => ({
-    deleteOrg: orgStore.deleteOrg,
-  }),
-);

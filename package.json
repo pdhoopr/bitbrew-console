@@ -15,10 +15,10 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.production.js && node config/redirects.js",
     "check:css": "stylelint '**/*.js'",
-    "check:format": "prettier --list-different '**/*.{js,json,md}'",
+    "check:format": "prettier --list-different '**/*.{html,js,json,md}'",
     "check:js": "eslint '**/*.js'",
     "ci": "run-p --aggregate-output --continue-on-error check:* && run-s build",
-    "format": "prettier --write '**/*.{js,json,md}'",
+    "format": "prettier --write '**/*.{html,js,json,md}'",
     "start": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.development.js"
   },
   "dependencies": {
@@ -26,48 +26,44 @@
     "@reach/router": "^1.2.1",
     "axios": "^0.18.0",
     "jwt-decode": "^2.2.0",
-    "mobx": "^5.5.1",
-    "mobx-react": "^5.3.4",
-    "mobx-state-tree": "^3.7.0",
     "prop-types": "^15.6.2",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
+    "react": "^16.7.0-alpha.0",
+    "react-dom": "^16.7.0-alpha.0",
     "react-modal": "^3.6.1",
-    "styled-components": "^4.0.2",
+    "styled-components": "^4.0.3",
     "uniqid": "^5.0.3",
     "url-search-params-polyfill": "^5.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.2",
-    "@babel/plugin-proposal-class-properties": "^7.1.0",
-    "@babel/plugin-proposal-optional-catch-binding": "^7.0.0",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/core": "^7.1.5",
+    "@babel/preset-env": "^7.1.5",
     "@babel/preset-react": "^7.0.0",
-    "@svgr/webpack": "^3.1.0",
+    "@svgr/webpack": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "babel-plugin-styled-components": "^1.8.0",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.19",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.20",
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
     "chalk": "^2.4.1",
     "clean-webpack-plugin": "^0.1.19",
-    "copy-webpack-plugin": "^4.5.4",
+    "copy-webpack-plugin": "^4.6.0",
     "cross-env": "^5.2.0",
-    "eslint": "^5.7.0",
+    "eslint": "^5.8.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^3.1.0",
-    "eslint-plugin-compat": "^2.6.2",
+    "eslint-plugin-compat": "^2.6.3",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-react-hooks": "^0.0.0",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^3.2.0",
-    "husky": "^1.1.2",
+    "husky": "^1.1.3",
     "ip": "^1.1.5",
-    "lint-staged": "^7.3.0",
+    "lint-staged": "^8.0.4",
     "npm-run-all": "^4.1.3",
-    "prettier": "^1.14.3",
-    "stylelint": "^9.6.0",
+    "prettier": "^1.15.1",
+    "stylelint": "^9.7.1",
     "stylelint-config-prettier": "^4.0.0",
     "stylelint-config-standard": "^18.2.0",
     "stylelint-config-styled-components": "^0.1.1",
@@ -76,9 +72,9 @@
     "stylelint-processor-styled-components": "^1.5.0",
     "terser-webpack-plugin": "^1.1.0",
     "thread-loader": "^1.2.0",
-    "webpack": "^4.22.0",
+    "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.9"
+    "webpack-dev-server": "^3.1.10"
   },
   "browserslist": [
     "last 3 Chrome versions",
@@ -106,7 +102,8 @@
       ]
     },
     "plugins": [
-      "compat"
+      "compat",
+      "react-hooks"
     ],
     "extends": [
       "airbnb",
@@ -190,15 +187,6 @@
         }
       ],
       "jsx-a11y/label-has-for": "off",
-      "no-param-reassign": [
-        "error",
-        {
-          "ignorePropertyModificationsFor": [
-            "self"
-          ],
-          "props": true
-        }
-      ],
       "react/forbid-prop-types": [
         "error",
         {
@@ -216,7 +204,8 @@
             ".js"
           ]
         }
-      ]
+      ],
+      "react-hooks/rules-of-hooks": "error"
     },
     "overrides": [
       {
@@ -240,7 +229,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{js,json,md}": [
+    "**/*.{html,js,json,md}": [
       "prettier --write",
       "git add ."
     ],
@@ -250,7 +239,6 @@
     ]
   },
   "prettier": {
-    "singleQuote": true,
     "trailingComma": "all"
   },
   "stylelint": {

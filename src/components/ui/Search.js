@@ -1,10 +1,9 @@
-import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled from 'styled-components';
-import { createIdForA11y } from '../../utils/helpers';
-import { Input } from './Forms';
-import { SearchIcon } from './Icons';
+import PropTypes from "prop-types";
+import React, { useRef } from "react";
+import styled from "styled-components";
+import { generateId } from "../../utils";
+import { Input } from "./Forms";
+import { SearchIcon } from "./Icons";
 
 const Wrapper = styled.div`
   display: block;
@@ -37,30 +36,27 @@ const Field = styled(Input)`
   }
 `;
 
-class Search extends React.Component {
-  descriptionId = createIdForA11y(`${Search.name}__description`);
+export default function Search({ description, onChange, placeholder, value }) {
+  const descriptionId = useRef(generateId(`${Search.name}__description`));
 
-  render() {
-    const { description, onChange, placeholder, value } = this.props;
-    return (
-      <Wrapper>
-        <label htmlFor="term">
-          <Icon aria-hidden />
-          <Field
-            id="term"
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder}
-            aria-label={placeholder}
-            aria-describedby={this.descriptionId}
-          />
-        </label>
-        <p id={this.descriptionId} hidden>
-          {description}
-        </p>
-      </Wrapper>
-    );
-  }
+  return (
+    <Wrapper>
+      <label htmlFor="searchTerm">
+        <Icon aria-hidden />
+        <Field
+          id="searchTerm"
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          aria-label={placeholder}
+          aria-describedby={descriptionId.current}
+        />
+      </label>
+      <p id={descriptionId.current} hidden>
+        {description}
+      </p>
+    </Wrapper>
+  );
 }
 
 Search.propTypes = {
@@ -71,7 +67,5 @@ Search.propTypes = {
 };
 
 Search.defaultProps = {
-  placeholder: '',
+  placeholder: "",
 };
-
-export default observer(Search);

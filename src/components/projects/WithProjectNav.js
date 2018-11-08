@@ -1,15 +1,15 @@
-import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { projectDevicesPath } from '../../utils/urls';
-import Nav from '../ui/Nav';
-import NavLink from '../ui/NavLink';
+import PropTypes from "prop-types";
+import React from "react";
+import Nav from "../ui/Nav";
+import NavLink from "../ui/NavLink";
 
-function WithProjectNav({ children, projectId }) {
+export default function WithProjectNav({ children, orgId, projectId }) {
   return (
     <React.Fragment>
       <Nav heading="Project Resources">
-        <NavLink to={projectDevicesPath(projectId)}>Devices</NavLink>
+        <NavLink to={`/orgs/${orgId}/projects/${projectId}/devices`}>
+          Devices
+        </NavLink>
       </Nav>
       {children}
     </React.Fragment>
@@ -21,11 +21,11 @@ WithProjectNav.propTypes = {
     PropTypes.element,
     PropTypes.arrayOf(PropTypes.element),
   ]).isRequired,
+  orgId: PropTypes.string,
   projectId: PropTypes.string,
 };
 
 WithProjectNav.defaultProps = {
+  orgId: null,
   projectId: null,
 };
-
-export default observer(WithProjectNav);

@@ -1,128 +1,174 @@
-import { Redirect, Router as ReachRouter } from '@reach/router';
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled from 'styled-components';
-import { summarize } from '../utils/formatters';
-import { connect } from '../utils/helpers';
-import {
-  deviceDetailsPath,
-  devicesPath,
-  orgDetailsPath,
-  orgsPath,
-  projectDetailsPath,
-  projectDevicesPath,
-  projectsPath,
-  rootPath,
-} from '../utils/urls';
-import DeviceDetailsPage from './devices/DeviceDetailsPage';
-import DevicesPage from './devices/DevicesPage';
-import OrgDetailsPage from './orgs/OrgDetailsPage';
-import WithOrgNav from './orgs/WithOrgNav';
-import WithProjectNav from './projects/WithProjectNav';
-import Banner from './ui/Banner';
-import Footer from './ui/Footer';
-import GlobalStyle from './ui/GlobalStyle';
-import WelcomePage from './WelcomePage';
+import { navigate, Redirect, Router as ReachRouter } from "@reach/router";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { off, on, removeToken, retry, setToken } from "../api";
+import { silentRefresh, summarize } from "../utils";
+import Context from "./Context";
+import DeviceOverviewPage from "./devices/DeviceOverviewPage";
+import DevicesPage from "./devices/DevicesPage";
+import OrgMembersPage from "./orgs/OrgMembersPage";
+import OrgOverviewPage from "./orgs/OrgOverviewPage";
+import WithOrgNav from "./orgs/WithOrgNav";
+import ProjectsPage from "./projects/ProjectsPage";
+import WithProjectNav from "./projects/WithProjectNav";
+import Banner from "./ui/Banner";
+import Footer from "./ui/Footer";
+import GlobalStyle from "./ui/GlobalStyle";
+import WelcomePage from "./WelcomePage";
 
 const Router = styled(ReachRouter)`
   flex: 1;
 `;
 
-class App extends React.Component {
-  /* eslint-disable react/destructuring-assignment */
-  async componentDidMount() {
-    this.props.setLoading(true);
+export default function App() {
+  const [auth, setAuth] = useState(null);
+  const [drawer, setDrawer] = useState(null);
+  const [dialog, setDialog] = useState(null);
+  const [banner, setBanner] = useState(null);
+
+  function signInWithToken(token) {
+    setToken(token);
+    setAuth(token);
+  }
+
+  function signInWithRedirect() {
+    const currentUrl = window.location.href;
+    navigate(
+      `https://service.bitbrew.com/auth/logout?redirect_uri=https://service.bitbrew.com/auth/login?redirect_uri=${currentUrl}`,
+    );
+  }
+
+  async function signInWithSilentRefresh() {
     try {
-      await this.props.createToken();
-      await this.props.listOrgs();
-      await Promise.all([
-        ...this.props.orgs.map(org => org.listMembers()),
-        ...this.props.orgs.map(this.props.listProjects),
-      ]);
-      await Promise.all(this.props.projects.map(this.props.listDevices));
-      this.props.setLoading(false);
-    } catch (error) {
-      this.props.openBanner(<Banner>{summarize(error)}</Banner>);
+      const token = await silentRefresh();
+      signInWithToken(token);
+    } catch {
+      signInWithRedirect();
     }
   }
 
-  /* eslint-enable react/destructuring-assignment */
-  render() {
-    const { banner, drawer, dialog, isLoading, token } = this.props;
-    const isVisible = !isLoading && token;
-    return (
-      <React.Fragment>
-        <GlobalStyle />
-        {isVisible && (
-          <React.Fragment>
-            <Router>
-              <WelcomePage path={rootPath} />
-              <Redirect from={orgsPath} to={rootPath} noThrow />
-              <WithOrgNav path={orgDetailsPath()}>
-                <OrgDetailsPage path={rootPath} />
-              </WithOrgNav>
-              <Redirect from={projectsPath} to={rootPath} noThrow />
-              <Redirect
-                from={projectDetailsPath()}
-                to={projectDevicesPath()}
-                noThrow
-              />
-              <WithProjectNav path={projectDetailsPath()}>
-                <DevicesPage path={devicesPath} />
-                <DeviceDetailsPage path={deviceDetailsPath()} />
-              </WithProjectNav>
-            </Router>
-            <Footer />
-            {drawer}
-            {dialog}
-          </React.Fragment>
-        )}
-        <div role="alert" aria-live="assertive">
-          {banner}
-        </div>
-      </React.Fragment>
+  function signInWithUrlParam() {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("access_token");
+    params.delete("access_token");
+    const currentUrl = `${window.location.origin}${window.location.pathname}`;
+    const queryWithoutToken = `?${params}`.replace(/\?$/, "");
+    navigate(`${currentUrl}${queryWithoutToken}`, {
+      replace: true,
+    });
+    if (document.referrer.startsWith("https://service.bitbrew.com")) {
+      signInWithToken(token);
+    } else {
+      signInWithSilentRefresh();
+    }
+  }
+
+  function signOut() {
+    removeToken();
+    setAuth(null);
+    const rootUrl = window.location.origin;
+    navigate(
+      `https://service.bitbrew.com/auth/logout?redirect_uri=https://service.bitbrew.com/auth/login?redirect_uri=${rootUrl}`,
     );
   }
+
+  function openDrawer(component) {
+    setDrawer(component);
+  }
+
+  function closeDrawer() {
+    setDrawer(null);
+  }
+
+  function openDialog(component) {
+    setDialog(component);
+  }
+
+  function closeDialog() {
+    setDialog(null);
+  }
+
+  function openBanner(component) {
+    setBanner(component);
+  }
+
+  function closeBanner() {
+    setBanner(null);
+  }
+
+  async function errorBoundary(code) {
+    try {
+      await code();
+      return null;
+    } catch (error) {
+      openBanner(<Banner>{summarize(error)}</Banner>);
+      return error;
+    }
+  }
+
+  async function refreshAndRetryOn401(error) {
+    if (error.response.status === 401) {
+      await signInWithSilentRefresh();
+      const response = await retry(error);
+      return response;
+    }
+    throw error;
+  }
+
+  useEffect(() => {
+    if (/[?&]access_token=/.test(window.location.search)) {
+      signInWithUrlParam();
+    } else {
+      signInWithSilentRefresh();
+    }
+    on("error", refreshAndRetryOn401);
+    return () => {
+      off("error", refreshAndRetryOn401);
+    };
+  }, []);
+
+  return (
+    <Context.Provider
+      value={{
+        auth,
+        signInWithToken,
+        signOut,
+        openDrawer,
+        closeDrawer,
+        openDialog,
+        closeDialog,
+        openBanner,
+        closeBanner,
+        errorBoundary,
+      }}
+    >
+      <GlobalStyle />
+      {auth && (
+        <React.Fragment>
+          <Router>
+            <WelcomePage path="/" />
+            <Redirect from="/orgs" to="/" noThrow />
+            <WithOrgNav path="/orgs/:orgId">
+              <OrgOverviewPage path="/" />
+              <OrgMembersPage path="/members" />
+              <ProjectsPage path="/projects" />
+            </WithOrgNav>
+            <Redirect
+              from="/orgs/:orgId/projects/:projectId"
+              to="/orgs/:orgId/projects/:projectId/devices"
+              noThrow
+            />
+            <WithProjectNav path="/orgs/:orgId/projects/:projectId">
+              <DevicesPage path="/devices" />
+              <DeviceOverviewPage path="/devices/:deviceId" />
+            </WithProjectNav>
+          </Router>
+          <Footer />
+          {drawer}
+          {dialog}
+          {banner}
+        </React.Fragment>
+      )}
+    </Context.Provider>
+  );
 }
-
-App.propTypes = {
-  banner: PropTypes.element,
-  createToken: PropTypes.func.isRequired,
-  dialog: PropTypes.element,
-  drawer: PropTypes.element,
-  isLoading: PropTypes.bool.isRequired,
-  listDevices: PropTypes.func.isRequired,
-  listOrgs: PropTypes.func.isRequired,
-  listProjects: PropTypes.func.isRequired,
-  openBanner: PropTypes.func.isRequired,
-  orgs: PropTypes.array.isRequired,
-  projects: PropTypes.array.isRequired,
-  setLoading: PropTypes.func.isRequired,
-  token: PropTypes.string,
-};
-
-App.defaultProps = {
-  banner: null,
-  dialog: null,
-  drawer: null,
-  token: null,
-};
-
-export default connect(
-  App,
-  ({ deviceStore, orgStore, projectStore, uiStore, userStore }) => ({
-    banner: uiStore.banner,
-    createToken: userStore.createToken,
-    dialog: uiStore.dialog,
-    drawer: uiStore.drawer,
-    isLoading: uiStore.isLoading,
-    listDevices: deviceStore.listDevices,
-    listOrgs: orgStore.listOrgs,
-    listProjects: projectStore.listProjects,
-    openBanner: uiStore.openBanner,
-    orgs: orgStore.orgs,
-    projects: projectStore.projects,
-    setLoading: uiStore.setLoading,
-    token: userStore.token,
-  }),
-);

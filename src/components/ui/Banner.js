@@ -1,10 +1,11 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled from 'styled-components';
-import { connect } from '../../utils/helpers';
-import { IconButton } from './Buttons';
-import { CloseIcon, ErrorIcon } from './Icons';
-import { Text } from './Texts';
+import PropTypes from "prop-types";
+import React, { useContext, useEffect, useRef } from "react";
+import ReactDOM from "react-dom";
+import styled from "styled-components";
+import Context from "../Context";
+import { IconButton } from "./Buttons";
+import { CloseIcon, ErrorIcon } from "./Icons";
+import { Text } from "./Texts";
 
 const Wrapper = styled.div`
   align-items: center;
@@ -19,7 +20,7 @@ const Wrapper = styled.div`
   margin-right: var(--size-24);
   padding: var(--size-8) var(--size-16);
   position: fixed;
-  z-index: 5;
+  z-index: 6;
 `;
 
 const Message = styled(Text)`
@@ -32,41 +33,32 @@ const DismissIcon = styled(CloseIcon)`
   fill: var(--color-gray);
 `;
 
-class Banner extends React.Component {
-  /* eslint-disable react/destructuring-assignment */
-  timeoutId = null;
+export default function Banner({ children }) {
+  const { closeBanner } = useContext(Context);
 
-  componentDidMount() {
-    this.timeoutId = window.setTimeout(this.props.closeBanner, 5000);
-  }
+  const timeoutId = useRef(null);
 
-  componentWillUnmount() {
-    window.clearTimeout(this.timeoutId);
-  }
+  useEffect(() => {
+    timeoutId.current = window.setTimeout(closeBanner, 5000);
+    return () => {
+      window.clearTimeout(timeoutId.current);
+      timeoutId.current = null;
+    };
+  });
 
-  /* eslint-enable react/destructuring-assignment */
-  render() {
-    const { children, closeBanner } = this.props;
-    return (
-      <Wrapper>
-        <ErrorIcon aria-hidden />
-        <Message>{children}</Message>
-        <IconButton onClick={closeBanner} title="Close error banner">
-          <DismissIcon />
-        </IconButton>
-      </Wrapper>
-    );
-  }
+  const bannerElement = document.getElementById("alert-region");
+  return ReactDOM.createPortal(
+    <Wrapper>
+      <ErrorIcon aria-hidden />
+      <Message>{children}</Message>
+      <IconButton onClick={closeBanner} title="Close error banner">
+        <DismissIcon />
+      </IconButton>
+    </Wrapper>,
+    bannerElement,
+  );
 }
 
 Banner.propTypes = {
   children: PropTypes.string.isRequired,
-  closeBanner: PropTypes.func.isRequired,
 };
-
-export default connect(
-  Banner,
-  ({ uiStore }) => ({
-    closeBanner: uiStore.closeBanner,
-  }),
-);

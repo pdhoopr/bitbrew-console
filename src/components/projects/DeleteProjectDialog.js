@@ -1,19 +1,27 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { connect } from '../../utils/helpers';
-import DeleteDialog from '../ui/DeleteDialog';
-import Panel from '../ui/Panel';
-import { Text } from '../ui/Texts';
+import PropTypes from "prop-types";
+import React from "react";
+import { deleteProject, listProjects } from "../../api";
+import { poll } from "../../utils";
+import DeleteDialog from "../ui/DeleteDialog";
+import Panel from "../ui/Panel";
+import { Text } from "../ui/Texts";
 
-function DeleteProjectDialog({ deleteProject, project }) {
+export default function DeleteProjectDialog({ onDelete, project }) {
   return (
     <DeleteDialog
       title="Delete Project"
-      onDelete={() => deleteProject(project)}
+      onDelete={async () => {
+        await deleteProject(project.id);
+        await poll(async () => {
+          const { items } = await listProjects(project.orgId);
+          return items.every(item => item.id !== project.id);
+        });
+        await onDelete();
+      }}
     >
       <Text>The following project will be permanently deleted:</Text>
       <Panel
-        items={[['Project', project.name], ['Organization', project.org.name]]}
+        items={[["Project", project.name], ["Organization", project.orgName]]}
       />
       <Text>Are you sure you want to continue?</Text>
     </DeleteDialog>
@@ -21,18 +29,11 @@ function DeleteProjectDialog({ deleteProject, project }) {
 }
 
 DeleteProjectDialog.propTypes = {
-  deleteProject: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
   project: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    org: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }).isRequired,
+    orgId: PropTypes.string.isRequired,
+    orgName: PropTypes.string.isRequired,
   }).isRequired,
 };
-
-export default connect(
-  DeleteProjectDialog,
-  ({ projectStore }) => ({
-    deleteProject: projectStore.deleteProject,
-  }),
-);

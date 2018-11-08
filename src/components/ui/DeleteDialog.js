@@ -1,14 +1,13 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled, { css } from 'styled-components';
-import { summarize } from '../../utils/formatters';
-import { connect } from '../../utils/helpers';
-import Banner from './Banner';
-import { Button, RaisedButton } from './Buttons';
-import { FlexEnd } from './Flexboxes';
-import { ContentHeader } from './Headers';
-import { Dialog } from './Modals';
-import { ContentTitle } from './Texts';
+import PropTypes from "prop-types";
+import React, { useContext, useState } from "react";
+import styled, { css } from "styled-components";
+import Context from "../Context";
+import { Button, RaisedButton } from "./Buttons";
+import { FlexEnd } from "./Flexboxes";
+import FocusTrap from "./FocusTrap";
+import { ContentHeader } from "./Headers";
+import { Dialog } from "./Modals";
+import { ContentTitle } from "./Texts";
 
 const padding = css`
   padding-bottom: var(--size-16);
@@ -29,7 +28,11 @@ const CancelButton = styled(Button)`
   margin-right: var(--size-16);
 `;
 
-function DeleteDialog({ children, closeDialog, onDelete, openBanner, title }) {
+export default function DeleteDialog({ children, onDelete, title }) {
+  const { closeDialog, errorBoundary } = useContext(Context);
+
+  const [isDeleting, setDeleting] = useState(false);
+
   return (
     <Dialog onRequestClose={closeDialog} contentLabel={title}>
       <ContentHeader>
@@ -40,11 +43,13 @@ function DeleteDialog({ children, closeDialog, onDelete, openBanner, title }) {
         <CancelButton onClick={closeDialog}>Cancel</CancelButton>
         <RaisedButton
           onClick={async () => {
-            try {
+            setDeleting(true);
+            const error = await errorBoundary(async () => {
               await onDelete();
               closeDialog();
-            } catch (error) {
-              openBanner(<Banner>{summarize(error)}</Banner>);
+            });
+            if (error && error.response.status !== 408) {
+              setDeleting(false);
             }
           }}
           red
@@ -52,22 +57,16 @@ function DeleteDialog({ children, closeDialog, onDelete, openBanner, title }) {
           Delete
         </RaisedButton>
       </Actions>
+      {isDeleting && <FocusTrap label={`Processing ${title} request`} />}
     </Dialog>
   );
 }
 
 DeleteDialog.propTypes = {
-  children: PropTypes.node.isRequired,
-  closeDialog: PropTypes.func.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
   onDelete: PropTypes.func.isRequired,
-  openBanner: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
 };
-
-export default connect(
-  DeleteDialog,
-  ({ uiStore }) => ({
-    closeDialog: uiStore.closeDialog,
-    openBanner: uiStore.openBanner,
-  }),
-);
