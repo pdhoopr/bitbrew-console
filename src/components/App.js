@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { off, on, removeToken, retry, setToken } from "../api";
 import { silentRefresh, summarize } from "../utils";
 import Context from "./Context";
+import DestinationsPage from "./destinations/DestinationsPage";
 import DeviceOverviewPage from "./devices/DeviceOverviewPage";
 import DevicesPage from "./devices/DevicesPage";
 import OrgMembersPage from "./orgs/OrgMembersPage";
@@ -161,6 +162,7 @@ export default function App() {
             <WithProjectNav path="/orgs/:orgId/projects/:projectId">
               <DevicesPage path="/devices" />
               <DeviceOverviewPage path="/devices/:deviceId" />
+              <DestinationsPage path="/destinations" />
             </WithProjectNav>
           </Router>
           <Footer />

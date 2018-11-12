@@ -1,3 +1,6 @@
 export default function capitalize(string) {
-  return string.replace(/^[a-z]/, letter => letter.toUpperCase());
+  const upper = string.toUpperCase();
+  return upper === "AMQP"
+    ? upper
+    : string.replace(/^[a-z]/, letter => letter.toUpperCase());
 }

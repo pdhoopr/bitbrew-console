@@ -10,6 +10,9 @@ export default function WithProjectNav({ children, orgId, projectId }) {
         <NavLink to={`/orgs/${orgId}/projects/${projectId}/devices`}>
           Devices
         </NavLink>
+        <NavLink to={`/orgs/${orgId}/projects/${projectId}/destinations`}>
+          Destinations
+        </NavLink>
       </Nav>
       {children}
     </React.Fragment>

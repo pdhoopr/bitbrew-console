@@ -25,6 +25,7 @@ export function retry(error) {
   return request(options);
 }
 
+export * from "./destinationService";
 export * from "./deviceService";
 export {
   addEventListener as on,
