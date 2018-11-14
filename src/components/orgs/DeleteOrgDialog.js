@@ -9,7 +9,7 @@ import { Text } from "../ui/Texts";
 export default function DeleteOrgDialog({ onDelete, org }) {
   return (
     <DeleteDialog
-      title="Delete Organization"
+      heading="Delete Organization"
       onDelete={async () => {
         await deleteOrg(org.id);
         await poll(async () => {

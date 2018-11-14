@@ -14,12 +14,12 @@ import { BackIcon, SyncDisabledIcon, SyncIcon } from "../ui/Icons";
 import { IconLink } from "../ui/Links";
 import List from "../ui/List";
 import { Content, Section } from "../ui/Sections";
-import { Heading, PageTitle, SectionTitle } from "../ui/Texts";
+import { PageHeading, SectionHeading, SubHeading } from "../ui/Texts";
 import { Width640 } from "../ui/Widths";
 import DeleteDeviceDialog from "./DeleteDeviceDialog";
 import EditDeviceForm from "./EditDeviceForm";
 
-const Title = styled(PageTitle)`
+const Heading = styled(PageHeading)`
   margin-left: var(--size-16);
   margin-right: auto;
 `;
@@ -50,6 +50,7 @@ export default function DeviceOverviewPage({ deviceId, orgId, projectId }) {
 
   const isLoading = useLoading(loadDevice, [deviceId, projectId, orgId]);
 
+  const type = device.type ? capitalize(device.type.trim()) : "";
   return (
     <main>
       <PageHeader>
@@ -60,14 +61,14 @@ export default function DeviceOverviewPage({ deviceId, orgId, projectId }) {
           >
             <BackIcon />
           </IconLink>
-          <Title>{device.codename || <span>&nbsp;</span>}</Title>
+          <Heading>{device.codename || <span>&nbsp;</span>}</Heading>
         </AppBar>
       </PageHeader>
       {!isLoading && (
         <Width640>
           <Section>
             <FlexBetween>
-              <SectionTitle>Overview</SectionTitle>
+              <SectionHeading>Overview</SectionHeading>
               <EditDeviceButton
                 onClick={() => {
                   openDrawer(
@@ -122,24 +123,26 @@ export default function DeviceOverviewPage({ deviceId, orgId, projectId }) {
                     ),
                   ],
                   ["Date Created", localize(device.createdAt)],
-                  ["Type", capitalize(device.type)],
                 ]}
               />
             </Content>
           </Section>
           <Section>
-            <SectionTitle>{capitalize(device.type)} Settings</SectionTitle>
-            <Heading gray>
+            <SectionHeading>Device Settings</SectionHeading>
+            <SubHeading gray>
               Additional details about your device that are relevant to its
               type.
-            </Heading>
+            </SubHeading>
             <Content>
-              <List
-                items={[
-                  ["Serial Number", device.serialNumber],
-                  ["IMEI", device.imei],
-                ]}
-              />
+              {type.toUpperCase() === "DATALOGGER" && (
+                <List
+                  items={[
+                    ["Type", type],
+                    ["Serial Number", device.serialNumber],
+                    ["IMEI", device.imei],
+                  ]}
+                />
+              )}
             </Content>
           </Section>
         </Width640>

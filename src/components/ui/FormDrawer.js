@@ -9,29 +9,34 @@ import { Form } from "./Forms";
 import { PageHeader } from "./Headers";
 import { CloseIcon } from "./Icons";
 import { Drawer } from "./Modals";
-import { PageTitle } from "./Texts";
+import { PageHeading } from "./Texts";
 import { Width320 } from "./Widths";
 
-const Title = styled(PageTitle)`
+const Heading = styled(PageHeading)`
   margin-left: var(--size-16);
 `;
 
-export default function FormDrawer({ buttonText, children, onSubmit, title }) {
+export default function FormDrawer({
+  buttonText,
+  children,
+  heading,
+  onSubmit,
+}) {
   const { closeDrawer, errorBoundary } = useContext(Context);
 
   const [isSubmitting, setSubmitting] = useState(false);
 
   return (
-    <Drawer onRequestClose={closeDrawer} contentLabel={title}>
+    <Drawer onRequestClose={closeDrawer} contentLabel={heading}>
       <PageHeader>
         <FlexStart>
           <IconButton
             onClick={closeDrawer}
-            title={`Cancel ${title.toLowerCase()}`}
+            title={`Cancel ${heading.toLowerCase()}`}
           >
             <CloseIcon />
           </IconButton>
-          <Title as="h2">{title}</Title>
+          <Heading as="h2">{heading}</Heading>
         </FlexStart>
       </PageHeader>
       <Width320>
@@ -54,17 +59,14 @@ export default function FormDrawer({ buttonText, children, onSubmit, title }) {
           </FlexEnd>
         </Form>
       </Width320>
-      {isSubmitting && <FocusTrap label={`Processing ${title} request`} />}
+      {isSubmitting && <FocusTrap label={`Processing ${heading} request`} />}
     </Drawer>
   );
 }
 
 FormDrawer.propTypes = {
   buttonText: PropTypes.string.isRequired,
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]).isRequired,
+  children: PropTypes.node.isRequired,
+  heading: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
 };

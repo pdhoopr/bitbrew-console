@@ -27,6 +27,7 @@ const OrgsAndProjectsLink = styled(IconLink)`
 const Heading = styled(Caption)`
   color: var(--color-gray);
   font-weight: var(--weight-bold);
+  letter-spacing: var(--letter-spacing);
   margin-bottom: var(--size-8);
   margin-top: var(--size-24);
   padding-left: var(--size-24);
@@ -67,9 +68,6 @@ export default function Nav({ children, heading }) {
 }
 
 Nav.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]).isRequired,
+  children: PropTypes.node.isRequired,
   heading: PropTypes.string.isRequired,
 };

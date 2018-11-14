@@ -5,7 +5,8 @@ import { ButtonLink } from "./Links";
 
 const Wrapper = styled(ButtonLink)`
   font-size: var(--size-16);
-  padding: var(--size-8) var(--size-24);
+  padding-left: var(--size-24);
+  padding-right: var(--size-24);
   width: 100%;
 
   &::before {

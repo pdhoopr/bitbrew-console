@@ -12,7 +12,7 @@ import { FlexBetween } from "../ui/Flexboxes";
 import { PageHeader } from "../ui/Headers";
 import List from "../ui/List";
 import { Content, Section } from "../ui/Sections";
-import { PageTitle, SectionTitle } from "../ui/Texts";
+import { PageHeading, SectionHeading } from "../ui/Texts";
 import { Width640 } from "../ui/Widths";
 import DeleteOrgDialog from "./DeleteOrgDialog";
 import EditOrgForm from "./EditOrgForm";
@@ -39,14 +39,14 @@ export default function OrgOverviewPage({ orgId }) {
     <main>
       <PageHeader>
         <AppBar>
-          <PageTitle>{org.name || <span>&nbsp;</span>}</PageTitle>
+          <PageHeading>{org.name || <span>&nbsp;</span>}</PageHeading>
         </AppBar>
       </PageHeader>
       {!isLoading && (
         <Width640>
           <Section>
             <FlexBetween>
-              <SectionTitle>Overview</SectionTitle>
+              <SectionHeading>Overview</SectionHeading>
               <EditOrgButton
                 onClick={() => {
                   openDrawer(<EditOrgForm org={org} onUpdate={loadOrg} />);

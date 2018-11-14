@@ -1,6 +1,5 @@
-import { get } from "./httpClient";
+import { get, post } from "./httpClient";
 
-// eslint-disable-next-line import/prefer-default-export
 export function listDestinations(projectId) {
   return get("/destinations", {
     params: {
@@ -8,4 +7,8 @@ export function listDestinations(projectId) {
       pageSize: 50,
     },
   });
+}
+
+export function createDestination(data) {
+  return post("/destinations", data);
 }

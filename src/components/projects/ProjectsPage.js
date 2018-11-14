@@ -11,7 +11,7 @@ import { RaisedButton } from "../ui/Buttons";
 import { FlexBetween } from "../ui/Flexboxes";
 import { PageHeader } from "../ui/Headers";
 import Search from "../ui/Search";
-import { PageTitle, Text } from "../ui/Texts";
+import { PageHeading, Text } from "../ui/Texts";
 import { Width640 } from "../ui/Widths";
 import NewProjectForm from "./NewProjectForm";
 import ProjectContent from "./ProjectContent";
@@ -52,7 +52,7 @@ export default function ProjectsPage({ orgId }) {
     <main>
       <PageHeader>
         <AppBar>
-          <PageTitle>Projects</PageTitle>
+          <PageHeading>Projects</PageHeading>
         </AppBar>
       </PageHeader>
       {!isLoading && (
@@ -67,7 +67,7 @@ export default function ProjectsPage({ orgId }) {
             <NewProjectButton
               onClick={() => {
                 openDrawer(
-                  <NewProjectForm org={org} onCreate={loadProjects} />,
+                  <NewProjectForm org={org.id} onCreate={loadProjects} />,
                 );
               }}
             >

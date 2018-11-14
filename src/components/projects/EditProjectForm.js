@@ -6,7 +6,7 @@ import useForm from "../hooks/useForm";
 import FormDrawer from "../ui/FormDrawer";
 import ProjectFormFields from "./ProjectFormFields";
 
-export default function EditProjectForm({ onUpdate, project }) {
+export default function EditProjectForm({ onUpdate, project, showOrgOnForm }) {
   const [values, setValue] = useForm({
     orgId: project.orgId,
     name: project.name,
@@ -16,7 +16,7 @@ export default function EditProjectForm({ onUpdate, project }) {
 
   return (
     <FormDrawer
-      title="Edit Project"
+      heading="Edit Project"
       buttonText="Save"
       onSubmit={async () => {
         const data = await updateProject(project.id, values);
@@ -29,7 +29,7 @@ export default function EditProjectForm({ onUpdate, project }) {
       }}
     >
       <ProjectFormFields
-        org={project.orgName}
+        org={showOrgOnForm ? project.orgName : null}
         values={values}
         setValue={setValue}
       />
@@ -47,4 +47,9 @@ EditProjectForm.propTypes = {
     orgName: PropTypes.string.isRequired,
     usesSimulatedDevices: PropTypes.bool.isRequired,
   }).isRequired,
+  showOrgOnForm: PropTypes.bool,
+};
+
+EditProjectForm.defaultProps = {
+  showOrgOnForm: false,
 };

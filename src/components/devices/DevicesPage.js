@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
-import styled from "styled-components";
 import { listDevices } from "../../api";
 import { capitalize, localize } from "../../utils";
 import Context from "../Context";
@@ -10,17 +9,10 @@ import { IconButton } from "../ui/Buttons";
 import { PageHeader } from "../ui/Headers";
 import { AddIcon } from "../ui/Icons";
 import { Link } from "../ui/Links";
-import Table, { Cell, Row } from "../ui/Table";
-import { PageTitle } from "../ui/Texts";
+import Table, { Cell, IconCell, Row } from "../ui/Table";
+import { PageHeading } from "../ui/Texts";
 import { Width640 } from "../ui/Widths";
 import NewDeviceForm from "./NewDeviceForm";
-
-const AddIconWrapper = styled.span`
-  display: block;
-  margin-bottom: calc(-1 * var(--size-8));
-  margin-top: calc(-1 * var(--size-8));
-  text-align: right;
-`;
 
 export default function DevicesPage({ orgId, projectId }) {
   const { openDrawer } = useContext(Context);
@@ -38,7 +30,7 @@ export default function DevicesPage({ orgId, projectId }) {
     <main>
       <PageHeader>
         <AppBar>
-          <PageTitle>Devices</PageTitle>
+          <PageHeading>Devices</PageHeading>
         </AppBar>
       </PageHeader>
       {!isLoading && (
@@ -48,7 +40,7 @@ export default function DevicesPage({ orgId, projectId }) {
               "Codename",
               "Date Created",
               "Type",
-              <AddIconWrapper key="New Device">
+              <IconCell key="New Device">
                 <IconButton
                   onClick={() => {
                     openDrawer(
@@ -62,7 +54,7 @@ export default function DevicesPage({ orgId, projectId }) {
                 >
                   <AddIcon />
                 </IconButton>
-              </AddIconWrapper>,
+              </IconCell>,
             ]}
             emptyState="There are no devices in this project yet."
           >
@@ -75,7 +67,7 @@ export default function DevicesPage({ orgId, projectId }) {
                     <Link
                       to={`/orgs/${orgId}/projects/${projectId}/devices/${deviceId}`}
                     >
-                      {codename || "Untitled device"}
+                      {codename || "Unnamed device"}
                       {!device.enabled && " (disabled)"}
                     </Link>
                   </Cell>

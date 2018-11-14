@@ -9,10 +9,10 @@ const baseStyles = css`
   font-family: var(--font-roboto);
   font-size: var(--size-14);
   font-weight: var(--weight-bold);
+  letter-spacing: var(--letter-spacing);
   line-height: var(--size-20);
   margin: 0;
   padding: var(--size-8) var(--size-16);
-  text-transform: uppercase;
 
   &::-moz-focus-inner {
     border-style: none;
@@ -29,7 +29,6 @@ export const Button = styled.button.attrs({
 })`
   ${baseStyles};
   color: inherit;
-  padding: var(--size-8);
   position: relative;
 
   &::before {
@@ -51,9 +50,12 @@ export const Button = styled.button.attrs({
   }
 `;
 
-export const IconButton = styled(Button).attrs({
-  "aria-label": ({ title }) => title,
-})`
+export const IconButton = styled(Button).attrs(({ title }) => ({
+  "aria-label": title,
+}))`
+  padding-left: var(--size-8);
+  padding-right: var(--size-8);
+
   &::before {
     border-radius: 50%;
   }

@@ -6,7 +6,7 @@ import useLoading from "../hooks/useLoading";
 import AppBar from "../ui/AppBar";
 import { PageHeader } from "../ui/Headers";
 import Table, { Cell, Row } from "../ui/Table";
-import { PageTitle } from "../ui/Texts";
+import { PageHeading } from "../ui/Texts";
 import { Width640 } from "../ui/Widths";
 
 export default function OrgMembersPage({ orgId }) {
@@ -23,7 +23,7 @@ export default function OrgMembersPage({ orgId }) {
     <main>
       <PageHeader>
         <AppBar>
-          <PageTitle>Members</PageTitle>
+          <PageHeading>Members</PageHeading>
         </AppBar>
       </PageHeader>
       {!isLoading && (

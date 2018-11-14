@@ -8,17 +8,17 @@ import DeviceFormFields from "./DeviceFormFields";
 
 export default function NewDeviceForm({ onCreate, project }) {
   const [values, setValue] = useForm({
+    projectId: project,
     codename: "",
-    type: "Datalogger",
+    enabled: true,
+    type: "datalogger",
     serialNumber: "",
     imei: "",
-    enabled: true,
-    projectId: project,
   });
 
   return (
     <FormDrawer
-      title="New Device"
+      heading="New Device"
       buttonText="Create"
       onSubmit={async () => {
         const data = await createDevice(values);

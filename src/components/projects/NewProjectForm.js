@@ -6,9 +6,9 @@ import useForm from "../hooks/useForm";
 import FormDrawer from "../ui/FormDrawer";
 import ProjectFormFields from "./ProjectFormFields";
 
-export default function NewProjectForm({ onCreate, org }) {
+export default function NewProjectForm({ onCreate, org, selectOrgFrom }) {
   const [values, setValue] = useForm({
-    orgId: org.id || "",
+    orgId: org,
     name: "",
     description: "",
     usesSimulatedDevices: false,
@@ -16,7 +16,7 @@ export default function NewProjectForm({ onCreate, org }) {
 
   return (
     <FormDrawer
-      title="New Project"
+      heading="New Project"
       buttonText="Create"
       onSubmit={async () => {
         const data = await createProject(values);
@@ -28,7 +28,7 @@ export default function NewProjectForm({ onCreate, org }) {
       }}
     >
       <ProjectFormFields
-        org={org.name || org}
+        selectOrgFrom={selectOrgFrom}
         values={values}
         setValue={setValue}
       />
@@ -38,11 +38,11 @@ export default function NewProjectForm({ onCreate, org }) {
 
 NewProjectForm.propTypes = {
   onCreate: PropTypes.func.isRequired,
-  org: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    }),
-  ]).isRequired,
+  org: PropTypes.string,
+  selectOrgFrom: PropTypes.array,
+};
+
+NewProjectForm.defaultProps = {
+  org: "",
+  selectOrgFrom: null,
 };

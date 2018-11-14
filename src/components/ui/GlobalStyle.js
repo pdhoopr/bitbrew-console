@@ -25,6 +25,7 @@ export default createGlobalStyle`
     --font-roboto: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI',
       Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
       'Segoe UI Symbol';
+    --letter-spacing: 0.25px;
     --size-2: 0.125rem;
     --size-4: 0.25rem;
     --size-7: 0.4375rem;

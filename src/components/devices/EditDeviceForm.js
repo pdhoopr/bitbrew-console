@@ -8,17 +8,17 @@ import DeviceFormFields from "./DeviceFormFields";
 
 export default function EditDeviceForm({ device, onUpdate }) {
   const [values, setValue] = useForm({
+    projectId: device.projectId,
     codename: device.codename,
+    enabled: device.enabled,
     type: device.type,
     serialNumber: device.serialNumber,
     imei: device.imei,
-    enabled: device.enabled,
-    projectId: device.projectId,
   });
 
   return (
     <FormDrawer
-      title="Edit Device"
+      heading="Edit Device"
       buttonText="Save"
       onSubmit={async () => {
         const data = await updateDevice(device.id, values);
@@ -30,7 +30,7 @@ export default function EditDeviceForm({ device, onUpdate }) {
         await onUpdate();
       }}
     >
-      <DeviceFormFields values={values} setValue={setValue} />
+      <DeviceFormFields values={values} setValue={setValue} edit />
     </FormDrawer>
   );
 }

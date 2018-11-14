@@ -37,7 +37,7 @@ export const Link = styled(LinkImpl)`
 export const ButtonLink = styled(LinkImpl)`
   ${baseStyles};
   display: inline-block;
-  padding: var(--size-8);
+  padding: var(--size-8) var(--size-16);
   position: relative;
 
   &::before {
@@ -59,9 +59,12 @@ export const ButtonLink = styled(LinkImpl)`
   }
 `;
 
-export const IconLink = styled(ButtonLink).attrs({
-  "aria-label": ({ title }) => title,
-})`
+export const IconLink = styled(ButtonLink).attrs(({ title }) => ({
+  "aria-label": title,
+}))`
+  padding-left: var(--size-8);
+  padding-right: var(--size-8);
+
   &::before {
     border-radius: 50%;
   }

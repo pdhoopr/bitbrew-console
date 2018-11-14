@@ -7,7 +7,7 @@ import { FlexEnd } from "./Flexboxes";
 import FocusTrap from "./FocusTrap";
 import { ContentHeader } from "./Headers";
 import { Dialog } from "./Modals";
-import { ContentTitle } from "./Texts";
+import { ContentHeading } from "./Texts";
 
 const padding = css`
   padding-bottom: var(--size-16);
@@ -28,15 +28,15 @@ const CancelButton = styled(Button)`
   margin-right: var(--size-16);
 `;
 
-export default function DeleteDialog({ children, onDelete, title }) {
+export default function DeleteDialog({ children, heading, onDelete }) {
   const { closeDialog, errorBoundary } = useContext(Context);
 
   const [isDeleting, setDeleting] = useState(false);
 
   return (
-    <Dialog onRequestClose={closeDialog} contentLabel={title}>
+    <Dialog onRequestClose={closeDialog} contentLabel={heading}>
       <ContentHeader>
-        <ContentTitle as="h2">{title}</ContentTitle>
+        <ContentHeading as="h2">{heading}</ContentHeading>
       </ContentHeader>
       <Message>{children}</Message>
       <Actions>
@@ -57,16 +57,13 @@ export default function DeleteDialog({ children, onDelete, title }) {
           Delete
         </RaisedButton>
       </Actions>
-      {isDeleting && <FocusTrap label={`Processing ${title} request`} />}
+      {isDeleting && <FocusTrap label={`Processing ${heading} request`} />}
     </Dialog>
   );
 }
 
 DeleteDialog.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]).isRequired,
+  children: PropTypes.node.isRequired,
+  heading: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
 };

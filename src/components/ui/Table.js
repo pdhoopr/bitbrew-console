@@ -26,11 +26,19 @@ export const Cell = styled.td`
 
 const HeaderCell = styled(Cell)`
   font-weight: var(--weight-bold);
+  letter-spacing: var(--letter-spacing);
 `;
 
 const EmptyCell = styled(Cell)`
   color: var(--color-dark-gray);
   text-align: center;
+`;
+
+export const IconCell = styled.span`
+  display: block;
+  margin-bottom: calc(-1 * var(--size-8));
+  margin-top: calc(-1 * var(--size-8));
+  text-align: right;
 `;
 
 export default function Table({ children, columns, emptyState }) {
@@ -59,13 +67,8 @@ export default function Table({ children, columns, emptyState }) {
 }
 
 Table.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]).isRequired,
-  columns: PropTypes.arrayOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  ).isRequired,
+  children: PropTypes.node.isRequired,
+  columns: PropTypes.arrayOf(PropTypes.node).isRequired,
   emptyState: PropTypes.string,
 };
 

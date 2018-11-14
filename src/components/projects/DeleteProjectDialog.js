@@ -9,7 +9,7 @@ import { Text } from "../ui/Texts";
 export default function DeleteProjectDialog({ onDelete, project }) {
   return (
     <DeleteDialog
-      title="Delete Project"
+      heading="Delete Project"
       onDelete={async () => {
         await deleteProject(project.id);
         await poll(async () => {

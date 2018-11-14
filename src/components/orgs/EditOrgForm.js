@@ -13,7 +13,7 @@ export default function EditOrgForm({ onUpdate, org }) {
 
   return (
     <FormDrawer
-      title="Edit Organization"
+      heading="Edit Organization"
       buttonText="Save"
       onSubmit={async () => {
         const data = await updateOrg(org.id, values);

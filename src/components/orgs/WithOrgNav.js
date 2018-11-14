@@ -23,10 +23,7 @@ export default function WithOrgNav({ children, orgId }) {
 }
 
 WithOrgNav.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]).isRequired,
+  children: PropTypes.node.isRequired,
   orgId: PropTypes.string,
 };
 

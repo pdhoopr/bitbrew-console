@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import AddSvg from "../../icons/add.svg";
 import ArrowDownSvg from "../../icons/arrow-down.svg";
+import ArrowUpSvg from "../../icons/arrow-up.svg";
 import BackSvg from "../../icons/back.svg";
 import CheckboxSelectedSvg from "../../icons/checkbox-selected.svg";
 import CheckboxSvg from "../../icons/checkbox.svg";
@@ -8,6 +9,7 @@ import CloseSvg from "../../icons/close.svg";
 import ErrorSvg from "../../icons/error.svg";
 import MoreSvg from "../../icons/more.svg";
 import RadioButtonSelectedSvg from "../../icons/radio-button-selected.svg";
+import RadioButtonSvg from "../../icons/radio-button.svg";
 import SearchSvg from "../../icons/search.svg";
 import SyncDisabledSvg from "../../icons/sync-disabled.svg";
 import SyncSvg from "../../icons/sync.svg";
@@ -25,6 +27,30 @@ export const AddIcon = styled(AddSvg)`
 
 export const ArrowDownIcon = styled(ArrowDownSvg)`
   ${baseStyles};
+`;
+
+export const ArrowDownInlineIcon = styled(ArrowDownSvg).attrs({
+  "aria-hidden": true,
+})`
+  fill: currentColor;
+  height: var(--size-16);
+  margin-right: calc(-1 * var(--size-4));
+  vertical-align: middle;
+  width: var(--size-16);
+`;
+
+export const ArrowUpIcon = styled(ArrowUpSvg)`
+  ${baseStyles};
+`;
+
+export const ArrowUpInlineIcon = styled(ArrowUpSvg).attrs({
+  "aria-hidden": true,
+})`
+  fill: currentColor;
+  height: var(--size-16);
+  margin-right: calc(-1 * var(--size-4));
+  vertical-align: middle;
+  width: var(--size-16);
 `;
 
 export const BackIcon = styled(BackSvg)`
@@ -50,6 +76,10 @@ export const ErrorIcon = styled(ErrorSvg)`
 `;
 
 export const MoreIcon = styled(MoreSvg)`
+  ${baseStyles};
+`;
+
+export const RadioButtonIcon = styled(RadioButtonSvg)`
   ${baseStyles};
 `;
 

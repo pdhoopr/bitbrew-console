@@ -17,7 +17,7 @@ export default function NewOrgForm({ onCreate }) {
 
   return (
     <FormDrawer
-      title="New Organization"
+      heading="New Organization"
       buttonText="Create"
       onSubmit={async () => {
         const data = await createOrg(values);

@@ -10,11 +10,16 @@ import { Link } from "../ui/Links";
 import List from "../ui/List";
 import Menu from "../ui/Menu";
 import { Content } from "../ui/Sections";
-import { ContentTitle, Text } from "../ui/Texts";
+import { ContentHeading, Text } from "../ui/Texts";
 import DeleteProjectDialog from "./DeleteProjectDialog";
 import EditProjectForm from "./EditProjectForm";
 
-export default function ProjectContent({ onDelete, onUpdate, project }) {
+export default function ProjectContent({
+  onDelete,
+  onUpdate,
+  project,
+  showOrgOnForm,
+}) {
   const { openDialog, openDrawer } = useContext(Context);
 
   const name = project.name.trim();
@@ -23,13 +28,13 @@ export default function ProjectContent({ onDelete, onUpdate, project }) {
       <ContentHeader>
         <FlexBetween>
           <div>
-            <ContentTitle gray={!name}>
+            <ContentHeading gray={!name}>
               <Link
                 to={`/orgs/${project.orgId}/projects/${project.id}/devices`}
               >
-                {name || "Untitled project"}
+                {name || "Unnamed project"}
               </Link>
-            </ContentTitle>
+            </ContentHeading>
             <Text gray>{project.description}</Text>
           </div>
           <Menu
@@ -42,7 +47,11 @@ export default function ProjectContent({ onDelete, onUpdate, project }) {
             <Button
               onClick={() => {
                 openDrawer(
-                  <EditProjectForm project={project} onUpdate={onUpdate} />,
+                  <EditProjectForm
+                    showOrgOnForm={showOrgOnForm}
+                    project={project}
+                    onUpdate={onUpdate}
+                  />,
                 );
               }}
             >
@@ -80,4 +89,9 @@ ProjectContent.propTypes = {
     name: PropTypes.string.isRequired,
     orgId: PropTypes.string.isRequired,
   }).isRequired,
+  showOrgOnForm: PropTypes.bool,
+};
+
+ProjectContent.defaultProps = {
+  showOrgOnForm: false,
 };

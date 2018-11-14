@@ -24,10 +24,8 @@ const Items = styled.div`
   ${/* sc-selector */ Button} {
     border-radius: 0;
     font-weight: var(--weight-regular);
-    padding-left: var(--size-16);
-    padding-right: var(--size-16);
+    letter-spacing: normal;
     text-align: left;
-    text-transform: none;
     transition: background-color var(--duration-short);
     width: 100%;
 
@@ -178,9 +176,6 @@ export default function Menu({ children, control }) {
 }
 
 Menu.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]).isRequired,
+  children: PropTypes.node.isRequired,
   control: PropTypes.element.isRequired,
 };

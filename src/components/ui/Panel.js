@@ -20,6 +20,7 @@ const Row = styled(FlexStart)`
 const Term = styled.dt`
   flex: 1;
   font-weight: var(--weight-bold);
+  letter-spacing: var(--letter-spacing);
 `;
 
 const Description = styled.dd`

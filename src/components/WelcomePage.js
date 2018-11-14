@@ -12,13 +12,13 @@ import AppBar from "./ui/AppBar";
 import { Button, RaisedButton } from "./ui/Buttons";
 import { FlexBetween } from "./ui/Flexboxes";
 import { PageHeader } from "./ui/Headers";
-import { ArrowDownIcon } from "./ui/Icons";
+import { ArrowDownInlineIcon } from "./ui/Icons";
 import { Link } from "./ui/Links";
 import Logo from "./ui/Logo";
 import Menu from "./ui/Menu";
 import Search from "./ui/Search";
 import { Section } from "./ui/Sections";
-import { Heading, PageTitle, SectionTitle, Text } from "./ui/Texts";
+import { PageHeading, SectionHeading, SubHeading, Text } from "./ui/Texts";
 import { Width640 } from "./ui/Widths";
 
 const WelcomeHeader = styled(PageHeader)`
@@ -26,20 +26,13 @@ const WelcomeHeader = styled(PageHeader)`
   color: var(--color-white);
 `;
 
-const Title = styled(PageTitle)`
+const Heading = styled(PageHeading)`
   margin-top: var(--size-32);
 `;
 
 const Actions = styled(FlexBetween)`
   margin-bottom: var(--size-32);
   margin-top: var(--size-32);
-`;
-
-const NewButtonIcon = styled(ArrowDownIcon)`
-  fill: currentColor;
-  height: var(--size-16);
-  margin-right: calc(-1 * var(--size-4));
-  width: var(--size-16);
 `;
 
 export default function WelcomePage() {
@@ -72,10 +65,10 @@ export default function WelcomePage() {
           <AppBar>
             <Logo />
           </AppBar>
-          <Title>Welcome!</Title>
-          <Heading>
+          <Heading>Welcome!</Heading>
+          <SubHeading>
             Use the BitBrew Console to manage your data pipeline.
-          </Heading>
+          </SubHeading>
         </Width640>
       </WelcomeHeader>
       {!isLoading && (
@@ -90,7 +83,7 @@ export default function WelcomePage() {
             <Menu
               control={
                 <RaisedButton>
-                  New <NewButtonIcon aria-hidden />
+                  New <ArrowDownInlineIcon />
                 </RaisedButton>
               }
             >
@@ -103,7 +96,9 @@ export default function WelcomePage() {
               </Button>
               <Button
                 onClick={() => {
-                  openDrawer(<NewProjectForm org={orgs} onCreate={loadOrgs} />);
+                  openDrawer(
+                    <NewProjectForm selectOrgFrom={orgs} onCreate={loadOrgs} />,
+                  );
                 }}
               >
                 Project
@@ -121,9 +116,9 @@ export default function WelcomePage() {
             return (
               (values.searchTerm === "" || searchResults.length > 0) && (
                 <Section key={org.id}>
-                  <SectionTitle>
+                  <SectionHeading>
                     <Link to={`/orgs/${org.id}`}>{org.name}</Link>
-                  </SectionTitle>
+                  </SectionHeading>
                   <FlexBetween>
                     <Text gray>Created on {localize(org.createdAt)}</Text>
                     <Text gray>
@@ -139,6 +134,7 @@ export default function WelcomePage() {
                       }}
                       onUpdate={loadOrgs}
                       onDelete={loadOrgs}
+                      showOrgOnForm
                     />
                   ))}
                 </Section>

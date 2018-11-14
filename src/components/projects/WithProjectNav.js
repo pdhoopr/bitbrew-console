@@ -20,10 +20,7 @@ export default function WithProjectNav({ children, orgId, projectId }) {
 }
 
 WithProjectNav.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]).isRequired,
+  children: PropTypes.node.isRequired,
   orgId: PropTypes.string,
   projectId: PropTypes.string,
 };

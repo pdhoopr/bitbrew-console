@@ -9,7 +9,7 @@ import { Text } from "../ui/Texts";
 export default function DeleteDeviceDialog({ device, onDelete }) {
   return (
     <DeleteDialog
-      title="Delete Device"
+      heading="Delete Device"
       onDelete={async () => {
         await deleteDevice(device.id);
         await poll(async () => {
