@@ -22,6 +22,8 @@ const Term = styled.dt`
 const Description = styled.dd`
   margin-left: 0;
   flex: 1.5;
+  overflow: auto;
+  word-wrap: break-word;
 `;
 
 export default function List({ items }) {

@@ -72,7 +72,7 @@ export default function ProjectContent({
       <List
         items={[
           ["ID", project.id],
-          ["Date Created", localize(project.createdAt)],
+          ["Created On", localize(project.createdAt)],
         ]}
       />
     </Content>

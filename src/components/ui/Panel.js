@@ -26,6 +26,8 @@ const Term = styled.dt`
 const Description = styled.dd`
   margin-left: 0;
   flex: 2;
+  overflow: auto;
+  word-wrap: break-word;
 `;
 
 export default function Panel({ items }) {

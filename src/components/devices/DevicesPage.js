@@ -38,7 +38,7 @@ export default function DevicesPage({ orgId, projectId }) {
           <Table
             columns={[
               "Codename",
-              "Date Created",
+              "Created On",
               "Type",
               <IconCell key="New Device">
                 <IconButton

@@ -122,7 +122,18 @@ export default function DeviceOverviewPage({ deviceId, orgId, projectId }) {
                       </span>
                     ),
                   ],
-                  ["Date Created", localize(device.createdAt)],
+                  [
+                    "Created On",
+                    localize(device.createdAt, {
+                      time: true,
+                    }),
+                  ],
+                  [
+                    "Last Modified On",
+                    localize(device.updatedAt, {
+                      time: true,
+                    }),
+                  ],
                 ]}
               />
             </Content>

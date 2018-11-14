@@ -74,7 +74,7 @@ export default function OrgOverviewPage({ orgId }) {
               <List
                 items={[
                   ["ID", org.id],
-                  ["Date Created", localize(org.createdAt)],
+                  ["Created On", localize(org.createdAt)],
                 ]}
               />
             </Content>

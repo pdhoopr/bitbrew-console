@@ -8,12 +8,13 @@ import AppBar from "../ui/AppBar";
 import { IconButton } from "../ui/Buttons";
 import { PageHeader } from "../ui/Headers";
 import { AddIcon } from "../ui/Icons";
+import { Link } from "../ui/Links";
 import Table, { Cell, IconCell, Row } from "../ui/Table";
 import { PageHeading } from "../ui/Texts";
 import { Width640 } from "../ui/Widths";
 import NewDestinationForm from "./NewDestinationForm";
 
-export default function DestinationsPage({ projectId }) {
+export default function DestinationsPage({ orgId, projectId }) {
   const { openDrawer } = useContext(Context);
 
   const [destinations, setDestinations] = useState([]);
@@ -37,7 +38,7 @@ export default function DestinationsPage({ projectId }) {
           <Table
             columns={[
               "Name",
-              "Date Created",
+              "Created On",
               "Type",
               <IconCell key="New Destination">
                 <IconButton
@@ -57,17 +58,24 @@ export default function DestinationsPage({ projectId }) {
             ]}
             emptyState="There are no destinations in this project yet."
           >
-            {destinations.map(destination => (
-              <Row key={destination.id} italic={!destination.enabled}>
-                <Cell>
-                  {destination.name}
-                  {!destination.enabled && " (disabled)"}
-                </Cell>
-                <Cell>{localize(destination.createdAt)}</Cell>
-                <Cell>{capitalize(destination.type)}</Cell>
-                <Cell />
-              </Row>
-            ))}
+            {destinations.map(destination => {
+              const { id: destinationId } = destination;
+              return (
+                <Row key={destination.id} italic={!destination.enabled}>
+                  <Cell>
+                    <Link
+                      to={`/orgs/${orgId}/projects/${projectId}/destinations/${destinationId}`}
+                    >
+                      {destination.name}
+                      {!destination.enabled && " (disabled)"}
+                    </Link>
+                  </Cell>
+                  <Cell>{localize(destination.createdAt)}</Cell>
+                  <Cell>{capitalize(destination.type)}</Cell>
+                  <Cell />
+                </Row>
+              );
+            })}
           </Table>
         </Width640>
       )}
@@ -76,9 +84,11 @@ export default function DestinationsPage({ projectId }) {
 }
 
 DestinationsPage.propTypes = {
+  orgId: PropTypes.string,
   projectId: PropTypes.string,
 };
 
 DestinationsPage.defaultProps = {
+  orgId: null,
   projectId: null,
 };

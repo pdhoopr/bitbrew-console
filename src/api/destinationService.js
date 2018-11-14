@@ -9,6 +9,10 @@ export function listDestinations(projectId) {
   });
 }
 
+export function viewDestination(id) {
+  return get(`/destinations/${id}`);
+}
+
 export function createDestination(data) {
   return post("/destinations", data);
 }
