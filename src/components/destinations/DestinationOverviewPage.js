@@ -1,10 +1,12 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { viewDestination } from "../../api";
 import { capitalize, localize } from "../../utils";
+import Context from "../Context";
 import useLoading from "../hooks/useLoading";
 import AppBar from "../ui/AppBar";
+import { RaisedButton } from "../ui/Buttons";
 import { FlexBetween } from "../ui/Flexboxes";
 import { PageHeader } from "../ui/Headers";
 import { BackIcon, SyncDisabledIcon, SyncIcon } from "../ui/Icons";
@@ -13,10 +15,15 @@ import List from "../ui/List";
 import { Content, Section } from "../ui/Sections";
 import { PageHeading, SectionHeading, SubHeading } from "../ui/Texts";
 import { Width640 } from "../ui/Widths";
+import EditDestinationForm from "./EditDestinationForm";
 
 const Heading = styled(PageHeading)`
   margin-left: var(--size-16);
   margin-right: auto;
+`;
+
+const EditDestinationButton = styled(RaisedButton)`
+  background-color: var(--color-black);
 `;
 
 export default function DestinationOverviewPage({
@@ -24,6 +31,8 @@ export default function DestinationOverviewPage({
   orgId,
   projectId,
 }) {
+  const { openDrawer } = useContext(Context);
+
   const [destination, setDestination] = useState({});
 
   async function loadDestination() {
@@ -52,6 +61,18 @@ export default function DestinationOverviewPage({
           <Section>
             <FlexBetween>
               <SectionHeading>Overview</SectionHeading>
+              <EditDestinationButton
+                onClick={() => {
+                  openDrawer(
+                    <EditDestinationForm
+                      destination={destination}
+                      onUpdate={loadDestination}
+                    />,
+                  );
+                }}
+              >
+                Edit
+              </EditDestinationButton>
             </FlexBetween>
             <Content>
               <List

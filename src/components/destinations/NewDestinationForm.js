@@ -31,9 +31,10 @@ export default function NewDestinationForm({ onCreate, project }) {
       buttonText="Create"
       onSubmit={async () => {
         const amqpPort = values.amqpPort.trim();
+        const defaultAmqpPort = values.amqpSecure ? 5671 : 5672;
         const data = await createDestination({
           ...values,
-          amqpPort: amqpPort ? Number(amqpPort) : undefined,
+          amqpPort: amqpPort ? Number(amqpPort) : defaultAmqpPort,
         });
         await poll(async () => {
           const { items } = await listDestinations(data.projectId);

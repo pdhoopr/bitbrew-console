@@ -6,12 +6,16 @@ export default function useLoading(loadData, props = []) {
 
   const [isLoading, setLoading] = useState(true);
 
-  useEffect(async () => {
+  async function loadWithErrorHandling() {
     setLoading(true);
     const error = await errorBoundary(loadData);
     if (!error) {
       setLoading(false);
     }
+  }
+
+  useEffect(() => {
+    loadWithErrorHandling();
   }, props);
 
   return isLoading;

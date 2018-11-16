@@ -1,4 +1,4 @@
-import { get, post } from "./httpClient";
+import { get, post, put } from "./httpClient";
 
 export function listDestinations(projectId) {
   return get("/destinations", {
@@ -15,4 +15,8 @@ export function viewDestination(id) {
 
 export function createDestination(data) {
   return post("/destinations", data);
+}
+
+export function updateDestination(id, data) {
+  return put(`/destinations/${id}`, data);
 }
