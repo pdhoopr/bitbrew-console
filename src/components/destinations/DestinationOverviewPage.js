@@ -1,7 +1,8 @@
+import { navigate } from "@reach/router";
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { viewDestination } from "../../api";
+import { viewDestination, viewOrg, viewProject } from "../../api";
 import { capitalize, localize } from "../../utils";
 import Context from "../Context";
 import useLoading from "../hooks/useLoading";
@@ -15,6 +16,7 @@ import List from "../ui/List";
 import { Content, Section } from "../ui/Sections";
 import { PageHeading, SectionHeading, SubHeading } from "../ui/Texts";
 import { Width640 } from "../ui/Widths";
+import DeleteDestinationDialog from "./DeleteDestinationDialog";
 import EditDestinationForm from "./EditDestinationForm";
 
 const Heading = styled(PageHeading)`
@@ -24,6 +26,8 @@ const Heading = styled(PageHeading)`
 
 const EditDestinationButton = styled(RaisedButton)`
   background-color: var(--color-black);
+  margin-left: auto;
+  margin-right: var(--size-16);
 `;
 
 export default function DestinationOverviewPage({
@@ -31,24 +35,37 @@ export default function DestinationOverviewPage({
   orgId,
   projectId,
 }) {
-  const { openDrawer } = useContext(Context);
+  const { openDialog, openDrawer } = useContext(Context);
 
   const [destination, setDestination] = useState({});
+  const [project, setProject] = useState({});
+  const [org, setOrg] = useState({});
 
   async function loadDestination() {
-    const data = await viewDestination(destinationId);
+    const [data, projectData, orgData] = await Promise.all([
+      viewDestination(destinationId),
+      viewProject(projectId),
+      viewOrg(orgId),
+    ]);
     setDestination(data);
+    setProject(projectData);
+    setOrg(orgData);
   }
 
-  const isLoading = useLoading(loadDestination, [destinationId]);
+  const isLoading = useLoading(loadDestination, [
+    destinationId,
+    projectId,
+    orgId,
+  ]);
 
+  const destinationsUrl = `/orgs/${orgId}/projects/${projectId}/destinations`;
   const type = destination.type ? capitalize(destination.type.trim()) : "";
   return (
     <main>
       <PageHeader>
         <AppBar>
           <IconLink
-            to={`/orgs/${orgId}/projects/${projectId}/destinations`}
+            to={destinationsUrl}
             title="View all destinations for this project"
           >
             <BackIcon />
@@ -73,6 +90,25 @@ export default function DestinationOverviewPage({
               >
                 Edit
               </EditDestinationButton>
+              <RaisedButton
+                onClick={() => {
+                  openDialog(
+                    <DeleteDestinationDialog
+                      destination={{
+                        ...destination,
+                        projectName: project.name,
+                        orgName: org.name,
+                      }}
+                      onDelete={() => {
+                        navigate(destinationsUrl);
+                      }}
+                    />,
+                  );
+                }}
+                red
+              >
+                Delete
+              </RaisedButton>
             </FlexBetween>
             <Content>
               <List

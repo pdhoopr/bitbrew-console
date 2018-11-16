@@ -1,4 +1,4 @@
-import { get, post, put } from "./httpClient";
+import { del, get, post, put } from "./httpClient";
 
 export function listDestinations(projectId) {
   return get("/destinations", {
@@ -19,4 +19,8 @@ export function createDestination(data) {
 
 export function updateDestination(id, data) {
   return put(`/destinations/${id}`, data);
+}
+
+export function deleteDestination(id) {
+  return del(`/destinations/${id}`);
 }

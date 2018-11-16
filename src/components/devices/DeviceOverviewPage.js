@@ -50,15 +50,13 @@ export default function DeviceOverviewPage({ deviceId, orgId, projectId }) {
 
   const isLoading = useLoading(loadDevice, [deviceId, projectId, orgId]);
 
+  const devicesUrl = `/orgs/${orgId}/projects/${projectId}/devices`;
   const type = device.type ? capitalize(device.type.trim()) : "";
   return (
     <main>
       <PageHeader>
         <AppBar>
-          <IconLink
-            to={`/orgs/${orgId}/projects/${projectId}/devices`}
-            title="View all devices for this project"
-          >
+          <IconLink to={devicesUrl} title="View all devices for this project">
             <BackIcon />
           </IconLink>
           <Heading>{device.codename || <span>&nbsp;</span>}</Heading>
@@ -88,9 +86,7 @@ export default function DeviceOverviewPage({ deviceId, orgId, projectId }) {
                         orgName: org.name,
                       }}
                       onDelete={() => {
-                        navigate(
-                          `/orgs/${orgId}/projects/${projectId}/devices`,
-                        );
+                        navigate(devicesUrl);
                       }}
                     />,
                   );
