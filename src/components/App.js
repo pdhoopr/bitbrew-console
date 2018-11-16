@@ -13,6 +13,7 @@ import OrgOverviewPage from "./orgs/OrgOverviewPage";
 import WithOrgNav from "./orgs/WithOrgNav";
 import ProjectsPage from "./projects/ProjectsPage";
 import WithProjectNav from "./projects/WithProjectNav";
+import RulesPage from "./rules/RulesPage";
 import Banner from "./ui/Banner";
 import Footer from "./ui/Footer";
 import GlobalStyle from "./ui/GlobalStyle";
@@ -165,6 +166,7 @@ export default function App() {
               <DeviceOverviewPage path="/devices/:deviceId" />
               <DestinationsPage path="/destinations" />
               <DestinationOverviewPage path="/destinations/:destinationId" />
+              <RulesPage path="/rules" />
             </WithProjectNav>
           </Router>
           <Footer />

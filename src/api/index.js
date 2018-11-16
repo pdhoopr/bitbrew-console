@@ -33,3 +33,4 @@ export {
 } from "./httpClient";
 export * from "./orgService";
 export * from "./projectService";
+export * from "./ruleService";

@@ -4,16 +4,17 @@ import Nav from "../ui/Nav";
 import NavLink from "../ui/NavLink";
 
 export default function WithOrgNav({ children, orgId }) {
+  const orgUrl = `/orgs/${orgId}`;
   return (
     <React.Fragment>
       <Nav heading="Organization Resources">
-        <NavLink to={`/orgs/${orgId}`} exact>
+        <NavLink to={orgUrl} exact>
           Overview
         </NavLink>
-        <NavLink to={`/orgs/${orgId}/members`} exact>
+        <NavLink to={`${orgUrl}/members`} exact>
           Members
         </NavLink>
-        <NavLink to={`/orgs/${orgId}/projects`} exact>
+        <NavLink to={`${orgUrl}/projects`} exact>
           Projects
         </NavLink>
       </Nav>

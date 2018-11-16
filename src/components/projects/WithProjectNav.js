@@ -4,15 +4,13 @@ import Nav from "../ui/Nav";
 import NavLink from "../ui/NavLink";
 
 export default function WithProjectNav({ children, orgId, projectId }) {
+  const projectUrl = `/orgs/${orgId}/projects/${projectId}`;
   return (
     <React.Fragment>
       <Nav heading="Project Resources">
-        <NavLink to={`/orgs/${orgId}/projects/${projectId}/devices`}>
-          Devices
-        </NavLink>
-        <NavLink to={`/orgs/${orgId}/projects/${projectId}/destinations`}>
-          Destinations
-        </NavLink>
+        <NavLink to={`${projectUrl}/devices`}>Devices</NavLink>
+        <NavLink to={`${projectUrl}/destinations`}>Destinations</NavLink>
+        <NavLink to={`${projectUrl}/rules`}>Rules</NavLink>
       </Nav>
       {children}
     </React.Fragment>
