@@ -133,7 +133,10 @@ export const TransparentInput = styled.input`
 
 export const TextArea = styled(Input).attrs({
   as: "textarea",
+  rows: 7,
 })`
+  font-family: ${({ code }) => code && "var(--font-system-monospace)"};
+  font-size: ${({ code }) => code && "var(--size-12)"};
   max-width: 100%;
   min-width: 100%;
   resize: vertical;

@@ -133,7 +133,6 @@ export default function DestinationFormFields({ edit, setValue, values }) {
                   id="keenWriteKey"
                   value={values.keenWriteKey}
                   onChange={setValue}
-                  rows={7}
                 />
               </Label>
               <Label htmlFor="keenStreamName">

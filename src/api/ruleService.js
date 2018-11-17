@@ -1,4 +1,4 @@
-import { get } from "./httpClient";
+import { get, post } from "./httpClient";
 
 // eslint-disable-next-line import/prefer-default-export
 export function listRules(projectId) {
@@ -8,4 +8,8 @@ export function listRules(projectId) {
       pageSize: 50,
     },
   });
+}
+
+export function createRule(data) {
+  return post("/rules", data);
 }

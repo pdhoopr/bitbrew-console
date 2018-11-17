@@ -17,14 +17,16 @@ export default createGlobalStyle`
     --elevation-low: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
       0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
     --elevation-low-darker: 0 3px 1px -2px rgba(0, 0, 0, 0.28),
-      0 2px 2px 0 rgba(0, 0, 0, 0.22), 0 1px 5px 0 rgba(0, 0, 0, 0.20);
+      0 2px 2px 0 rgba(0, 0, 0, 0.22), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
     --elevation-medium: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
       0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
     --elevation-high: 0 8px 10px -5px rgba(0, 0, 0, 0.2),
       0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12);
-    --font-roboto: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-      Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-      'Segoe UI Symbol';
+    --font-roboto: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol";
+    --font-system-monospace: SFMono-Regular, Consolas, Liberation Mono, Menlo,
+      Courier, monospace;
     --letter-spacing: 0.25px;
     --size-2: 0.125rem;
     --size-4: 0.25rem;
