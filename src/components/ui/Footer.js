@@ -30,17 +30,10 @@ export default function Footer() {
       <Resources>
         <Item>&copy; 2018 BitBrew, Inc.</Item>
         <Item>
-          <Link to="http://docs.hub.bitbrew.com/v1.3/reference#authentication">
-            API Documentation
-          </Link>
-        </Item>
-        <Item>
-          <Link to="http://docs.hub.bitbrew.com/v1.3/reference">
-            Event Catalog
-          </Link>
-        </Item>
-        <Item>
           <Link to="https://help.bitbrew.com/">Help</Link>
+        </Item>
+        <Item>
+          <Link to="http://docs.hub.bitbrew.com/reference">Reference</Link>
         </Item>
       </Resources>
     </Wrapper>
