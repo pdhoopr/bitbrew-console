@@ -1,4 +1,4 @@
-import { get, post } from "./httpClient";
+import { del, get, post } from "./httpClient";
 
 // eslint-disable-next-line import/prefer-default-export
 export function listRules(projectId) {
@@ -16,4 +16,8 @@ export function viewRule(id) {
 
 export function createRule(data) {
   return post("/rules", data);
+}
+
+export function deleteRule(id) {
+  return del(`/rules/${id}`);
 }

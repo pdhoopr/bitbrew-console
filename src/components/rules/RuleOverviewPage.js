@@ -1,10 +1,13 @@
+import { navigate } from "@reach/router";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { viewRule } from "../../api";
+import { viewOrg, viewProject, viewRule } from "../../api";
 import { capitalize, localize } from "../../utils";
+import Context from "../Context";
 import useLoading from "../hooks/useLoading";
 import AppBar from "../ui/AppBar";
+import { RaisedButton } from "../ui/Buttons";
 import { FlexBetween } from "../ui/Flexboxes";
 import { PageHeader } from "../ui/Headers";
 import { BackIcon, SyncDisabledIcon, SyncIcon } from "../ui/Icons";
@@ -13,6 +16,7 @@ import List from "../ui/List";
 import { Content, Section } from "../ui/Sections";
 import { PageHeading, SectionHeading, SubHeading } from "../ui/Texts";
 import { Width640 } from "../ui/Widths";
+import DeleteRuleDialog from "./DeleteRuleDialog";
 
 const Heading = styled(PageHeading)`
   margin-left: var(--size-16);
@@ -31,23 +35,31 @@ const Code = styled.pre`
 `;
 
 export default function RuleOverviewPage({ orgId, projectId, ruleId }) {
+  const { openDialog } = useContext(Context);
+
   const [rule, setRule] = useState({});
+  const [project, setProject] = useState({});
+  const [org, setOrg] = useState({});
 
   async function loadRule() {
-    const data = await viewRule(ruleId);
+    const [data, projectData, orgData] = await Promise.all([
+      viewRule(ruleId),
+      viewProject(projectId),
+      viewOrg(orgId),
+    ]);
     setRule(data);
+    setProject(projectData);
+    setOrg(orgData);
   }
 
-  const isLoading = useLoading(loadRule, [ruleId]);
+  const isLoading = useLoading(loadRule, [ruleId, projectId, orgId]);
 
+  const rulesUrl = `/orgs/${orgId}/projects/${projectId}/rules`;
   return (
     <main>
       <PageHeader>
         <AppBar>
-          <IconLink
-            to={`/orgs/${orgId}/projects/${projectId}/rules`}
-            title="View all rules for this project"
-          >
+          <IconLink to={rulesUrl} title="View all rules for this project">
             <BackIcon />
           </IconLink>
           <Heading>{rule.name || <span>&nbsp;</span>}</Heading>
@@ -58,6 +70,25 @@ export default function RuleOverviewPage({ orgId, projectId, ruleId }) {
           <Section>
             <FlexBetween>
               <SectionHeading>Overview</SectionHeading>
+              <RaisedButton
+                onClick={() => {
+                  openDialog(
+                    <DeleteRuleDialog
+                      rule={{
+                        ...rule,
+                        projectName: project.name,
+                        orgName: org.name,
+                      }}
+                      onDelete={() => {
+                        navigate(rulesUrl);
+                      }}
+                    />,
+                  );
+                }}
+                red
+              >
+                Delete
+              </RaisedButton>
             </FlexBetween>
             <Content>
               <List

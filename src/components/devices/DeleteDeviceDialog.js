@@ -36,7 +36,6 @@ export default function DeleteDeviceDialog({ device, onDelete }) {
 }
 
 DeleteDeviceDialog.propTypes = {
-  onDelete: PropTypes.func.isRequired,
   device: PropTypes.shape({
     codename: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
@@ -44,4 +43,5 @@ DeleteDeviceDialog.propTypes = {
     projectId: PropTypes.string.isRequired,
     projectName: PropTypes.string.isRequired,
   }).isRequired,
+  onDelete: PropTypes.func.isRequired,
 };

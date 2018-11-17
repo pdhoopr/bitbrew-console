@@ -1,30 +1,30 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { deleteDestination, listDestinations } from "../../api";
+import { deleteRule, listRules } from "../../api";
 import { poll } from "../../utils";
 import DeleteDialog from "../ui/DeleteDialog";
 import Panel from "../ui/Panel";
 import { Text } from "../ui/Texts";
 
-export default function DeleteDestinationDialog({ destination, onDelete }) {
+export default function DeleteRuleDialog({ onDelete, rule }) {
   return (
     <DeleteDialog
-      heading="Delete Destination"
+      heading="Delete Rule"
       onDelete={async () => {
-        await deleteDestination(destination.id);
+        await deleteRule(rule.id);
         await poll(async () => {
-          const { items } = await listDestinations(destination.projectId);
-          return items.every(item => item.id !== destination.id);
+          const { items } = await listRules(rule.projectId);
+          return items.every(item => item.id !== rule.id);
         });
         await onDelete();
       }}
     >
-      <Text>The following destination will be permanently deleted:</Text>
+      <Text>The following rule will be permanently deleted:</Text>
       <Panel
         items={[
-          ["Destination", destination.name],
-          ["Project", destination.projectName],
-          ["Organization", destination.orgName],
+          ["Rule", rule.name],
+          ["Project", rule.projectName],
+          ["Organization", rule.orgName],
         ]}
       />
       <Text>Are you sure you want to continue?</Text>
@@ -32,13 +32,13 @@ export default function DeleteDestinationDialog({ destination, onDelete }) {
   );
 }
 
-DeleteDestinationDialog.propTypes = {
-  destination: PropTypes.shape({
+DeleteRuleDialog.propTypes = {
+  onDelete: PropTypes.func.isRequired,
+  rule: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     orgName: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
     projectName: PropTypes.string.isRequired,
   }).isRequired,
-  onDelete: PropTypes.func.isRequired,
 };
