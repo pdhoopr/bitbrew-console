@@ -8,12 +8,13 @@ import AppBar from "../ui/AppBar";
 import { IconButton } from "../ui/Buttons";
 import { PageHeader } from "../ui/Headers";
 import { AddIcon } from "../ui/Icons";
+import { Link } from "../ui/Links";
 import Table, { Cell, IconCell, Row } from "../ui/Table";
 import { PageHeading } from "../ui/Texts";
 import { Width640 } from "../ui/Widths";
 import NewRuleForm from "./NewRuleForm";
 
-export default function RulesPage({ projectId }) {
+export default function RulesPage({ orgId, projectId }) {
   const { openDrawer } = useContext(Context);
 
   const [rules, setRules] = useState([]);
@@ -65,11 +66,16 @@ export default function RulesPage({ projectId }) {
           >
             {rules.map(rule => {
               const name = rule.name.trim();
+              const { id: ruleId } = rule;
               return (
                 <Row key={rule.id} italic={!rule.enabled}>
                   <Cell gray={!name}>
-                    {name || "Unnamed rule"}
-                    {!rule.enabled && " (disabled)"}
+                    <Link
+                      to={`/orgs/${orgId}/projects/${projectId}/rules/${ruleId}`}
+                    >
+                      {name || "Unnamed rule"}
+                      {!rule.enabled && " (disabled)"}
+                    </Link>
                   </Cell>
                   <Cell>{localize(rule.createdAt)}</Cell>
                   <Cell>{capitalize(rule.destinationType)}</Cell>
@@ -85,9 +91,11 @@ export default function RulesPage({ projectId }) {
 }
 
 RulesPage.propTypes = {
+  orgId: PropTypes.string,
   projectId: PropTypes.string,
 };
 
 RulesPage.defaultProps = {
+  orgId: null,
   projectId: null,
 };

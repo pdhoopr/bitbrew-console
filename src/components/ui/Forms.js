@@ -137,6 +137,7 @@ export const TextArea = styled(Input).attrs({
 })`
   font-family: ${({ code }) => code && "var(--font-system-monospace)"};
   font-size: ${({ code }) => code && "var(--size-12)"};
+  line-height: ${({ code }) => code && "var(--size-16)"};
   max-width: 100%;
   min-width: 100%;
   resize: vertical;

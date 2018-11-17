@@ -23,6 +23,7 @@ const Description = styled.dd`
   margin-left: 0;
   flex: 1.5;
   overflow: auto;
+  white-space: pre-wrap;
   word-wrap: break-word;
 `;
 

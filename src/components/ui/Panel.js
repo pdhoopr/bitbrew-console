@@ -27,6 +27,7 @@ const Description = styled.dd`
   margin-left: 0;
   flex: 2;
   overflow: auto;
+  white-space: pre-wrap;
   word-wrap: break-word;
 `;
 

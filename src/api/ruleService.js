@@ -10,6 +10,10 @@ export function listRules(projectId) {
   });
 }
 
+export function viewRule(id) {
+  return get(`/rules/${id}`);
+}
+
 export function createRule(data) {
   return post("/rules", data);
 }

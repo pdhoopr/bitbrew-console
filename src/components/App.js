@@ -13,6 +13,7 @@ import OrgOverviewPage from "./orgs/OrgOverviewPage";
 import WithOrgNav from "./orgs/WithOrgNav";
 import ProjectsPage from "./projects/ProjectsPage";
 import WithProjectNav from "./projects/WithProjectNav";
+import RuleOverviewPage from "./rules/RuleOverviewPage";
 import RulesPage from "./rules/RulesPage";
 import Banner from "./ui/Banner";
 import Footer from "./ui/Footer";
@@ -167,6 +168,7 @@ export default function App() {
               <DestinationsPage path="/destinations" />
               <DestinationOverviewPage path="/destinations/:destinationId" />
               <RulesPage path="/rules" />
+              <RuleOverviewPage path="/rules/:ruleId" />
             </WithProjectNav>
           </Router>
           <Footer />
