@@ -1,5 +1,11 @@
-import { navigate, Redirect, Router as ReachRouter } from "@reach/router";
-import React, { useEffect, useState } from "react";
+import {
+  createHistory,
+  LocationProvider,
+  navigate,
+  Redirect,
+  Router as ReachRouter,
+} from "@reach/router";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { off, on, removeToken, retry, setToken } from "../api";
 import { silentRefresh, summarize } from "../utils";
@@ -25,6 +31,8 @@ const Router = styled(ReachRouter)`
 `;
 
 export default function App() {
+  const history = useRef(createHistory(window));
+
   const [auth, setAuth] = useState(null);
   const [drawer, setDrawer] = useState(null);
   const [dialog, setDialog] = useState(null);
@@ -131,6 +139,16 @@ export default function App() {
     };
   }, []);
 
+  useEffect(
+    () =>
+      history.current.listen(() => {
+        closeDrawer();
+        closeDialog();
+        closeBanner();
+      }),
+    [],
+  );
+
   return (
     <Context.Provider
       value={{
@@ -148,7 +166,7 @@ export default function App() {
     >
       <GlobalStyle />
       {auth && (
-        <React.Fragment>
+        <LocationProvider history={history.current}>
           <Router>
             <WelcomePage path="/" />
             <Redirect from="/orgs" to="/" noThrow />
@@ -175,7 +193,7 @@ export default function App() {
           {drawer}
           {dialog}
           {banner}
-        </React.Fragment>
+        </LocationProvider>
       )}
     </Context.Provider>
   );
