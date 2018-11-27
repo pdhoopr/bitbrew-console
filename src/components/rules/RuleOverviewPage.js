@@ -1,4 +1,3 @@
-import { navigate } from "@reach/router";
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
@@ -34,7 +33,12 @@ const Code = styled.pre`
   word-wrap: break-word;
 `;
 
-export default function RuleOverviewPage({ orgId, projectId, ruleId }) {
+export default function RuleOverviewPage({
+  navigate,
+  orgId,
+  projectId,
+  ruleId,
+}) {
   const { openDialog } = useContext(Context);
 
   const [rule, setRule] = useState({});
@@ -154,13 +158,15 @@ export default function RuleOverviewPage({ orgId, projectId, ruleId }) {
 }
 
 RuleOverviewPage.propTypes = {
-  ruleId: PropTypes.string,
+  navigate: PropTypes.func,
   orgId: PropTypes.string,
   projectId: PropTypes.string,
+  ruleId: PropTypes.string,
 };
 
 RuleOverviewPage.defaultProps = {
-  ruleId: null,
+  navigate: null,
   orgId: null,
   projectId: null,
+  ruleId: null,
 };

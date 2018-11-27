@@ -1,10 +1,31 @@
 export default function silentRefresh() {
   return new Promise((resolve, reject) => {
-    const silentRefreshUrl = `${window.location.origin}/silent-refresh.html`;
+    let timeoutId = null;
     const iframe = document.createElement("iframe");
-    iframe.hidden = true;
-    iframe.title = "Refreshing token...";
-    iframe.src = `https://service.bitbrew.com/auth/refresh?redirect_uri=${silentRefreshUrl}`;
+    const silentRefreshUrl = `${window.location.origin}/silent-refresh.html`;
+
+    function cleanup() {
+      window.clearTimeout(timeoutId);
+      window.removeEventListener("message", iframe.onmessage);
+      document.body.removeChild(iframe);
+    }
+
+    iframe.onload = event => {
+      try {
+        if (
+          (
+            event.currentTarget.contentWindow ||
+            event.currentTarget.contentDocument
+          ).location.href === "about:blank"
+        ) {
+          throw new Error();
+        }
+      } catch {
+        cleanup();
+        reject();
+      }
+    };
+
     iframe.onmessage = event => {
       if (
         event.origin === window.location.origin &&
@@ -12,22 +33,20 @@ export default function silentRefresh() {
       ) {
         const params = new URLSearchParams(event.source.location.search);
         const token = params.get("access_token");
-        window.removeEventListener("message", iframe.onmessage);
-        document.body.removeChild(iframe);
+        cleanup();
         resolve(token);
       }
     };
-    iframe.onload = event => {
-      try {
-        // eslint-disable-next-line no-unused-expressions
-        event.currentTarget.contentWindow.href;
-      } catch {
-        window.removeEventListener("message", iframe.onmessage);
-        document.body.removeChild(iframe);
-        reject();
-      }
-    };
+
+    iframe.hidden = true;
+    iframe.src = `https://service.bitbrew.com/auth/refresh?redirect_uri=${silentRefreshUrl}`;
+    iframe.title = "Refreshing token...";
     window.addEventListener("message", iframe.onmessage);
     document.body.appendChild(iframe);
+
+    timeoutId = window.setTimeout(() => {
+      cleanup();
+      reject();
+    }, 1000);
   });
 }

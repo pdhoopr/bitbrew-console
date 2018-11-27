@@ -1,4 +1,3 @@
-import { navigate } from "@reach/router";
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
@@ -32,6 +31,7 @@ const EditDestinationButton = styled(RaisedButton)`
 
 export default function DestinationOverviewPage({
   destinationId,
+  navigate,
   orgId,
   projectId,
 }) {
@@ -195,12 +195,14 @@ export default function DestinationOverviewPage({
 
 DestinationOverviewPage.propTypes = {
   destinationId: PropTypes.string,
+  navigate: PropTypes.func,
   orgId: PropTypes.string,
   projectId: PropTypes.string,
 };
 
 DestinationOverviewPage.defaultProps = {
   destinationId: null,
+  navigate: null,
   orgId: null,
   projectId: null,
 };

@@ -1,4 +1,3 @@
-import { navigate } from "@reach/router";
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
@@ -30,7 +29,12 @@ const EditDeviceButton = styled(RaisedButton)`
   margin-right: var(--size-16);
 `;
 
-export default function DeviceOverviewPage({ deviceId, orgId, projectId }) {
+export default function DeviceOverviewPage({
+  deviceId,
+  navigate,
+  orgId,
+  projectId,
+}) {
   const { openDialog, openDrawer } = useContext(Context);
 
   const [device, setDevice] = useState({});
@@ -160,12 +164,14 @@ export default function DeviceOverviewPage({ deviceId, orgId, projectId }) {
 
 DeviceOverviewPage.propTypes = {
   deviceId: PropTypes.string,
+  navigate: PropTypes.func,
   orgId: PropTypes.string,
   projectId: PropTypes.string,
 };
 
 DeviceOverviewPage.defaultProps = {
   deviceId: null,
+  navigate: null,
   orgId: null,
   projectId: null,
 };

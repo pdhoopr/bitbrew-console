@@ -1,4 +1,3 @@
-import { navigate } from "@reach/router";
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
@@ -23,7 +22,7 @@ const EditOrgButton = styled(RaisedButton)`
   margin-right: var(--size-16);
 `;
 
-export default function OrgOverviewPage({ orgId }) {
+export default function OrgOverviewPage({ navigate, orgId }) {
   const { openDialog, openDrawer } = useContext(Context);
 
   const [org, setOrg] = useState({});
@@ -86,9 +85,11 @@ export default function OrgOverviewPage({ orgId }) {
 }
 
 OrgOverviewPage.propTypes = {
+  navigate: PropTypes.func,
   orgId: PropTypes.string,
 };
 
 OrgOverviewPage.defaultProps = {
+  navigate: null,
   orgId: null,
 };
