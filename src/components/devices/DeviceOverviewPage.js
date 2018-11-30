@@ -141,8 +141,7 @@ export default function DeviceOverviewPage({
           <Section>
             <SectionHeading>Device Settings</SectionHeading>
             <SubHeading gray>
-              Additional details about your device that are relevant to its
-              type.
+              Details about your device that are relevant to its type.
             </SubHeading>
             <Content>
               {type.toUpperCase() === "DATALOGGER" && (

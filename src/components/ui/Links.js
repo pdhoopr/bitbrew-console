@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled, { css } from "styled-components";
 
-const LinkImpl = ({ to, ...props }) =>
+const LinkImpl = ({ green, to, ...props }) =>
   /^\/(?!\/)/.test(to) ? (
     <ReachLink to={to} {...props} />
   ) : (
@@ -12,7 +12,12 @@ const LinkImpl = ({ to, ...props }) =>
   );
 
 LinkImpl.propTypes = {
+  green: PropTypes.bool,
   to: PropTypes.string.isRequired,
+};
+
+LinkImpl.defaultProps = {
+  green: false,
 };
 
 const baseStyles = css`
@@ -24,6 +29,7 @@ const baseStyles = css`
 export const Link = styled(LinkImpl)`
   ${baseStyles};
   border-bottom: 1px solid transparent;
+  color: ${({ green }) => (green ? "var(--color-green)" : "inherit")};
   transition: border-bottom-color var(--duration-short),
     color var(--duration-short);
 

@@ -1,8 +1,14 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { Divider } from "./Forms";
 import { ContentHeading } from "./Texts";
+
+const Divider = styled.hr`
+  background-color: var(--color-medium-gray);
+  border: none;
+  height: 1px;
+  margin: 0 calc(-1 * var(--size-24)) var(--size-16);
+`;
 
 const Fields = styled.fieldset`
   border: none;

@@ -151,8 +151,7 @@ export default function DestinationOverviewPage({
           <Section>
             <SectionHeading>Destination Settings</SectionHeading>
             <SubHeading gray>
-              Additional details about your destination that are relevant to its
-              type.
+              Details about your destination that are relevant to its type.
             </SubHeading>
             <Content>
               {type.toUpperCase() === "AMQP" && (

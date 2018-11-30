@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { viewOrg, viewProject, viewRule } from "../../api";
+import { viewDestination, viewOrg, viewProject, viewRule } from "../../api";
 import { capitalize, localize } from "../../utils";
 import Context from "../Context";
 import useLoading from "../hooks/useLoading";
@@ -10,7 +10,7 @@ import { RaisedButton } from "../ui/Buttons";
 import { FlexBetween } from "../ui/Flexboxes";
 import { PageHeader } from "../ui/Headers";
 import { BackIcon, SyncDisabledIcon, SyncIcon } from "../ui/Icons";
-import { IconLink } from "../ui/Links";
+import { IconLink, Link } from "../ui/Links";
 import List from "../ui/List";
 import { Content, Section } from "../ui/Sections";
 import { PageHeading, SectionHeading, SubHeading } from "../ui/Texts";
@@ -33,6 +33,10 @@ const Code = styled.pre`
   word-wrap: break-word;
 `;
 
+const NotFound = styled.span`
+  color: var(--color-dark-gray);
+`;
+
 export default function RuleOverviewPage({
   navigate,
   orgId,
@@ -42,6 +46,7 @@ export default function RuleOverviewPage({
   const { openDialog } = useContext(Context);
 
   const [rule, setRule] = useState({});
+  const [destination, setDestination] = useState({});
   const [project, setProject] = useState({});
   const [org, setOrg] = useState({});
 
@@ -51,14 +56,20 @@ export default function RuleOverviewPage({
       viewProject(projectId),
       viewOrg(orgId),
     ]);
+    const destinationData =
+      data.destinationType.toUpperCase() === "UNKNOWN"
+        ? {}
+        : await viewDestination(data.destinationId);
     setRule(data);
+    setDestination(destinationData);
     setProject(projectData);
     setOrg(orgData);
   }
 
   const isLoading = useLoading(loadRule, [ruleId, projectId, orgId]);
 
-  const rulesUrl = `/orgs/${orgId}/projects/${projectId}/rules`;
+  const projectUrl = `/orgs/${orgId}/projects/${projectId}`;
+  const rulesUrl = `${projectUrl}/rules`;
   return (
     <main>
       <PageHeader>
@@ -135,8 +146,8 @@ export default function RuleOverviewPage({
           <Section>
             <SectionHeading>Rule Settings</SectionHeading>
             <SubHeading gray>
-              Additional details about your rule, such as the records it&apos;s
-              capturing, any transformations, and the destination it outputs to.
+              Details about your rule, such as the records it&apos;s capturing
+              and any transformations.
             </SubHeading>
             <Content>
               <List
@@ -146,7 +157,39 @@ export default function RuleOverviewPage({
                     "Data Transformation",
                     <Code>{rule.dataTransformation}</Code>,
                   ],
-                  ["Destination Type", capitalize(rule.destinationType)],
+                ]}
+              />
+            </Content>
+          </Section>
+          <Section>
+            <SectionHeading>Destination Settings</SectionHeading>
+            <SubHeading gray>
+              Details about the destination this rule outputs to.
+            </SubHeading>
+            <Content>
+              <List
+                items={[
+                  [
+                    "Destination",
+                    destination.id ? (
+                      <Link
+                        to={`${projectUrl}/destinations/${destination.id}`}
+                        green
+                      >
+                        {destination.name}
+                      </Link>
+                    ) : (
+                      <NotFound>Not found</NotFound>
+                    ),
+                  ],
+                  [
+                    "Destination Type",
+                    destination.type ? (
+                      capitalize(destination.type)
+                    ) : (
+                      <NotFound>N/A</NotFound>
+                    ),
+                  ],
                 ]}
               />
             </Content>

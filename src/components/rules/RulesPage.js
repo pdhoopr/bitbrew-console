@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { listDestinations, listRules } from "../../api";
 import { capitalize, localize } from "../../utils";
 import Context from "../Context";
@@ -17,6 +17,8 @@ import NewRuleForm from "./NewRuleForm";
 export default function RulesPage({ orgId, projectId }) {
   const { openDrawer } = useContext(Context);
 
+  const destinationsById = useRef({});
+
   const [rules, setRules] = useState([]);
   const [destinations, setDestinations] = useState([]);
 
@@ -27,10 +29,18 @@ export default function RulesPage({ orgId, projectId }) {
     ]);
     setRules(items);
     setDestinations(destinationItems);
+    destinationsById.current = destinationItems.reduce(
+      (byId, destination) => ({
+        ...byId,
+        [destination.id]: destination,
+      }),
+      {},
+    );
   }
 
   const isLoading = useLoading(loadRules, [projectId]);
 
+  const projectUrl = `/orgs/${orgId}/projects/${projectId}`;
   return (
     <main>
       <PageHeader>
@@ -44,6 +54,7 @@ export default function RulesPage({ orgId, projectId }) {
             columns={[
               "Name",
               "Created On",
+              "Destination",
               "Destination Type",
               <IconCell key="New Rule">
                 <IconButton
@@ -66,19 +77,28 @@ export default function RulesPage({ orgId, projectId }) {
           >
             {rules.map(rule => {
               const name = rule.name.trim();
-              const { id: ruleId } = rule;
+              const destination = destinationsById.current[rule.destinationId];
               return (
                 <Row key={rule.id} italic={!rule.enabled}>
                   <Cell gray={!name}>
-                    <Link
-                      to={`/orgs/${orgId}/projects/${projectId}/rules/${ruleId}`}
-                    >
+                    <Link to={`${projectUrl}/rules/${rule.id}`}>
                       {name || "Unnamed rule"}
                       {!rule.enabled && " (disabled)"}
                     </Link>
                   </Cell>
                   <Cell>{localize(rule.createdAt)}</Cell>
-                  <Cell>{capitalize(rule.destinationType)}</Cell>
+                  <Cell gray={!destination}>
+                    {destination ? (
+                      <Link to={`${projectUrl}/destinations/${destination.id}`}>
+                        {destination.name}
+                      </Link>
+                    ) : (
+                      "Not found"
+                    )}
+                  </Cell>
+                  <Cell gray={!destination}>
+                    {destination ? capitalize(destination.type) : "N/A"}
+                  </Cell>
                   <Cell />
                 </Row>
               );

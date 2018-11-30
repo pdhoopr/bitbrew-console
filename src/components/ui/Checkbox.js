@@ -1,22 +1,40 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { TransparentInput } from "./Forms";
+import styled from "styled-components";
 import { CheckboxIcon, CheckboxSelectedIcon } from "./Icons";
+
+const Field = styled.input`
+  cursor: pointer;
+  height: 100%;
+  left: 0;
+  margin: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+`;
+
+const Icon = styled.svg`
+  margin-left: calc(-1 * var(--size-2));
+  margin-right: var(--size-8);
+  vertical-align: -25%;
+
+  ${/* sc-selector */ Field}:focus + & {
+    @supports (-moz-appearance: none) {
+      outline: 1px dotted ButtonText;
+    }
+
+    @supports (-webkit-appearance: none) {
+      outline: 5px auto -webkit-focus-ring-color;
+    }
+  }
+`;
 
 export default function Checkbox({ checked, id, onChange }) {
   return (
     <React.Fragment>
-      <TransparentInput
-        type="checkbox"
-        id={id}
-        checked={checked}
-        onChange={onChange}
-      />
-      {checked ? (
-        <CheckboxSelectedIcon aria-hidden />
-      ) : (
-        <CheckboxIcon aria-hidden />
-      )}
+      <Field type="checkbox" id={id} checked={checked} onChange={onChange} />
+      <Icon as={checked ? CheckboxSelectedIcon : CheckboxIcon} aria-hidden />
     </React.Fragment>
   );
 }

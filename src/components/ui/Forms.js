@@ -1,10 +1,4 @@
 import styled from "styled-components";
-import {
-  CheckboxIcon,
-  CheckboxSelectedIcon,
-  RadioButtonIcon,
-  RadioButtonSelectedIcon,
-} from "./Icons";
 
 export const Form = styled.form.attrs({
   autoComplete: "off",
@@ -47,15 +41,6 @@ export const Choice = styled(Label)`
     &:not(:last-of-type) {
       margin-bottom: var(--size-8);
     }
-  }
-
-  ${/* sc-selector */ CheckboxIcon},
-  ${/* sc-selector */ CheckboxSelectedIcon},
-  ${/* sc-selector */ RadioButtonIcon},
-  ${/* sc-selector */ RadioButtonSelectedIcon} {
-    margin-left: calc(-1 * var(--size-2));
-    margin-right: var(--size-8);
-    vertical-align: -25%;
   }
 `;
 
@@ -106,31 +91,6 @@ export const ReadOnlyInput = styled(Input).attrs({
   }
 `;
 
-export const TransparentInput = styled.input`
-  cursor: pointer;
-  height: 100%;
-  left: 0;
-  margin: 0;
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
-
-  /* prettier-ignore */
-  &:focus + ${/* sc-selector */ CheckboxIcon},
-  &:focus + ${/* sc-selector */ CheckboxSelectedIcon},
-  &:focus + ${/* sc-selector */ RadioButtonIcon},
-  &:focus + ${/* sc-selector */ RadioButtonSelectedIcon} {
-    @supports (-moz-appearance: none) {
-      outline: 1px dotted ButtonText;
-    }
-
-    @supports (-webkit-appearance: none) {
-      outline: 5px auto -webkit-focus-ring-color;
-    }
-  }
-`;
-
 export const TextArea = styled(Input).attrs({
   as: "textarea",
   rows: 7,
@@ -141,15 +101,4 @@ export const TextArea = styled(Input).attrs({
   max-width: 100%;
   min-width: 100%;
   resize: vertical;
-`;
-
-export const Divider = styled.hr`
-  background-color: var(--color-medium-gray);
-  border: none;
-  height: 1px;
-  margin: 0 calc(-1 * var(--size-24)) var(--size-16);
-
-  ${/* sc-selector */ Label} + & {
-    margin-top: var(--size-20);
-  }
 `;

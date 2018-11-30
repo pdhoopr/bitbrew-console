@@ -2,11 +2,16 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.table`
+const Overflow = styled.div`
   background-color: var(--color-white);
-  border-collapse: collapse;
   border-radius: var(--corner-radius);
   box-shadow: var(--elevation-low);
+  overflow-y: auto;
+  width: 100%;
+`;
+
+const Wrapper = styled.table`
+  border-collapse: collapse;
   font-size: var(--size-14);
   line-height: var(--size-20);
   width: 100%;
@@ -21,12 +26,14 @@ export const Cell = styled.td`
   color: ${({ gray }) => (gray ? "var(--color-dark-gray)" : "inherit")};
   padding: var(--size-16) var(--size-24);
   text-align: left;
-  white-space: nowrap;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 `;
 
 const HeaderCell = styled(Cell)`
   font-weight: var(--weight-bold);
   letter-spacing: var(--letter-spacing);
+  white-space: nowrap;
 `;
 
 const EmptyCell = styled(Cell)`
@@ -43,26 +50,28 @@ export const IconCell = styled.span`
 
 export default function Table({ children, columns, emptyState }) {
   return (
-    <Wrapper>
-      <thead>
-        <tr>
-          {columns.map(column => (
-            <HeaderCell as="th" key={column.key || column}>
-              {column}
-            </HeaderCell>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {React.Children.count(children) > 0
-          ? children
-          : emptyState && (
-              <Row>
-                <EmptyCell colSpan={columns.length}>{emptyState}</EmptyCell>
-              </Row>
-            )}
-      </tbody>
-    </Wrapper>
+    <Overflow>
+      <Wrapper>
+        <thead>
+          <tr>
+            {columns.map(column => (
+              <HeaderCell as="th" key={column.key || column}>
+                {column}
+              </HeaderCell>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {React.Children.count(children) > 0
+            ? children
+            : emptyState && (
+                <Row>
+                  <EmptyCell colSpan={columns.length}>{emptyState}</EmptyCell>
+                </Row>
+              )}
+        </tbody>
+      </Wrapper>
+    </Overflow>
   );
 }
 

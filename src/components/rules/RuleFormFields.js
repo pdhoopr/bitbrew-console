@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Input, Label, TextArea } from "../ui/Forms";
+import Checkbox from "../ui/Checkbox";
+import { Choice, Input, Label, TextArea } from "../ui/Forms";
 import Select from "../ui/Select";
 
 export default function RuleFormFields({
@@ -14,6 +15,10 @@ export default function RuleFormFields({
         Name
         <Input id="name" value={values.name} onChange={setValue} />
       </Label>
+      <Choice htmlFor="enabled">
+        <Checkbox id="enabled" checked={values.enabled} onChange={setValue} />
+        Enable
+      </Choice>
       <Label htmlFor="triggerRuleWhen">
         Trigger When
         <TextArea
