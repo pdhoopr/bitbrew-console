@@ -17,6 +17,7 @@
     "Segoe UI Symbol";
   --letter-spacing: 0.25px;
   --size-1: 0.0625rem;
+  --size--1: -0.0625rem;
   --size-4: 0.25rem;
   --size-7: 0.4375rem;
   --size-8: 0.5rem;
@@ -161,22 +162,17 @@ strong {
   display: none;
 }
 
-.logo {
-  height: var(--size-40);
-  width: var(--size-140);
-}
-
-.icon {
-  height: var(--size-20);
-  width: var(--size-20);
-}
-
-.page-heading {
+.wrapper {
   margin-bottom: 0;
   margin-top: 0;
   padding-bottom: var(--size-32);
   padding-top: var(--size-32);
   text-align: center;
+}
+
+.logo {
+  height: var(--size-40);
+  width: var(--size-140);
 }
 
 .content {
@@ -198,6 +194,11 @@ strong {
   width: 100%;
 }
 
+.icon {
+  height: var(--size-20);
+  width: var(--size-20);
+}
+
 .banner .icon {
   flex-shrink: 0;
   margin-right: var(--size-16);
@@ -213,7 +214,7 @@ strong {
   width: 100%;
 }
 
-.form-heading {
+.heading {
   font-size: var(--size-20);
   font-weight: var(--weight-regular);
   line-height: var(--size-28);
@@ -222,12 +223,19 @@ strong {
   padding: var(--size-16) var(--size-24);
 }
 
-.csrf {
-  padding-top: var(--size-20);
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: var(--size-1);
+  margin: var(--size--1);
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: var(--size-1);
 }
 
-.form-heading + .csrf {
-  padding-top: 0;
+.heading.visually-hidden + * {
+  padding-top: var(--size-20);
 }
 
 .field {
@@ -280,6 +288,8 @@ strong {
 .resources {
   color: var(--color-dark-gray);
   list-style-type: none;
+  margin-bottom: 0;
+  margin-top: 0;
   padding-bottom: var(--size-32);
   padding-left: 0;
   padding-top: var(--size-128);
