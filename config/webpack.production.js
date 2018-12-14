@@ -1,8 +1,11 @@
+const autoprefixer = require("autoprefixer");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const CleanPlugin = require("clean-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const cssnano = require("cssnano");
 const HtmlPlugin = require("html-webpack-plugin");
 const path = require("path");
+const postcss = require("postcss");
 const TerserPlugin = require("terser-webpack-plugin");
 const paths = require("./paths");
 
@@ -64,8 +67,15 @@ module.exports = {
       {
         from: paths.staticFolder,
         to: paths.distFolder,
-        ignore: "index.html",
-        flatten: true,
+        ignore: ["index.html", "css/web-login.css"],
+      },
+      {
+        from: paths.webLoginCssFile,
+        to: paths.distCssFolder,
+        async transform(css) {
+          const result = await postcss([autoprefixer, cssnano]).process(css);
+          return result.css;
+        },
       },
     ]),
     new HtmlPlugin({
