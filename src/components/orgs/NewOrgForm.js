@@ -24,7 +24,7 @@ export default function NewOrgForm({ onCreate }) {
         await poll(async () => {
           try {
             const token = await silentRefresh();
-            if (jwtDecode(token).orgs[data.id]) {
+            if (jwtDecode(token).orgs.some(org => org.startsWith(data.id))) {
               signInWithToken(token);
               return true;
             }
