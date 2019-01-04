@@ -8,7 +8,7 @@ import { ArrowDownInlineIcon } from "./Icons";
 import Menu from "./Menu";
 
 export default function AppBar({ children }) {
-  const { auth, signOut } = useContext(Context);
+  const { auth, logOut } = useContext(Context);
 
   return (
     <FlexBetween>
@@ -20,7 +20,7 @@ export default function AppBar({ children }) {
           </Button>
         }
       >
-        <Button onClick={signOut}>Sign out</Button>
+        <Button onClick={logOut}>Log out</Button>
       </Menu>
     </FlexBetween>
   );

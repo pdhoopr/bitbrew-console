@@ -3,10 +3,9 @@ import React from "react";
 import { deleteRule, listRules } from "../../api";
 import { poll } from "../../utils";
 import DeleteDialog from "../ui/DeleteDialog";
-import Panel from "../ui/Panel";
-import { Text } from "../ui/Texts";
 
 export default function DeleteRuleDialog({ onDelete, rule }) {
+  const name = rule.name.trim();
   return (
     <DeleteDialog
       heading="Delete Rule"
@@ -19,15 +18,8 @@ export default function DeleteRuleDialog({ onDelete, rule }) {
         await onDelete();
       }}
     >
-      <Text>The following rule will be permanently deleted:</Text>
-      <Panel
-        items={[
-          ["Rule", rule.name],
-          ["Project", rule.projectName],
-          ["Organization", rule.orgName],
-        ]}
-      />
-      <Text>Are you sure you want to continue?</Text>
+      Are you sure you want to delete {name ? "the" : "this"} rule
+      {name && <strong> {rule.name}</strong>}?
     </DeleteDialog>
   );
 }
@@ -37,8 +29,6 @@ DeleteRuleDialog.propTypes = {
   rule: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    orgName: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projectName: PropTypes.string.isRequired,
   }).isRequired,
 };

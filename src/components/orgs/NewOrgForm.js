@@ -9,7 +9,7 @@ import FormDrawer from "../ui/FormDrawer";
 import OrgFormFields from "./OrgFormFields";
 
 export default function NewOrgForm({ onCreate }) {
-  const { signInWithToken, signOut } = useContext(Context);
+  const { logInWithToken, logOut } = useContext(Context);
 
   const [values, setValue] = useForm({
     name: "",
@@ -25,11 +25,11 @@ export default function NewOrgForm({ onCreate }) {
           try {
             const token = await silentRefresh();
             if (jwtDecode(token).orgs.some(org => org.startsWith(data.id))) {
-              signInWithToken(token);
+              logInWithToken(token);
               return true;
             }
           } catch {
-            signOut();
+            logOut();
           }
           return false;
         });

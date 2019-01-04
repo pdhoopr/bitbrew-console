@@ -25,6 +25,8 @@ const Items = styled.div`
     border-radius: 0;
     font-weight: var(--weight-regular);
     letter-spacing: normal;
+    padding-left: var(--size-16);
+    padding-right: var(--size-16);
     text-align: left;
     transition: background-color var(--duration-short);
     width: 100%;
@@ -51,10 +53,10 @@ const Items = styled.div`
 `;
 
 export default function Menu({ children, control }) {
-  const buttonElement = useRef(null);
-  const buttonId = useRef(generateId(`${Menu.name}__button`));
-  const menuElement = useRef(generateId(`${Menu.name}__items`));
-  const menuId = useRef(null);
+  const menuButtonElement = useRef(null);
+  const menuButtonId = useRef(generateId(`${Menu.name}__button`));
+  const menuElement = useRef(null);
+  const menuId = useRef(generateId(`${Menu.name}__items`));
   const menuItemElements = useRef([]);
 
   const [isOpen, setOpen] = useState(false);
@@ -66,7 +68,7 @@ export default function Menu({ children, control }) {
       // eslint-disable-next-line no-use-before-define
       closeMenu();
       if (isEsc) {
-        buttonElement.current.focus();
+        menuButtonElement.current.focus();
       }
     }
   }
@@ -74,8 +76,9 @@ export default function Menu({ children, control }) {
   function closeOnOuterClick(event) {
     if (
       event.target !== menuElement.current &&
-      event.target !== buttonElement.current &&
-      (buttonElement.current && !buttonElement.current.contains(event.target))
+      event.target !== menuButtonElement.current &&
+      (menuButtonElement.current &&
+        !menuButtonElement.current.contains(event.target))
     ) {
       // eslint-disable-next-line no-use-before-define
       closeMenu();
@@ -136,7 +139,7 @@ export default function Menu({ children, control }) {
   return (
     <Wrapper>
       {React.cloneElement(control, {
-        id: buttonId.current,
+        id: menuButtonId.current,
         onClick() {
           if (isOpen) {
             closeMenu();
@@ -148,19 +151,19 @@ export default function Menu({ children, control }) {
         "aria-controls": menuId.current,
         "aria-expanded": isOpen,
         "aria-haspopup": true,
-        ref: buttonElement,
+        ref: menuButtonElement,
       })}
       <Items
         id={menuId.current}
         hidden={!isOpen}
-        aria-labelledby={buttonId.current}
+        aria-labelledby={menuButtonId.current}
         role="menu"
         ref={menuElement}
       >
         {React.Children.map(children, (menuItem, index) =>
           React.cloneElement(menuItem, {
             onClick() {
-              buttonElement.current.focus();
+              menuButtonElement.current.focus();
               menuItem.props.onClick();
             },
             onKeyDown: focusOnSomeKeyPresses,

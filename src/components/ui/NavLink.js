@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { ButtonLink } from "./Links";
+import { IconLink } from "./Links";
 
-const Wrapper = styled(ButtonLink)`
+const Wrapper = styled(IconLink)`
   font-size: var(--size-16);
+  line-height: var(--size-24);
   padding-left: var(--size-24);
   padding-right: var(--size-24);
   width: 100%;

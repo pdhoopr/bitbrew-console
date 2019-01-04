@@ -3,8 +3,6 @@ import React from "react";
 import { deleteDestination, listDestinations } from "../../api";
 import { poll } from "../../utils";
 import DeleteDialog from "../ui/DeleteDialog";
-import Panel from "../ui/Panel";
-import { Text } from "../ui/Texts";
 
 export default function DeleteDestinationDialog({ destination, onDelete }) {
   return (
@@ -19,15 +17,8 @@ export default function DeleteDestinationDialog({ destination, onDelete }) {
         await onDelete();
       }}
     >
-      <Text>The following destination will be permanently deleted:</Text>
-      <Panel
-        items={[
-          ["Destination", destination.name],
-          ["Project", destination.projectName],
-          ["Organization", destination.orgName],
-        ]}
-      />
-      <Text>Are you sure you want to continue?</Text>
+      Are you sure you want to delete the destination
+      <strong> {destination.name}</strong>?
     </DeleteDialog>
   );
 }
@@ -36,9 +27,7 @@ DeleteDestinationDialog.propTypes = {
   destination: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    orgName: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projectName: PropTypes.string.isRequired,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
 };

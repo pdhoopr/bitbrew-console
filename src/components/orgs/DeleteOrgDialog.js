@@ -3,8 +3,6 @@ import React from "react";
 import { deleteOrg, listOrgs } from "../../api";
 import { poll } from "../../utils";
 import DeleteDialog from "../ui/DeleteDialog";
-import Panel from "../ui/Panel";
-import { Text } from "../ui/Texts";
 
 export default function DeleteOrgDialog({ onDelete, org }) {
   return (
@@ -19,9 +17,8 @@ export default function DeleteOrgDialog({ onDelete, org }) {
         await onDelete();
       }}
     >
-      <Text>The following organization will be permanently deleted:</Text>
-      <Panel items={[["Organization", org.name]]} />
-      <Text>Are you sure you want to continue?</Text>
+      Are you sure you want to delete the organization
+      <strong> {org.name}</strong>?
     </DeleteDialog>
   );
 }

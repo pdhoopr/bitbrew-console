@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { viewDevice, viewOrg, viewProject } from "../../api";
+import { viewDevice } from "../../api";
 import { capitalize, localize } from "../../utils";
 import Context from "../Context";
 import useLoading from "../hooks/useLoading";
@@ -38,21 +38,13 @@ export default function DeviceOverviewPage({
   const { openDialog, openDrawer } = useContext(Context);
 
   const [device, setDevice] = useState({});
-  const [project, setProject] = useState({});
-  const [org, setOrg] = useState({});
 
   async function loadDevice() {
-    const [data, projectData, orgData] = await Promise.all([
-      viewDevice(deviceId),
-      viewProject(projectId),
-      viewOrg(orgId),
-    ]);
+    const data = await viewDevice(deviceId);
     setDevice(data);
-    setProject(projectData);
-    setOrg(orgData);
   }
 
-  const isLoading = useLoading(loadDevice, [deviceId, projectId, orgId]);
+  const isLoading = useLoading(loadDevice, [deviceId]);
 
   const devicesUrl = `/orgs/${orgId}/projects/${projectId}/devices`;
   const type = device.type ? capitalize(device.type.trim()) : "";
@@ -84,11 +76,7 @@ export default function DeviceOverviewPage({
                 onClick={() => {
                   openDialog(
                     <DeleteDeviceDialog
-                      device={{
-                        ...device,
-                        projectName: project.name,
-                        orgName: org.name,
-                      }}
+                      device={device}
                       onDelete={() => {
                         navigate(devicesUrl);
                       }}

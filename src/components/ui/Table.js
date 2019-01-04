@@ -19,11 +19,11 @@ const Wrapper = styled.table`
 
 export const Row = styled.tr`
   border-top: 1px solid var(--color-medium-gray);
-  font-style: ${({ italic }) => (italic ? "italic" : "normal")};
+  font-style: ${({ italic }) => italic && "italic"};
 `;
 
 export const Cell = styled.td`
-  color: ${({ gray }) => (gray ? "var(--color-dark-gray)" : "inherit")};
+  color: ${({ gray }) => gray && "var(--color-dark-gray)"};
   padding: var(--size-16) var(--size-24);
   text-align: left;
   white-space: pre-wrap;

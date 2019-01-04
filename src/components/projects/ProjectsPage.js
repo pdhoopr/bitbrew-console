@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { listProjects, viewOrg } from "../../api";
+import { listProjects } from "../../api";
 import { pluralize } from "../../utils";
 import Context from "../Context";
 import useForm from "../hooks/useForm";
@@ -28,15 +28,10 @@ export default function ProjectsPage({ orgId }) {
   const { openDrawer } = useContext(Context);
 
   const [projects, setProjects] = useState([]);
-  const [org, setOrg] = useState({});
 
   async function loadProjects() {
-    const [{ items }, orgData] = await Promise.all([
-      listProjects(orgId),
-      viewOrg(orgId),
-    ]);
+    const { items } = await listProjects(orgId);
     setProjects(items);
-    setOrg(orgData);
   }
 
   const isLoading = useLoading(loadProjects, [orgId]);
@@ -67,7 +62,7 @@ export default function ProjectsPage({ orgId }) {
             <NewProjectButton
               onClick={() => {
                 openDrawer(
-                  <NewProjectForm org={org.id} onCreate={loadProjects} />,
+                  <NewProjectForm org={orgId} onCreate={loadProjects} />,
                 );
               }}
             >
@@ -80,10 +75,7 @@ export default function ProjectsPage({ orgId }) {
           {searchResults.map(project => (
             <ProjectContent
               key={project.id}
-              project={{
-                ...project,
-                orgName: org.name,
-              }}
+              project={project}
               onUpdate={loadProjects}
               onDelete={loadProjects}
             />

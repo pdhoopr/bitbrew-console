@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { viewDestination, viewOrg, viewProject, viewRule } from "../../api";
+import { viewDestination, viewRule } from "../../api";
 import { capitalize, localize } from "../../utils";
 import Context from "../Context";
 import useLoading from "../hooks/useLoading";
@@ -47,26 +47,18 @@ export default function RuleOverviewPage({
 
   const [rule, setRule] = useState({});
   const [destination, setDestination] = useState({});
-  const [project, setProject] = useState({});
-  const [org, setOrg] = useState({});
 
   async function loadRule() {
-    const [data, projectData, orgData] = await Promise.all([
-      viewRule(ruleId),
-      viewProject(projectId),
-      viewOrg(orgId),
-    ]);
+    const data = await viewRule(ruleId);
     const destinationData =
       data.destinationType.toUpperCase() === "UNKNOWN"
         ? {}
         : await viewDestination(data.destinationId);
     setRule(data);
     setDestination(destinationData);
-    setProject(projectData);
-    setOrg(orgData);
   }
 
-  const isLoading = useLoading(loadRule, [ruleId, projectId, orgId]);
+  const isLoading = useLoading(loadRule, [ruleId]);
 
   const projectUrl = `/orgs/${orgId}/projects/${projectId}`;
   const rulesUrl = `${projectUrl}/rules`;
@@ -89,11 +81,7 @@ export default function RuleOverviewPage({
                 onClick={() => {
                   openDialog(
                     <DeleteRuleDialog
-                      rule={{
-                        ...rule,
-                        projectName: project.name,
-                        orgName: org.name,
-                      }}
+                      rule={rule}
                       onDelete={() => {
                         navigate(rulesUrl);
                       }}

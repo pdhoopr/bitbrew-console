@@ -25,7 +25,7 @@ export default createGlobalStyle`
     --font-roboto: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI",
       Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
       "Segoe UI Symbol";
-    --font-system-monospace: SFMono-Regular, Consolas, Liberation Mono, Menlo,
+    --font-system-monospace: SFMono-Regular, Consolas, "Liberation Mono", Menlo,
       Courier, monospace;
     --letter-spacing: 0.25px;
     --size-2: 0.125rem;
@@ -76,6 +76,7 @@ export default createGlobalStyle`
 
   strong {
     font-weight: var(--weight-bold);
+    letter-spacing: var(--letter-spacing);
   }
 
   #app {

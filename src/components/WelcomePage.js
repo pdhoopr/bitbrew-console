@@ -134,7 +134,6 @@ export default function WelcomePage() {
                       }}
                       onUpdate={loadOrgs}
                       onDelete={loadOrgs}
-                      showOrgOnForm
                     />
                   ))}
                 </Section>

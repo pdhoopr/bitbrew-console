@@ -29,7 +29,7 @@ const baseStyles = css`
 export const Link = styled(LinkImpl)`
   ${baseStyles};
   border-bottom: 1px solid transparent;
-  color: ${({ green }) => (green ? "var(--color-green)" : "inherit")};
+  color: ${({ green }) => green && "var(--color-green)"};
   transition: border-bottom-color var(--duration-short),
     color var(--duration-short);
 
@@ -40,15 +40,17 @@ export const Link = styled(LinkImpl)`
   }
 `;
 
-export const ButtonLink = styled(LinkImpl)`
+export const IconLink = styled(LinkImpl).attrs(({ title }) => ({
+  "aria-label": title,
+}))`
   ${baseStyles};
   display: inline-block;
-  padding: var(--size-8) var(--size-16);
+  padding: var(--size-8);
   position: relative;
 
   &::before {
     background-color: currentColor;
-    border-radius: var(--corner-radius);
+    border-radius: 50%;
     bottom: 0;
     content: "";
     left: 0;
@@ -62,16 +64,5 @@ export const ButtonLink = styled(LinkImpl)`
   &:hover::before,
   &:focus::before {
     opacity: 0.08;
-  }
-`;
-
-export const IconLink = styled(ButtonLink).attrs(({ title }) => ({
-  "aria-label": title,
-}))`
-  padding-left: var(--size-8);
-  padding-right: var(--size-8);
-
-  &::before {
-    border-radius: 50%;
   }
 `;

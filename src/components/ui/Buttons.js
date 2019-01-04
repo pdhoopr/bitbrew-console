@@ -12,7 +12,6 @@ const baseStyles = css`
   letter-spacing: var(--letter-spacing);
   line-height: var(--size-20);
   margin: 0;
-  padding: var(--size-8) var(--size-16);
 
   &::-moz-focus-inner {
     border-style: none;
@@ -29,6 +28,7 @@ export const Button = styled.button.attrs({
 })`
   ${baseStyles};
   color: inherit;
+  padding: var(--size-8);
   position: relative;
 
   &::before {
@@ -53,9 +53,6 @@ export const Button = styled.button.attrs({
 export const IconButton = styled(Button).attrs(({ title }) => ({
   "aria-label": title,
 }))`
-  padding-left: var(--size-8);
-  padding-right: var(--size-8);
-
   &::before {
     border-radius: 50%;
   }
@@ -69,6 +66,7 @@ export const RaisedButton = styled.button.attrs({
     red ? "var(--color-red)" : "var(--color-green)"};
   box-shadow: var(--elevation-low);
   color: var(--color-white);
+  padding: var(--size-8) var(--size-16);
   transition: opacity var(--duration-short);
 
   &:hover,

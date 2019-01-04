@@ -22,9 +22,7 @@ This app uses a few pieces of tech worth highlighting:
 
 - [React](https://reactjs.org/) powers the app.
 - [axios](https://github.com/axios/axios) is used to make HTTP requests.
-- [mobx-state-tree](https://github.com/mobxjs/mobx-state-tree) is used for state management.
 - [Reach Router](https://reach.tech/router) is used for routing.
-- [React Loadable](https://github.com/jamiebuilds/react-loadable) is used for code splitting.
 - [react-modal](http://reactcommunity.org/react-modal/) is used to create accessible modals.
 - [styled-components](https://www.styled-components.com/) is used to write styles.
 

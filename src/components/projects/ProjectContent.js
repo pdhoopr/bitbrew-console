@@ -14,12 +14,7 @@ import { ContentHeading, Text } from "../ui/Texts";
 import DeleteProjectDialog from "./DeleteProjectDialog";
 import EditProjectForm from "./EditProjectForm";
 
-export default function ProjectContent({
-  onDelete,
-  onUpdate,
-  project,
-  showOrgOnForm,
-}) {
+export default function ProjectContent({ onDelete, onUpdate, project }) {
   const { openDialog, openDrawer } = useContext(Context);
 
   const name = project.name.trim();
@@ -47,11 +42,7 @@ export default function ProjectContent({
             <Button
               onClick={() => {
                 openDrawer(
-                  <EditProjectForm
-                    showOrgOnForm={showOrgOnForm}
-                    project={project}
-                    onUpdate={onUpdate}
-                  />,
+                  <EditProjectForm project={project} onUpdate={onUpdate} />,
                 );
               }}
             >
@@ -89,9 +80,4 @@ ProjectContent.propTypes = {
     name: PropTypes.string.isRequired,
     orgId: PropTypes.string.isRequired,
   }).isRequired,
-  showOrgOnForm: PropTypes.bool,
-};
-
-ProjectContent.defaultProps = {
-  showOrgOnForm: false,
 };

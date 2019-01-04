@@ -38,28 +38,28 @@ export default function App() {
   const [dialog, setDialog] = useState(null);
   const [banner, setBanner] = useState(null);
 
-  function signInWithToken(token) {
+  function logInWithToken(token) {
     setToken(token);
     setAuth(token);
   }
 
-  function signInWithRedirect() {
+  function logInWithRedirect() {
     const currentUrl = window.location.href;
     navigate(
       `https://service.bitbrew.com/auth/logout?redirect_uri=https://service.bitbrew.com/auth/login?redirect_uri=${currentUrl}`,
     );
   }
 
-  async function signInWithSilentRefresh() {
+  async function logInWithSilentRefresh() {
     try {
       const token = await silentRefresh();
-      signInWithToken(token);
+      logInWithToken(token);
     } catch {
-      signInWithRedirect();
+      logInWithRedirect();
     }
   }
 
-  function signInWithUrlParam() {
+  function logInWithUrlParam() {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("access_token");
     params.delete("access_token");
@@ -69,13 +69,13 @@ export default function App() {
       replace: true,
     });
     if (document.referrer.startsWith("https://service.bitbrew.com")) {
-      signInWithToken(token);
+      logInWithToken(token);
     } else {
-      signInWithSilentRefresh();
+      logInWithSilentRefresh();
     }
   }
 
-  function signOut() {
+  function logOut() {
     removeToken();
     setAuth(null);
     const rootUrl = window.location.origin;
@@ -120,7 +120,7 @@ export default function App() {
 
   async function refreshAndRetryOn401(error) {
     if (error.response.status === 401) {
-      await signInWithSilentRefresh();
+      await logInWithSilentRefresh();
       const response = await retry(error);
       return response;
     }
@@ -129,9 +129,9 @@ export default function App() {
 
   useEffect(() => {
     if (/[?&]access_token=/.test(window.location.search)) {
-      signInWithUrlParam();
+      logInWithUrlParam();
     } else {
-      signInWithSilentRefresh();
+      logInWithSilentRefresh();
     }
     on("error", refreshAndRetryOn401);
     return () => {
@@ -153,8 +153,8 @@ export default function App() {
     <Context.Provider
       value={{
         auth,
-        signInWithToken,
-        signOut,
+        logInWithToken,
+        logOut,
         openDrawer,
         closeDrawer,
         openDialog,

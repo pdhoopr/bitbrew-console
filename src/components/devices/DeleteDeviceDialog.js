@@ -3,10 +3,9 @@ import React from "react";
 import { deleteDevice, listDevices } from "../../api";
 import { poll } from "../../utils";
 import DeleteDialog from "../ui/DeleteDialog";
-import Panel from "../ui/Panel";
-import { Text } from "../ui/Texts";
 
 export default function DeleteDeviceDialog({ device, onDelete }) {
+  const codename = device.codename.trim();
   return (
     <DeleteDialog
       heading="Delete Device"
@@ -19,18 +18,9 @@ export default function DeleteDeviceDialog({ device, onDelete }) {
         await onDelete();
       }}
     >
-      <Text>
-        The following device will be permanently deleted, and the platform will
-        no longer accept any data sent from this device:
-      </Text>
-      <Panel
-        items={[
-          ["Device", device.codename],
-          ["Project", device.projectName],
-          ["Organization", device.orgName],
-        ]}
-      />
-      <Text>Are you sure you want to continue?</Text>
+      Are you sure you want to delete {codename ? "the" : "this"} device
+      {codename && <strong> {device.codename}</strong>}? The platform will no
+      longer accept any data sent from this device.
     </DeleteDialog>
   );
 }
@@ -39,9 +29,7 @@ DeleteDeviceDialog.propTypes = {
   device: PropTypes.shape({
     codename: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
-    orgName: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    projectName: PropTypes.string.isRequired,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
 };

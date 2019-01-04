@@ -27,7 +27,7 @@ module.exports = {
       {
         test: /\.js$/,
         use: ["thread-loader", "babel-loader"],
-        include: [paths.envFile, paths.srcFolder],
+        include: [paths.srcFolder],
       },
       {
         test: /\.svg$/,

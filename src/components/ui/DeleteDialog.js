@@ -1,31 +1,27 @@
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Context from "../Context";
-import { Button, RaisedButton } from "./Buttons";
+import { Button } from "./Buttons";
 import { FlexEnd } from "./Flexboxes";
 import FocusTrap from "./FocusTrap";
 import { ContentHeader } from "./Headers";
 import { Dialog } from "./Modals";
 import { ContentHeading } from "./Texts";
 
-const padding = css`
-  padding-bottom: var(--size-16);
+const Message = styled.div`
   padding-left: var(--size-24);
   padding-right: var(--size-24);
 `;
 
-const Message = styled.div`
-  ${padding};
-`;
-
 const Actions = styled(FlexEnd)`
-  ${padding};
+  color: var(--color-dark-gray);
+  padding: var(--size-16) var(--size-16) var(--size-8);
 `;
 
-const CancelButton = styled(Button)`
-  color: var(--color-dark-gray);
-  margin-right: var(--size-16);
+const DeleteButton = styled(Button)`
+  color: var(--color-red);
+  margin-left: var(--size-8);
 `;
 
 export default function DeleteDialog({ children, heading, onDelete }) {
@@ -40,8 +36,8 @@ export default function DeleteDialog({ children, heading, onDelete }) {
       </ContentHeader>
       <Message>{children}</Message>
       <Actions>
-        <CancelButton onClick={closeDialog}>Cancel</CancelButton>
-        <RaisedButton
+        <Button onClick={closeDialog}>Cancel</Button>
+        <DeleteButton
           onClick={async () => {
             setDeleting(true);
             const error = await errorBoundary(async () => {
@@ -55,7 +51,7 @@ export default function DeleteDialog({ children, heading, onDelete }) {
           red
         >
           Delete
-        </RaisedButton>
+        </DeleteButton>
       </Actions>
       {isDeleting && <FocusTrap label={`Processing ${heading} request`} />}
     </Dialog>

@@ -3,10 +3,10 @@ import React from "react";
 import { deleteProject, listProjects } from "../../api";
 import { poll } from "../../utils";
 import DeleteDialog from "../ui/DeleteDialog";
-import Panel from "../ui/Panel";
-import { Text } from "../ui/Texts";
 
 export default function DeleteProjectDialog({ onDelete, project }) {
+  const name = project.name.trim();
+  const orgName = project.orgName ? project.orgName.trim() : null;
   return (
     <DeleteDialog
       heading="Delete Project"
@@ -19,11 +19,15 @@ export default function DeleteProjectDialog({ onDelete, project }) {
         await onDelete();
       }}
     >
-      <Text>The following project will be permanently deleted:</Text>
-      <Panel
-        items={[["Project", project.name], ["Organization", project.orgName]]}
-      />
-      <Text>Are you sure you want to continue?</Text>
+      Are you sure you want to delete {name ? "the" : "this"} project
+      {name && <strong> {project.name}</strong>}
+      {orgName && (
+        <span>
+          {" "}
+          from the organization <strong>{orgName}</strong>
+        </span>
+      )}
+      ?
     </DeleteDialog>
   );
 }
@@ -34,6 +38,6 @@ DeleteProjectDialog.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     orgId: PropTypes.string.isRequired,
-    orgName: PropTypes.string.isRequired,
+    orgName: PropTypes.string,
   }).isRequired,
 };

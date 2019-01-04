@@ -42,7 +42,7 @@ module.exports = {
           },
           "babel-loader",
         ],
-        include: [paths.envFile, paths.srcFolder],
+        include: [paths.srcFolder],
       },
       {
         test: /\.svg$/,

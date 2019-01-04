@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { viewDestination, viewOrg, viewProject } from "../../api";
+import { viewDestination } from "../../api";
 import { capitalize, localize } from "../../utils";
 import Context from "../Context";
 import useLoading from "../hooks/useLoading";
@@ -38,25 +38,13 @@ export default function DestinationOverviewPage({
   const { openDialog, openDrawer } = useContext(Context);
 
   const [destination, setDestination] = useState({});
-  const [project, setProject] = useState({});
-  const [org, setOrg] = useState({});
 
   async function loadDestination() {
-    const [data, projectData, orgData] = await Promise.all([
-      viewDestination(destinationId),
-      viewProject(projectId),
-      viewOrg(orgId),
-    ]);
+    const data = await viewDestination(destinationId);
     setDestination(data);
-    setProject(projectData);
-    setOrg(orgData);
   }
 
-  const isLoading = useLoading(loadDestination, [
-    destinationId,
-    projectId,
-    orgId,
-  ]);
+  const isLoading = useLoading(loadDestination, [destinationId]);
 
   const destinationsUrl = `/orgs/${orgId}/projects/${projectId}/destinations`;
   const type = destination.type ? capitalize(destination.type.trim()) : "";
@@ -94,11 +82,7 @@ export default function DestinationOverviewPage({
                 onClick={() => {
                   openDialog(
                     <DeleteDestinationDialog
-                      destination={{
-                        ...destination,
-                        projectName: project.name,
-                        orgName: org.name,
-                      }}
+                      destination={destination}
                       onDelete={() => {
                         navigate(destinationsUrl);
                       }}
