@@ -7,6 +7,7 @@ import Context from "../Context";
 import useLoading from "../hooks/useLoading";
 import AppBar from "../ui/AppBar";
 import { RaisedButton } from "../ui/Buttons";
+import DeleteButton from "../ui/DeleteButton";
 import { FlexBetween } from "../ui/Flexboxes";
 import { PageHeader } from "../ui/Headers";
 import { BackIcon, SyncDisabledIcon, SyncIcon } from "../ui/Icons";
@@ -21,12 +22,6 @@ import EditDestinationForm from "./EditDestinationForm";
 const Heading = styled(PageHeading)`
   margin-left: var(--size-16);
   margin-right: auto;
-`;
-
-const EditDestinationButton = styled(RaisedButton)`
-  background-color: var(--color-black);
-  margin-left: auto;
-  margin-right: var(--size-16);
 `;
 
 export default function DestinationOverviewPage({
@@ -66,7 +61,7 @@ export default function DestinationOverviewPage({
           <Section>
             <FlexBetween>
               <SectionHeading>Overview</SectionHeading>
-              <EditDestinationButton
+              <RaisedButton
                 onClick={() => {
                   openDrawer(
                     <EditDestinationForm
@@ -77,21 +72,6 @@ export default function DestinationOverviewPage({
                 }}
               >
                 Edit
-              </EditDestinationButton>
-              <RaisedButton
-                onClick={() => {
-                  openDialog(
-                    <DeleteDestinationDialog
-                      destination={destination}
-                      onDelete={() => {
-                        navigate(destinationsUrl);
-                      }}
-                    />,
-                  );
-                }}
-                red
-              >
-                Delete
               </RaisedButton>
             </FlexBetween>
             <Content>
@@ -170,6 +150,20 @@ export default function DestinationOverviewPage({
               )}
             </Content>
           </Section>
+          <DeleteButton
+            onClick={() => {
+              openDialog(
+                <DeleteDestinationDialog
+                  destination={destination}
+                  onDelete={() => {
+                    navigate(destinationsUrl);
+                  }}
+                />,
+              );
+            }}
+          >
+            Delete destination
+          </DeleteButton>
         </Width640>
       )}
     </main>

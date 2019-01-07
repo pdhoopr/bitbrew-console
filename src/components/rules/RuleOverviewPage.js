@@ -6,8 +6,7 @@ import { capitalize, localize } from "../../utils";
 import Context from "../Context";
 import useLoading from "../hooks/useLoading";
 import AppBar from "../ui/AppBar";
-import { RaisedButton } from "../ui/Buttons";
-import { FlexBetween } from "../ui/Flexboxes";
+import DeleteButton from "../ui/DeleteButton";
 import { PageHeader } from "../ui/Headers";
 import { BackIcon, SyncDisabledIcon, SyncIcon } from "../ui/Icons";
 import { IconLink, Link } from "../ui/Links";
@@ -75,24 +74,7 @@ export default function RuleOverviewPage({
       {!isLoading && (
         <Width640>
           <Section>
-            <FlexBetween>
-              <SectionHeading>Overview</SectionHeading>
-              <RaisedButton
-                onClick={() => {
-                  openDialog(
-                    <DeleteRuleDialog
-                      rule={rule}
-                      onDelete={() => {
-                        navigate(rulesUrl);
-                      }}
-                    />,
-                  );
-                }}
-                red
-              >
-                Delete
-              </RaisedButton>
-            </FlexBetween>
+            <SectionHeading>Overview</SectionHeading>
             <Content>
               <List
                 items={[
@@ -182,6 +164,20 @@ export default function RuleOverviewPage({
               />
             </Content>
           </Section>
+          <DeleteButton
+            onClick={() => {
+              openDialog(
+                <DeleteRuleDialog
+                  rule={rule}
+                  onDelete={() => {
+                    navigate(rulesUrl);
+                  }}
+                />,
+              );
+            }}
+          >
+            Delete rule
+          </DeleteButton>
         </Width640>
       )}
     </main>

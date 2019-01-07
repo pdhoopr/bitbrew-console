@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
-import styled from "styled-components";
 import { viewOrg } from "../../api";
 import { localize } from "../../utils";
 import Context from "../Context";
 import useLoading from "../hooks/useLoading";
 import AppBar from "../ui/AppBar";
 import { RaisedButton } from "../ui/Buttons";
+import DeleteButton from "../ui/DeleteButton";
 import { FlexBetween } from "../ui/Flexboxes";
 import { PageHeader } from "../ui/Headers";
 import List from "../ui/List";
@@ -15,12 +15,6 @@ import { PageHeading, SectionHeading } from "../ui/Texts";
 import { Width640 } from "../ui/Widths";
 import DeleteOrgDialog from "./DeleteOrgDialog";
 import EditOrgForm from "./EditOrgForm";
-
-const EditOrgButton = styled(RaisedButton)`
-  background-color: var(--color-black);
-  margin-left: auto;
-  margin-right: var(--size-16);
-`;
 
 export default function OrgOverviewPage({ navigate, orgId }) {
   const { openDialog, openDrawer } = useContext(Context);
@@ -46,27 +40,12 @@ export default function OrgOverviewPage({ navigate, orgId }) {
           <Section>
             <FlexBetween>
               <SectionHeading>Overview</SectionHeading>
-              <EditOrgButton
+              <RaisedButton
                 onClick={() => {
                   openDrawer(<EditOrgForm org={org} onUpdate={loadOrg} />);
                 }}
               >
                 Edit
-              </EditOrgButton>
-              <RaisedButton
-                onClick={() => {
-                  openDialog(
-                    <DeleteOrgDialog
-                      org={org}
-                      onDelete={() => {
-                        navigate("/");
-                      }}
-                    />,
-                  );
-                }}
-                red
-              >
-                Delete
               </RaisedButton>
             </FlexBetween>
             <Content>
@@ -78,6 +57,20 @@ export default function OrgOverviewPage({ navigate, orgId }) {
               />
             </Content>
           </Section>
+          <DeleteButton
+            onClick={() => {
+              openDialog(
+                <DeleteOrgDialog
+                  org={org}
+                  onDelete={() => {
+                    navigate("/");
+                  }}
+                />,
+              );
+            }}
+          >
+            Delete organization
+          </DeleteButton>
         </Width640>
       )}
     </main>

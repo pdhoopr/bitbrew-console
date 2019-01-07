@@ -62,8 +62,7 @@ export const RaisedButton = styled.button.attrs({
   type: "button",
 })`
   ${baseStyles};
-  background-color: ${({ red }) =>
-    red ? "var(--color-red)" : "var(--color-green)"};
+  background-color: var(--color-green);
   box-shadow: var(--elevation-low);
   color: var(--color-white);
   padding: var(--size-8) var(--size-16);
