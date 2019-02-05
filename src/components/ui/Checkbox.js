@@ -21,11 +21,11 @@ const Icon = styled.svg`
 
   ${/* sc-selector */ Field}:focus + & {
     @supports (-moz-appearance: none) {
-      outline: 1px dotted ButtonText;
+      outline: var(--outline-moz);
     }
 
     @supports (-webkit-appearance: none) {
-      outline: 5px auto -webkit-focus-ring-color;
+      outline: var(--outline-webkit);
     }
   }
 `;

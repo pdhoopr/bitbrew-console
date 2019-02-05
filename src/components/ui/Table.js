@@ -18,7 +18,7 @@ const Wrapper = styled.table`
 `;
 
 export const Row = styled.tr`
-  border-top: 1px solid var(--color-medium-gray);
+  border-top: var(--border-divider);
   font-style: ${({ italic }) => italic && "italic"};
 `;
 
@@ -41,13 +41,6 @@ const EmptyCell = styled(Cell)`
   text-align: center;
 `;
 
-export const IconCell = styled.span`
-  display: block;
-  margin-bottom: calc(-1 * var(--size-8));
-  margin-top: calc(-1 * var(--size-8));
-  text-align: right;
-`;
-
 export default function Table({ children, columns, emptyState }) {
   return (
     <Overflow>
@@ -55,7 +48,7 @@ export default function Table({ children, columns, emptyState }) {
         <thead>
           <tr>
             {columns.map(column => (
-              <HeaderCell as="th" key={column.key || column}>
+              <HeaderCell as="th" key={column}>
                 {column}
               </HeaderCell>
             ))}
@@ -77,7 +70,7 @@ export default function Table({ children, columns, emptyState }) {
 
 Table.propTypes = {
   children: PropTypes.node.isRequired,
-  columns: PropTypes.arrayOf(PropTypes.node).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.string).isRequired,
   emptyState: PropTypes.string,
 };
 

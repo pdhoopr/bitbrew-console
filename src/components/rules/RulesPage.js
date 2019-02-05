@@ -2,20 +2,19 @@ import PropTypes from "prop-types";
 import React, { useContext, useRef, useState } from "react";
 import { listDestinations, listRules } from "../../api";
 import { capitalize, localize } from "../../utils";
-import Context from "../Context";
+import GlobalContext from "../GlobalContext";
 import useLoading from "../hooks/useLoading";
-import AppBar from "../ui/AppBar";
-import { IconButton } from "../ui/Buttons";
+import { RaisedButton } from "../ui/Buttons";
+import { FlexBetween } from "../ui/Flexboxes";
 import { PageHeader } from "../ui/Headers";
-import { AddIcon } from "../ui/Icons";
 import { Link } from "../ui/Links";
-import Table, { Cell, IconCell, Row } from "../ui/Table";
+import Table, { Cell, Row } from "../ui/Table";
 import { PageHeading } from "../ui/Texts";
 import { Width640 } from "../ui/Widths";
 import NewRuleForm from "./NewRuleForm";
 
 export default function RulesPage({ orgId, projectId }) {
-  const { openDrawer } = useContext(Context);
+  const { openDrawer } = useContext(GlobalContext);
 
   const destinationsById = useRef({});
 
@@ -43,36 +42,28 @@ export default function RulesPage({ orgId, projectId }) {
   const projectUrl = `/orgs/${orgId}/projects/${projectId}`;
   return (
     <main>
-      <PageHeader>
-        <AppBar>
-          <PageHeading>Rules</PageHeading>
-        </AppBar>
-      </PageHeader>
-      {!isLoading && (
-        <Width640>
+      <Width640>
+        <PageHeader>
+          <FlexBetween>
+            <PageHeading>Rules</PageHeading>
+            <RaisedButton
+              onClick={() => {
+                openDrawer(
+                  <NewRuleForm
+                    project={projectId}
+                    selectDestinationFrom={destinations}
+                    onCreate={loadRules}
+                  />,
+                );
+              }}
+            >
+              New
+            </RaisedButton>
+          </FlexBetween>
+        </PageHeader>
+        {!isLoading && (
           <Table
-            columns={[
-              "Name",
-              "Created On",
-              "Destination",
-              "Destination Type",
-              <IconCell key="New Rule">
-                <IconButton
-                  onClick={() => {
-                    openDrawer(
-                      <NewRuleForm
-                        project={projectId}
-                        selectDestinationFrom={destinations}
-                        onCreate={loadRules}
-                      />,
-                    );
-                  }}
-                  title="Open new rule form"
-                >
-                  <AddIcon />
-                </IconButton>
-              </IconCell>,
-            ]}
+            columns={["Name", "Created On", "Destination", "Destination Type"]}
             emptyState="There are no rules in this project yet."
           >
             {rules.map(rule => {
@@ -99,13 +90,12 @@ export default function RulesPage({ orgId, projectId }) {
                   <Cell gray={!destination}>
                     {destination ? capitalize(destination.type) : "N/A"}
                   </Cell>
-                  <Cell />
                 </Row>
               );
             })}
           </Table>
-        </Width640>
-      )}
+        )}
+      </Width640>
     </main>
   );
 }

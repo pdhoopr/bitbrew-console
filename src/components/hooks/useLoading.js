@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import Context from "../Context";
+import GlobalContext from "../GlobalContext";
 
 export default function useLoading(loadData, props = []) {
-  const { errorBoundary } = useContext(Context);
+  const { errorBoundary } = useContext(GlobalContext);
 
   const [isLoading, setLoading] = useState(true);
 

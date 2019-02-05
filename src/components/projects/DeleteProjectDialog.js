@@ -3,6 +3,7 @@ import React from "react";
 import { deleteProject, listProjects } from "../../api";
 import { poll } from "../../utils";
 import DeleteDialog from "../ui/DeleteDialog";
+import { Text } from "../ui/Texts";
 
 export default function DeleteProjectDialog({ onDelete, project }) {
   const name = project.name.trim();
@@ -19,8 +20,10 @@ export default function DeleteProjectDialog({ onDelete, project }) {
         await onDelete();
       }}
     >
-      Are you sure you want to delete {name ? "the" : "this"} project
-      {name && <strong> {project.name}</strong>}
+      Are you sure you want to delete the project{" "}
+      <Text as="strong" gray={!name}>
+        {name || "Unnamed project"}
+      </Text>
       {orgName && (
         <span>
           {" "}

@@ -33,6 +33,7 @@ export const SubHeading = styled.h4`
 
 export const Text = styled.p`
   ${baseStyles};
+  font-weight: ${({ as }) => as === "strong" && "var(--weight-bold)"};
   font-size: var(--size-14);
   line-height: var(--size-20);
 `;

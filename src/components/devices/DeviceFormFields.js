@@ -13,7 +13,12 @@ export default function DeviceFormFields({ edit, setValue, values }) {
     <React.Fragment>
       <Label htmlFor="codename">
         Codename
-        <Input id="codename" value={values.codename} onChange={setValue} />
+        <Input
+          id="codename"
+          value={values.codename}
+          onChange={setValue}
+          placeholder="Unnamed device"
+        />
       </Label>
       <Choice htmlFor="enabled">
         <Checkbox id="enabled" checked={values.enabled} onChange={setValue} />

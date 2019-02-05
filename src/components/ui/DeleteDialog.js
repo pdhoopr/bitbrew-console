@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import Context from "../Context";
+import GlobalContext from "../GlobalContext";
 import { Button } from "./Buttons";
 import { FlexEnd } from "./Flexboxes";
 import FocusTrap from "./FocusTrap";
@@ -25,7 +25,7 @@ const DeleteButton = styled(Button)`
 `;
 
 export default function DeleteDialog({ children, heading, onDelete }) {
-  const { closeDialog, errorBoundary } = useContext(Context);
+  const { closeDialog, errorBoundary } = useContext(GlobalContext);
 
   const [isDeleting, setDeleting] = useState(false);
 

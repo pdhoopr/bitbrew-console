@@ -2,6 +2,8 @@ import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
   :root {
+    --border-divider: 1px solid #e0e0e0;
+    --border-transparent: 1px solid transparent;
     --color-red: #ff5252;
     --color-green: #02ca91;
     --color-white: #fff;
@@ -11,7 +13,7 @@ export default createGlobalStyle`
     --color-gray: #bdbdbd;
     --color-dark-gray: #616161;
     --color-black: #333;
-    --corner-radius: 3px;
+    --corner-radius: 2px;
     --duration-short: 0.15s;
     --duration-long: 1.5s;
     --elevation-low: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
@@ -28,10 +30,15 @@ export default createGlobalStyle`
     --font-system-monospace: SFMono-Regular, Consolas, "Liberation Mono", Menlo,
       Courier, monospace;
     --letter-spacing: 0.25px;
+    --outline-moz: 1px dotted ButtonText;
+    --outline-webkit: 5px auto -webkit-focus-ring-color;
+    --size-1: 0.0625rem;
     --size-2: 0.125rem;
     --size-4: 0.25rem;
+    --size-6: 0.375rem;
     --size-7: 0.4375rem;
     --size-8: 0.5rem;
+    --size-10: 0.625rem;
     --size-12: 0.75rem;
     --size-14: 0.875rem;
     --size-16: 1rem;
@@ -39,10 +46,13 @@ export default createGlobalStyle`
     --size-24: 1.5rem;
     --size-28: 1.75rem;
     --size-32: 2rem;
+    --size-34: 2.125rem;
     --size-40: 2.5rem;
     --size-44: 2.75rem;
     --size-48: 3rem;
     --size-56: 3.5rem;
+    --size-60: 3.75rem;
+    --size-68: 4.25rem;
     --size-128: 8rem;
     --size-240: 15rem;
     --size-320: 20rem;
@@ -83,9 +93,5 @@ export default createGlobalStyle`
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-
-    &[data-nav] {
-      padding-left: var(--size-240);
-    }
   }
 `;

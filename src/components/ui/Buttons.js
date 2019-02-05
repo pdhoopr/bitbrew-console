@@ -19,7 +19,7 @@ const baseStyles = css`
   }
 
   &:-moz-focusring {
-    outline: 1px dotted ButtonText;
+    outline: var(--outline-moz);
   }
 `;
 

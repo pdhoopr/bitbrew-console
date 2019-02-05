@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 const baseStyles = css`
   margin-left: auto;
   margin-right: auto;
+  position: relative;
   width: 100%;
 `;
 

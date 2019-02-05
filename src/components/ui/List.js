@@ -9,7 +9,7 @@ const Wrapper = styled.dl`
 `;
 
 const Row = styled(FlexStart)`
-  border-top: 1px solid var(--color-medium-gray);
+  border-top: var(--border-divider);
   padding: var(--size-16) var(--size-24);
 `;
 

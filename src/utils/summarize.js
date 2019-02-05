@@ -16,6 +16,6 @@ export default function summarize(error) {
     case 422:
       return "Invalid input. Please modify and try again.";
     default:
-      return "Sorry, something's wrong. Please try again.";
+      return "Sorry, something went wrong. Please try again.";
   }
 }

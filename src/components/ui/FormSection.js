@@ -6,7 +6,7 @@ import { ContentHeading } from "./Texts";
 const Divider = styled.hr`
   background-color: var(--color-medium-gray);
   border: none;
-  height: 1px;
+  height: var(--size-1);
   margin: 0 calc(-1 * var(--size-24)) var(--size-16);
 `;
 

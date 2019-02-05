@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import AddSvg from "../../icons/add.svg";
 import ArrowDownSvg from "../../icons/arrow-down.svg";
 import ArrowUpSvg from "../../icons/arrow-up.svg";
 import BackSvg from "../../icons/back.svg";
@@ -7,6 +6,7 @@ import CheckboxSelectedSvg from "../../icons/checkbox-selected.svg";
 import CheckboxSvg from "../../icons/checkbox.svg";
 import CloseSvg from "../../icons/close.svg";
 import ErrorSvg from "../../icons/error.svg";
+import LogoSvg from "../../icons/logo.svg";
 import MoreSvg from "../../icons/more.svg";
 import RadioButtonSelectedSvg from "../../icons/radio-button-selected.svg";
 import RadioButtonSvg from "../../icons/radio-button.svg";
@@ -19,10 +19,6 @@ const baseStyles = css`
   height: var(--size-20);
   vertical-align: middle;
   width: var(--size-20);
-`;
-
-export const AddIcon = styled(AddSvg)`
-  ${baseStyles};
 `;
 
 export const ArrowDownIcon = styled(ArrowDownSvg)`
@@ -73,6 +69,13 @@ export const CloseIcon = styled(CloseSvg)`
 export const ErrorIcon = styled(ErrorSvg)`
   ${baseStyles};
   fill: var(--color-red);
+`;
+
+export const LogoIcon = styled(LogoSvg)`
+  display: block;
+  fill: var(--color-white);
+  height: var(--size-32);
+  width: auto;
 `;
 
 export const MoreIcon = styled(MoreSvg)`

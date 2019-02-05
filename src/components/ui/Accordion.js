@@ -6,7 +6,7 @@ import { Button } from "./Buttons";
 import { ArrowDownInlineIcon, ArrowUpInlineIcon } from "./Icons";
 
 const Header = styled(Button)`
-  border-bottom: 1px solid transparent;
+  border-bottom: var(--border-transparent);
   border-radius: 0;
   color: var(--color-green);
   margin-bottom: var(--size-16);

@@ -3,6 +3,7 @@ import React from "react";
 import { deleteDevice, listDevices } from "../../api";
 import { poll } from "../../utils";
 import DeleteDialog from "../ui/DeleteDialog";
+import { Text } from "../ui/Texts";
 
 export default function DeleteDeviceDialog({ device, onDelete }) {
   const codename = device.codename.trim();
@@ -18,9 +19,11 @@ export default function DeleteDeviceDialog({ device, onDelete }) {
         await onDelete();
       }}
     >
-      Are you sure you want to delete {codename ? "the" : "this"} device
-      {codename && <strong> {device.codename}</strong>}? The platform will no
-      longer accept any data sent from this device.
+      Are you sure you want to delete the device{" "}
+      <Text as="strong" gray={!codename}>
+        {codename || "Unnamed device"}
+      </Text>
+      ? The platform will no longer accept any data sent from this device.
     </DeleteDialog>
   );
 }

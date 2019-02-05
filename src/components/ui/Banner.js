@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { useContext, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
-import Context from "../Context";
+import GlobalContext from "../GlobalContext";
 import { IconButton } from "./Buttons";
 import { CloseIcon, ErrorIcon } from "./Icons";
 import { Text } from "./Texts";
@@ -34,7 +34,7 @@ const DismissIcon = styled(CloseIcon)`
 `;
 
 export default function Banner({ children }) {
-  const { closeBanner } = useContext(Context);
+  const { closeBanner } = useContext(GlobalContext);
 
   const timeoutId = useRef(null);
 

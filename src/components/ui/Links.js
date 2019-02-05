@@ -28,7 +28,7 @@ const baseStyles = css`
 
 export const Link = styled(LinkImpl)`
   ${baseStyles};
-  border-bottom: 1px solid transparent;
+  border-bottom: var(--border-transparent);
   color: ${({ green }) => green && "var(--color-green)"};
   transition: border-bottom-color var(--duration-short),
     color var(--duration-short);

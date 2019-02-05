@@ -3,6 +3,7 @@ import React from "react";
 import { deleteRule, listRules } from "../../api";
 import { poll } from "../../utils";
 import DeleteDialog from "../ui/DeleteDialog";
+import { Text } from "../ui/Texts";
 
 export default function DeleteRuleDialog({ onDelete, rule }) {
   const name = rule.name.trim();
@@ -18,8 +19,11 @@ export default function DeleteRuleDialog({ onDelete, rule }) {
         await onDelete();
       }}
     >
-      Are you sure you want to delete {name ? "the" : "this"} rule
-      {name && <strong> {rule.name}</strong>}?
+      Are you sure you want to delete the rule{" "}
+      <Text as="strong" gray={!name}>
+        {name || "Unnamed rule"}
+      </Text>
+      ?
     </DeleteDialog>
   );
 }

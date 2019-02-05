@@ -9,17 +9,16 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { off, on, removeToken, retry, setToken } from "../api";
 import { silentRefresh, summarize } from "../utils";
-import Context from "./Context";
-import DestinationOverviewPage from "./destinations/DestinationOverviewPage";
+import DestinationInfoPage from "./destinations/DestinationInfoPage";
 import DestinationsPage from "./destinations/DestinationsPage";
-import DeviceOverviewPage from "./devices/DeviceOverviewPage";
+import DeviceInfoPage from "./devices/DeviceInfoPage";
 import DevicesPage from "./devices/DevicesPage";
-import OrgMembersPage from "./orgs/OrgMembersPage";
-import OrgOverviewPage from "./orgs/OrgOverviewPage";
+import GlobalContext from "./GlobalContext";
+import OrgInfoPage from "./orgs/OrgInfoPage";
 import WithOrgNav from "./orgs/WithOrgNav";
 import ProjectsPage from "./projects/ProjectsPage";
 import WithProjectNav from "./projects/WithProjectNav";
-import RuleOverviewPage from "./rules/RuleOverviewPage";
+import RuleInfoPage from "./rules/RuleInfoPage";
 import RulesPage from "./rules/RulesPage";
 import Banner from "./ui/Banner";
 import Footer from "./ui/Footer";
@@ -150,7 +149,7 @@ export default function App() {
   );
 
   return (
-    <Context.Provider
+    <GlobalContext.Provider
       value={{
         auth,
         logInWithToken,
@@ -171,8 +170,7 @@ export default function App() {
             <WelcomePage path="/" />
             <Redirect from="/orgs" to="/" noThrow />
             <WithOrgNav path="/orgs/:orgId">
-              <OrgOverviewPage path="/" />
-              <OrgMembersPage path="/members" />
+              <OrgInfoPage path="/" />
               <ProjectsPage path="/projects" />
             </WithOrgNav>
             <Redirect
@@ -182,11 +180,11 @@ export default function App() {
             />
             <WithProjectNav path="/orgs/:orgId/projects/:projectId">
               <DevicesPage path="/devices" />
-              <DeviceOverviewPage path="/devices/:deviceId" />
+              <DeviceInfoPage path="/devices/:deviceId" />
               <DestinationsPage path="/destinations" />
-              <DestinationOverviewPage path="/destinations/:destinationId" />
+              <DestinationInfoPage path="/destinations/:destinationId" />
               <RulesPage path="/rules" />
-              <RuleOverviewPage path="/rules/:ruleId" />
+              <RuleInfoPage path="/rules/:ruleId" />
             </WithProjectNav>
           </Router>
           <Footer />
@@ -195,6 +193,6 @@ export default function App() {
           {banner}
         </LocationProvider>
       )}
-    </Context.Provider>
+    </GlobalContext.Provider>
   );
 }

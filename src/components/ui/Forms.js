@@ -48,7 +48,7 @@ export const Input = styled.input.attrs({
   autoComplete: "off",
   type: "text",
 })`
-  border: 1px solid var(--color-medium-gray);
+  border: var(--border-divider);
   border-radius: var(--corner-radius);
   color: var(--color-black);
   display: block;
@@ -69,7 +69,7 @@ export const Input = styled.input.attrs({
   }
 
   &:-moz-focusring {
-    outline: 1px dotted ButtonText;
+    outline: var(--outline-moz);
   }
 
   &:hover,

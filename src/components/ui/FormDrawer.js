@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import Context from "../Context";
+import GlobalContext from "../GlobalContext";
 import { IconButton, RaisedButton } from "./Buttons";
 import { FlexEnd, FlexStart } from "./Flexboxes";
 import FocusTrap from "./FocusTrap";
@@ -11,6 +11,11 @@ import { CloseIcon } from "./Icons";
 import { Drawer } from "./Modals";
 import { PageHeading } from "./Texts";
 import { Width320 } from "./Widths";
+
+const Header = styled(PageHeader)`
+  padding-left: var(--size-24);
+  padding-right: var(--size-24);
+`;
 
 const Heading = styled(PageHeading)`
   margin-left: var(--size-16);
@@ -22,13 +27,13 @@ export default function FormDrawer({
   heading,
   onSubmit,
 }) {
-  const { closeDrawer, errorBoundary } = useContext(Context);
+  const { closeDrawer, errorBoundary } = useContext(GlobalContext);
 
   const [isSubmitting, setSubmitting] = useState(false);
 
   return (
     <Drawer onRequestClose={closeDrawer} contentLabel={heading}>
-      <PageHeader>
+      <Header>
         <FlexStart>
           <IconButton
             onClick={closeDrawer}
@@ -38,7 +43,7 @@ export default function FormDrawer({
           </IconButton>
           <Heading as="h2">{heading}</Heading>
         </FlexStart>
-      </PageHeader>
+      </Header>
       <Width320>
         <Form
           onSubmit={async event => {

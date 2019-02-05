@@ -2,20 +2,19 @@ import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import { listDevices } from "../../api";
 import { capitalize, localize } from "../../utils";
-import Context from "../Context";
+import GlobalContext from "../GlobalContext";
 import useLoading from "../hooks/useLoading";
-import AppBar from "../ui/AppBar";
-import { IconButton } from "../ui/Buttons";
+import { RaisedButton } from "../ui/Buttons";
+import { FlexBetween } from "../ui/Flexboxes";
 import { PageHeader } from "../ui/Headers";
-import { AddIcon } from "../ui/Icons";
 import { Link } from "../ui/Links";
-import Table, { Cell, IconCell, Row } from "../ui/Table";
+import Table, { Cell, Row } from "../ui/Table";
 import { PageHeading } from "../ui/Texts";
 import { Width640 } from "../ui/Widths";
 import NewDeviceForm from "./NewDeviceForm";
 
 export default function DevicesPage({ orgId, projectId }) {
-  const { openDrawer } = useContext(Context);
+  const { openDrawer } = useContext(GlobalContext);
 
   const [devices, setDevices] = useState([]);
 
@@ -28,34 +27,24 @@ export default function DevicesPage({ orgId, projectId }) {
 
   return (
     <main>
-      <PageHeader>
-        <AppBar>
-          <PageHeading>Devices</PageHeading>
-        </AppBar>
-      </PageHeader>
-      {!isLoading && (
-        <Width640>
+      <Width640>
+        <PageHeader>
+          <FlexBetween>
+            <PageHeading>Devices</PageHeading>
+            <RaisedButton
+              onClick={() => {
+                openDrawer(
+                  <NewDeviceForm project={projectId} onCreate={loadDevices} />,
+                );
+              }}
+            >
+              New
+            </RaisedButton>
+          </FlexBetween>
+        </PageHeader>
+        {!isLoading && (
           <Table
-            columns={[
-              "Codename",
-              "Created On",
-              "Type",
-              <IconCell key="New Device">
-                <IconButton
-                  onClick={() => {
-                    openDrawer(
-                      <NewDeviceForm
-                        project={projectId}
-                        onCreate={loadDevices}
-                      />,
-                    );
-                  }}
-                  title="Open new device form"
-                >
-                  <AddIcon />
-                </IconButton>
-              </IconCell>,
-            ]}
+            columns={["Codename", "Created On", "Type"]}
             emptyState="There are no devices in this project yet."
           >
             {devices.map(device => {
@@ -73,13 +62,12 @@ export default function DevicesPage({ orgId, projectId }) {
                   </Cell>
                   <Cell>{localize(device.createdAt)}</Cell>
                   <Cell>{capitalize(device.type)}</Cell>
-                  <Cell />
                 </Row>
               );
             })}
           </Table>
-        </Width640>
-      )}
+        )}
+      </Width640>
     </main>
   );
 }

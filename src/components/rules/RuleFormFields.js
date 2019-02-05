@@ -13,7 +13,12 @@ export default function RuleFormFields({
     <React.Fragment>
       <Label htmlFor="name">
         Name
-        <Input id="name" value={values.name} onChange={setValue} />
+        <Input
+          id="name"
+          value={values.name}
+          onChange={setValue}
+          placeholder="Unnamed rule"
+        />
       </Label>
       <Choice htmlFor="enabled">
         <Checkbox id="enabled" checked={values.enabled} onChange={setValue} />

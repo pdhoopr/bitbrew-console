@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useContext } from "react";
 import { localize } from "../../utils";
-import Context from "../Context";
+import GlobalContext from "../GlobalContext";
 import { Button, IconButton } from "../ui/Buttons";
 import { FlexBetween } from "../ui/Flexboxes";
 import { ContentHeader } from "../ui/Headers";
@@ -15,7 +15,7 @@ import DeleteProjectDialog from "./DeleteProjectDialog";
 import EditProjectForm from "./EditProjectForm";
 
 export default function ProjectContent({ onDelete, onUpdate, project }) {
-  const { openDialog, openDrawer } = useContext(Context);
+  const { openDialog, openDrawer } = useContext(GlobalContext);
 
   const name = project.name.trim();
   return (

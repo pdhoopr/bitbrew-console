@@ -31,7 +31,12 @@ export default function ProjectFormFields({
       )}
       <Label htmlFor="name">
         Name
-        <Input id="name" value={values.name} onChange={setValue} />
+        <Input
+          id="name"
+          value={values.name}
+          onChange={setValue}
+          placeholder="Unnamed project"
+        />
       </Label>
       <Label htmlFor="description">
         Description

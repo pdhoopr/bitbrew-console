@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import React, { useContext } from "react";
 import { createOrg } from "../../api";
 import { poll, silentRefresh } from "../../utils";
-import Context from "../Context";
+import GlobalContext from "../GlobalContext";
 import useForm from "../hooks/useForm";
 import FormDrawer from "../ui/FormDrawer";
 import OrgFormFields from "./OrgFormFields";
 
 export default function NewOrgForm({ onCreate }) {
-  const { logInWithToken, logOut } = useContext(Context);
+  const { logInWithToken, logOut } = useContext(GlobalContext);
 
   const [values, setValue] = useForm({
     name: "",

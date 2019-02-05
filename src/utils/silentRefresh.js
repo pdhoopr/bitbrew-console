@@ -44,9 +44,11 @@ export default function silentRefresh() {
     window.addEventListener("message", iframe.onmessage);
     document.body.appendChild(iframe);
 
-    timeoutId = window.setTimeout(() => {
-      cleanup();
-      reject();
-    }, 1000);
+    if (!module.hot) {
+      timeoutId = window.setTimeout(() => {
+        cleanup();
+        reject();
+      }, 1000);
+    }
   });
 }

@@ -129,12 +129,9 @@ export default function Menu({ children, control }) {
     }
   }
 
-  useEffect(
-    () => {
-      menuItemElements.current = React.Children.map(children, React.createRef);
-    },
-    [children],
-  );
+  useEffect(() => {
+    menuItemElements.current = React.Children.map(children, React.createRef);
+  }, [children]);
 
   return (
     <Wrapper>

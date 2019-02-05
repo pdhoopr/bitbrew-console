@@ -1,24 +1,41 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
+import { viewOrg } from "../../api";
+import useLoading from "../hooks/useLoading";
 import Nav from "../ui/Nav";
 import NavLink from "../ui/NavLink";
+import OrgContext from "./OrgContext";
 
 export default function WithOrgNav({ children, orgId }) {
+  const [org, setOrg] = useState({});
+
+  async function loadOrg() {
+    const data = await viewOrg(orgId);
+    setOrg(data);
+  }
+
+  const isLoading = useLoading(loadOrg, [orgId]);
+
   const orgUrl = `/orgs/${orgId}`;
   return (
     <React.Fragment>
-      <Nav heading="Organization Resources">
+      <Nav isLoading={isLoading} heading={org.name}>
         <NavLink to={orgUrl} exact>
-          Overview
-        </NavLink>
-        <NavLink to={`${orgUrl}/members`} exact>
-          Members
+          Organization Info
         </NavLink>
         <NavLink to={`${orgUrl}/projects`} exact>
           Projects
         </NavLink>
       </Nav>
-      {children}
+      <OrgContext.Provider
+        value={{
+          org,
+          loadOrg,
+          orgIsLoading: isLoading,
+        }}
+      >
+        {children}
+      </OrgContext.Provider>
     </React.Fragment>
   );
 }

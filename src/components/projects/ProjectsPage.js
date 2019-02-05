@@ -3,10 +3,9 @@ import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { listProjects } from "../../api";
 import { pluralize } from "../../utils";
-import Context from "../Context";
+import GlobalContext from "../GlobalContext";
 import useForm from "../hooks/useForm";
 import useLoading from "../hooks/useLoading";
-import AppBar from "../ui/AppBar";
 import { RaisedButton } from "../ui/Buttons";
 import { FlexBetween } from "../ui/Flexboxes";
 import { PageHeader } from "../ui/Headers";
@@ -16,16 +15,12 @@ import { Width640 } from "../ui/Widths";
 import NewProjectForm from "./NewProjectForm";
 import ProjectContent from "./ProjectContent";
 
-const NewProjectButton = styled(RaisedButton)`
-  margin-left: var(--size-16);
-`;
-
 const ProjectCount = styled(Text)`
   margin-top: var(--size-32);
 `;
 
 export default function ProjectsPage({ orgId }) {
-  const { openDrawer } = useContext(Context);
+  const { openDrawer } = useContext(GlobalContext);
 
   const [projects, setProjects] = useState([]);
 
@@ -45,21 +40,11 @@ export default function ProjectsPage({ orgId }) {
   );
   return (
     <main>
-      <PageHeader>
-        <AppBar>
-          <PageHeading>Projects</PageHeading>
-        </AppBar>
-      </PageHeader>
-      {!isLoading && (
-        <Width640>
+      <Width640>
+        <PageHeader>
           <FlexBetween>
-            <Search
-              description="The list of projects below will change to show only those with names matching the search term."
-              value={values.searchTerm}
-              onChange={setValue}
-              placeholder="Search by project name"
-            />
-            <NewProjectButton
+            <PageHeading>Projects</PageHeading>
+            <RaisedButton
               onClick={() => {
                 openDrawer(
                   <NewProjectForm org={orgId} onCreate={loadProjects} />,
@@ -67,21 +52,31 @@ export default function ProjectsPage({ orgId }) {
               }}
             >
               New
-            </NewProjectButton>
+            </RaisedButton>
           </FlexBetween>
-          <ProjectCount gray>
-            {pluralize("project", searchResults.length)}
-          </ProjectCount>
-          {searchResults.map(project => (
-            <ProjectContent
-              key={project.id}
-              project={project}
-              onUpdate={loadProjects}
-              onDelete={loadProjects}
+        </PageHeader>
+        {!isLoading && (
+          <React.Fragment>
+            <Search
+              description="The list of projects below will change to show only those with names matching the search term."
+              value={values.searchTerm}
+              onChange={setValue}
+              placeholder="Search by project name"
             />
-          ))}
-        </Width640>
-      )}
+            <ProjectCount gray>
+              {pluralize("project", searchResults.length)}
+            </ProjectCount>
+            {searchResults.map(project => (
+              <ProjectContent
+                key={project.id}
+                project={project}
+                onUpdate={loadProjects}
+                onDelete={loadProjects}
+              />
+            ))}
+          </React.Fragment>
+        )}
+      </Width640>
     </main>
   );
 }
