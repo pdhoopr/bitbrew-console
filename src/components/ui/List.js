@@ -10,19 +10,20 @@ const Wrapper = styled.dl`
 
 const Row = styled(FlexStart)`
   border-top: var(--border-divider);
-  padding: var(--size-16) var(--size-24);
 `;
 
 const Term = styled.dt`
   flex: 1;
   font-weight: var(--weight-bold);
   letter-spacing: var(--letter-spacing);
+  padding: var(--size-16) var(--size-24);
 `;
 
 const Description = styled.dd`
+  flex: 3;
   margin-left: 0;
-  flex: 1.5;
   overflow: auto;
+  padding: var(--size-16) var(--size-24);
   white-space: pre-wrap;
   word-wrap: break-word;
 `;

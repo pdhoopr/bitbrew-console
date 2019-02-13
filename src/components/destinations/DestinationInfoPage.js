@@ -13,7 +13,7 @@ import { SyncDisabledIcon, SyncIcon } from "../ui/Icons";
 import List from "../ui/List";
 import { Content, Section } from "../ui/Sections";
 import { PageHeading, SectionHeading, SubHeading } from "../ui/Texts";
-import { Width640 } from "../ui/Widths";
+import { Width800 } from "../ui/Widths";
 import DeleteDestinationDialog from "./DeleteDestinationDialog";
 import EditDestinationForm from "./EditDestinationForm";
 
@@ -38,8 +38,11 @@ export default function DestinationInfoPage({
   const type = destination.type ? capitalize(destination.type.trim()) : "";
   return (
     <main>
-      <Width640>
-        <BackLink to={destinationsUrl} title="Back to all destinations" />
+      <Width800>
+        <BackLink
+          to={destinationsUrl}
+          title="View all destinations in this project"
+        />
         {!isLoading && (
           <React.Fragment>
             <PageHeader>
@@ -155,7 +158,7 @@ export default function DestinationInfoPage({
             </DeleteButton>
           </React.Fragment>
         )}
-      </Width640>
+      </Width800>
     </main>
   );
 }

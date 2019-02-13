@@ -10,7 +10,7 @@ import { PageHeader } from "../ui/Headers";
 import { Link } from "../ui/Links";
 import Table, { Cell, Row } from "../ui/Table";
 import { PageHeading } from "../ui/Texts";
-import { Width640 } from "../ui/Widths";
+import { Width800 } from "../ui/Widths";
 import NewDeviceForm from "./NewDeviceForm";
 
 export default function DevicesPage({ orgId, projectId }) {
@@ -27,7 +27,7 @@ export default function DevicesPage({ orgId, projectId }) {
 
   return (
     <main>
-      <Width640>
+      <Width800>
         <PageHeader>
           <FlexBetween>
             <PageHeading>Devices</PageHeading>
@@ -67,7 +67,7 @@ export default function DevicesPage({ orgId, projectId }) {
             })}
           </Table>
         )}
-      </Width640>
+      </Width800>
     </main>
   );
 }

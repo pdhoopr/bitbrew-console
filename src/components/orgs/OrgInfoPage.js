@@ -1,46 +1,47 @@
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
-import styled from "styled-components";
-import { listOrgMembers } from "../../api";
-import { capitalize, localize } from "../../utils";
+import { listOrgMembers, listProjects } from "../../api";
+import { localize, pluralize } from "../../utils";
 import GlobalContext from "../GlobalContext";
 import useLoading from "../hooks/useLoading";
 import BackLink from "../ui/BackLink";
 import { RaisedButton } from "../ui/Buttons";
+import { Card, CardLink } from "../ui/Cards";
 import DeleteButton from "../ui/DeleteButton";
 import { FlexBetween } from "../ui/Flexboxes";
 import { PageHeader } from "../ui/Headers";
 import List from "../ui/List";
 import { Content, Section } from "../ui/Sections";
-import Table, { Cell, Row } from "../ui/Table";
-import { PageHeading, SectionHeading } from "../ui/Texts";
-import { Width640 } from "../ui/Widths";
+import { PageHeading, SectionHeading, SubHeading } from "../ui/Texts";
+import { Width800 } from "../ui/Widths";
 import DeleteOrgDialog from "./DeleteOrgDialog";
 import EditOrgForm from "./EditOrgForm";
 import OrgContext from "./OrgContext";
-
-const MembersHeading = styled(SectionHeading)`
-  margin-bottom: var(--size-16);
-`;
 
 export default function OrgInfoPage({ navigate, orgId }) {
   const { openDialog, openDrawer } = useContext(GlobalContext);
   const { loadOrg, org, orgIsLoading } = useContext(OrgContext);
 
-  const [members, setMembers] = useState([]);
+  const [numMembers, setNumMembers] = useState([]);
+  const [numProjects, setNumProjects] = useState([]);
 
-  async function loadMembers() {
-    const { items } = await listOrgMembers(orgId);
-    setMembers(items);
+  async function loadMetrics() {
+    const [
+      { totalItems: totalMembers },
+      { totalItems: totalProjects },
+    ] = await Promise.all([listOrgMembers(orgId), listProjects(orgId)]);
+    setNumMembers(totalMembers);
+    setNumProjects(totalProjects);
   }
 
-  const membersAreLoading = useLoading(loadMembers, [orgId]);
+  const metricsAreLoading = useLoading(loadMetrics, [orgId]);
 
+  const orgsUrl = "/";
   return (
     <main>
-      <Width640>
-        <BackLink to="/" title="Back to all organizations" />
-        {!orgIsLoading && !membersAreLoading && (
+      <Width800>
+        <BackLink to={orgsUrl} title="View all organizations" />
+        {!orgIsLoading && !metricsAreLoading && (
           <React.Fragment>
             <PageHeader>
               <FlexBetween>
@@ -55,6 +56,22 @@ export default function OrgInfoPage({ navigate, orgId }) {
               </FlexBetween>
             </PageHeader>
             <Section>
+              <FlexBetween gap>
+                {[[numMembers, "member"], [numProjects, "project"]].map(
+                  ([num, label]) => (
+                    <Card key={label} as={SectionHeading}>
+                      <CardLink to={`/orgs/${orgId}/${label}s`}>
+                        {num}
+                        <SubHeading as="p" gray>
+                          {pluralize(label, num).replace(/^\d+\s/, "")}
+                        </SubHeading>
+                      </CardLink>
+                    </Card>
+                  ),
+                )}
+              </FlexBetween>
+            </Section>
+            <Section>
               <SectionHeading>Overview</SectionHeading>
               <Content>
                 <List
@@ -65,25 +82,13 @@ export default function OrgInfoPage({ navigate, orgId }) {
                 />
               </Content>
             </Section>
-            <Section>
-              <MembersHeading>Members</MembersHeading>
-              <Table columns={["Name", "Email", "Role"]}>
-                {members.map(member => (
-                  <Row key={member.id}>
-                    <Cell>{member.name}</Cell>
-                    <Cell>{member.email}</Cell>
-                    <Cell>{capitalize(member.role)}</Cell>
-                  </Row>
-                ))}
-              </Table>
-            </Section>
             <DeleteButton
               onClick={() => {
                 openDialog(
                   <DeleteOrgDialog
                     org={org}
                     onDelete={() => {
-                      navigate("/");
+                      navigate(orgsUrl);
                     }}
                   />,
                 );
@@ -93,7 +98,7 @@ export default function OrgInfoPage({ navigate, orgId }) {
             </DeleteButton>
           </React.Fragment>
         )}
-      </Width640>
+      </Width800>
     </main>
   );
 }

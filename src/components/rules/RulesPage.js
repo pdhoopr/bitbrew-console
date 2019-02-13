@@ -10,7 +10,7 @@ import { PageHeader } from "../ui/Headers";
 import { Link } from "../ui/Links";
 import Table, { Cell, Row } from "../ui/Table";
 import { PageHeading } from "../ui/Texts";
-import { Width640 } from "../ui/Widths";
+import { Width800 } from "../ui/Widths";
 import NewRuleForm from "./NewRuleForm";
 
 export default function RulesPage({ orgId, projectId }) {
@@ -42,7 +42,7 @@ export default function RulesPage({ orgId, projectId }) {
   const projectUrl = `/orgs/${orgId}/projects/${projectId}`;
   return (
     <main>
-      <Width640>
+      <Width800>
         <PageHeader>
           <FlexBetween>
             <PageHeading>Rules</PageHeading>
@@ -95,7 +95,7 @@ export default function RulesPage({ orgId, projectId }) {
             })}
           </Table>
         )}
-      </Width640>
+      </Width800>
     </main>
   );
 }

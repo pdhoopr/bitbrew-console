@@ -13,7 +13,7 @@ import { Link } from "../ui/Links";
 import List from "../ui/List";
 import { Content, Section } from "../ui/Sections";
 import { PageHeading, SectionHeading, SubHeading } from "../ui/Texts";
-import { Width640 } from "../ui/Widths";
+import { Width800 } from "../ui/Widths";
 import DeleteRuleDialog from "./DeleteRuleDialog";
 
 const Code = styled.pre`
@@ -54,8 +54,8 @@ export default function RuleInfoPage({ navigate, orgId, projectId, ruleId }) {
   const name = rule.name && rule.name.trim();
   return (
     <main>
-      <Width640>
-        <BackLink to={rulesUrl} title="Back to all rules" />
+      <Width800>
+        <BackLink to={rulesUrl} title="View all rules in this project" />
         {!isLoading && (
           <React.Fragment>
             <PageHeader>
@@ -168,7 +168,7 @@ export default function RuleInfoPage({ navigate, orgId, projectId, ruleId }) {
             </DeleteButton>
           </React.Fragment>
         )}
-      </Width640>
+      </Width800>
     </main>
   );
 }

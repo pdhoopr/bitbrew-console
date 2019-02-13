@@ -18,6 +18,7 @@ const Wrapper = styled.div`
   left: 0;
   margin-left: var(--size-24);
   margin-right: var(--size-24);
+  max-width: var(--size-640);
   padding: var(--size-8) var(--size-16);
   position: fixed;
   z-index: 6;

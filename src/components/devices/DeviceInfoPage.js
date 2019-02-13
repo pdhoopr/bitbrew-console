@@ -13,7 +13,7 @@ import { SyncDisabledIcon, SyncIcon } from "../ui/Icons";
 import List from "../ui/List";
 import { Content, Section } from "../ui/Sections";
 import { PageHeading, SectionHeading, SubHeading } from "../ui/Texts";
-import { Width640 } from "../ui/Widths";
+import { Width800 } from "../ui/Widths";
 import DeleteDeviceDialog from "./DeleteDeviceDialog";
 import EditDeviceForm from "./EditDeviceForm";
 
@@ -39,8 +39,8 @@ export default function DeviceInfoPage({
   const type = device.type ? capitalize(device.type.trim()) : "";
   return (
     <main>
-      <Width640>
-        <BackLink to={devicesUrl} title="Back to all devices" />
+      <Width800>
+        <BackLink to={devicesUrl} title="View all devices in this project" />
         {!isLoading && (
           <React.Fragment>
             <PageHeader>
@@ -132,7 +132,7 @@ export default function DeviceInfoPage({
             </DeleteButton>
           </React.Fragment>
         )}
-      </Width640>
+      </Width800>
     </main>
   );
 }

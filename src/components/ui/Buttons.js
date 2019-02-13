@@ -12,6 +12,7 @@ const baseStyles = css`
   letter-spacing: var(--letter-spacing);
   line-height: var(--size-20);
   margin: 0;
+  min-width: var(--size-72);
 
   &::-moz-focus-inner {
     border-style: none;
@@ -53,6 +54,8 @@ export const Button = styled.button.attrs({
 export const IconButton = styled(Button).attrs(({ title }) => ({
   "aria-label": title,
 }))`
+  min-width: 0;
+
   &::before {
     border-radius: 50%;
   }

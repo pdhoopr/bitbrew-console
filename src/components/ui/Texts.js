@@ -37,9 +37,3 @@ export const Text = styled.p`
   font-size: var(--size-14);
   line-height: var(--size-20);
 `;
-
-export const Caption = styled.p`
-  ${baseStyles};
-  font-size: var(--size-12);
-  line-height: var(--size-16);
-`;

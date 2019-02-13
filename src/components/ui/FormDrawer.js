@@ -31,14 +31,14 @@ export default function FormDrawer({
 
   const [isSubmitting, setSubmitting] = useState(false);
 
+  const [, method, resource] = heading.match(/^([^\s]+)\s(.+)/);
+  const action = method.toUpperCase().trim() === "NEW" ? "creation" : "changes";
+  const request = `${resource.toLowerCase().trim()} ${action}`;
   return (
     <Drawer onRequestClose={closeDrawer} contentLabel={heading}>
       <Header>
         <FlexStart>
-          <IconButton
-            onClick={closeDrawer}
-            title={`Cancel ${heading.toLowerCase()}`}
-          >
+          <IconButton onClick={closeDrawer} title={`Cancel ${request}`}>
             <CloseIcon />
           </IconButton>
           <Heading as="h2">{heading}</Heading>
@@ -64,7 +64,7 @@ export default function FormDrawer({
           </FlexEnd>
         </Form>
       </Width320>
-      {isSubmitting && <FocusTrap label={`Processing ${heading} request`} />}
+      {isSubmitting && <FocusTrap label={`Processing ${request}`} />}
     </Drawer>
   );
 }

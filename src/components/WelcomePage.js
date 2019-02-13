@@ -3,28 +3,29 @@ import styled from "styled-components";
 import { listOrgs, listProjects } from "../api";
 import { flatMap, localize, pluralize } from "../utils";
 import GlobalContext from "./GlobalContext";
-import useForm from "./hooks/useForm";
 import useLoading from "./hooks/useLoading";
 import NewOrgForm from "./orgs/NewOrgForm";
 import NewProjectForm from "./projects/NewProjectForm";
-import ProjectContent from "./projects/ProjectContent";
-import { Button, RaisedButton } from "./ui/Buttons";
+import { Button } from "./ui/Buttons";
+import { Card, CardLink } from "./ui/Cards";
 import { FlexBetween } from "./ui/Flexboxes";
 import { PageHeader } from "./ui/Headers";
-import { ArrowDownInlineIcon } from "./ui/Icons";
+import { AddIcon } from "./ui/Icons";
 import { Link } from "./ui/Links";
-import Menu from "./ui/Menu";
 import Nav from "./ui/Nav";
-import Search from "./ui/Search";
-import { Section } from "./ui/Sections";
-import { PageHeading, SectionHeading, SubHeading, Text } from "./ui/Texts";
-import { Width640 } from "./ui/Widths";
+import {
+  ContentHeading,
+  PageHeading,
+  SectionHeading,
+  SubHeading,
+  Text,
+} from "./ui/Texts";
+import { Width800 } from "./ui/Widths";
 
 const WelcomeHeader = styled(PageHeader)`
   background-color: var(--color-black);
   box-shadow: var(--elevation-low);
   color: var(--color-white);
-  margin-bottom: var(--size-32);
   padding-bottom: var(--size-32);
   padding-top: var(--size-68);
 `;
@@ -33,9 +34,60 @@ const WelcomeText = styled(SubHeading)`
   color: var(--color-gray);
 `;
 
-const Actions = styled(FlexBetween)`
-  margin-bottom: var(--size-32);
-  margin-top: var(--size-32);
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: var(--size-16);
+  margin-top: var(--size-16);
+`;
+
+const OrgHeader = styled.header`
+  grid-column: span 3;
+  margin-top: var(--size-16);
+`;
+
+const ProjectLink = styled(CardLink)`
+  min-height: var(--size-160);
+`;
+
+const ProjectDescription = styled(SubHeading)`
+  margin-top: var(--size-16);
+`;
+
+const Spacer = styled.div`
+  grid-column: span 3;
+  height: ${({ fullHeight }) =>
+    fullHeight ? "var(--size-48)" : "var(--size-8)"};
+`;
+
+const PlaceholderButton = styled(Button)`
+  align-items: center;
+  color: var(--color-dark-gray);
+  display: flex;
+  flex-direction: column;
+  grid-column: ${({ fullWidth }) => fullWidth && "span 3"};
+  justify-content: center;
+  min-height: var(--size-160);
+  padding: var(--size-16) var(--size-24);
+  transition: color var(--duration-short);
+
+  &:hover,
+  &:focus {
+    color: var(--color-green);
+  }
+
+  &::before {
+    opacity: 0.08;
+  }
+`;
+
+const PlaceholderIcon = styled(AddIcon).attrs({
+  "aria-hidden": true,
+})`
+  fill: currentColor;
+  height: var(--size-28);
+  margin-bottom: var(--size-8);
+  width: var(--size-28);
 `;
 
 export default function WelcomePage() {
@@ -57,95 +109,92 @@ export default function WelcomePage() {
 
   const isLoading = useLoading(loadOrgs);
 
-  const [values, setValue] = useForm({
-    searchTerm: "",
-  });
-
   return (
     <React.Fragment>
       <Nav flat />
       <main>
         <WelcomeHeader>
-          <Width640>
+          <Width800>
             <PageHeading>Welcome!</PageHeading>
             <WelcomeText>
               Use the BitBrew Console to manage your data pipeline.
             </WelcomeText>
-          </Width640>
+          </Width800>
         </WelcomeHeader>
         {!isLoading && (
-          <Width640>
-            <Actions>
-              <Search
-                description="The list of organizations below will change to show only those with project names matching the search term."
-                value={values.searchTerm}
-                onChange={setValue}
-                placeholder="Search by project name"
-              />
-              <Menu
-                control={
-                  <RaisedButton>
-                    New <ArrowDownInlineIcon />
-                  </RaisedButton>
-                }
+          <Width800>
+            <Grid>
+              {orgs.map(org => {
+                const orgProjects = projects.filter(
+                  project => project.orgId === org.id,
+                );
+                return (
+                  <React.Fragment key={org.id}>
+                    <OrgHeader>
+                      <SectionHeading>
+                        <Link to={`/orgs/${org.id}`}>{org.name}</Link>
+                      </SectionHeading>
+                      <FlexBetween>
+                        <Text gray>Created on {localize(org.createdAt)}</Text>
+                        <SubHeading gray>
+                          {pluralize("project", orgProjects.length)}
+                        </SubHeading>
+                      </FlexBetween>
+                    </OrgHeader>
+                    {orgProjects.map(project => {
+                      const projectName = project.name.trim();
+                      const projectDescription = project.description.trim();
+                      return (
+                        <Card
+                          key={project.id}
+                          as={ContentHeading}
+                          gray={!projectName}
+                        >
+                          <ProjectLink
+                            to={`/orgs/${org.id}/projects/${project.id}`}
+                          >
+                            {project.name || "Unnamed project"}
+                            <Text gray>
+                              Created on {localize(project.createdAt)}
+                            </Text>
+                            {projectDescription && (
+                              <ProjectDescription gray>
+                                {project.description}
+                              </ProjectDescription>
+                            )}
+                          </ProjectLink>
+                        </Card>
+                      );
+                    })}
+                    <PlaceholderButton
+                      onClick={() => {
+                        openDrawer(
+                          <NewProjectForm
+                            org={org.id}
+                            orgName={org.name}
+                            onCreate={loadOrgs}
+                          />,
+                        );
+                      }}
+                    >
+                      <PlaceholderIcon />
+                      New project
+                    </PlaceholderButton>
+                  </React.Fragment>
+                );
+              })}
+              <Spacer fullHeight={orgs.length > 0} />
+              <PlaceholderButton
+                onClick={() => {
+                  openDrawer(<NewOrgForm onCreate={loadOrgs} />);
+                }}
+                fullWidth
               >
-                <Button
-                  onClick={() => {
-                    openDrawer(<NewOrgForm onCreate={loadOrgs} />);
-                  }}
-                >
-                  Organization
-                </Button>
-                <Button
-                  onClick={() => {
-                    openDrawer(
-                      <NewProjectForm
-                        selectOrgFrom={orgs}
-                        onCreate={loadOrgs}
-                      />,
-                    );
-                  }}
-                >
-                  Project
-                </Button>
-              </Menu>
-            </Actions>
-            {orgs.map(org => {
-              const searchResults = projects.filter(
-                project =>
-                  project.orgId === org.id &&
-                  project.name
-                    .toUpperCase()
-                    .includes(values.searchTerm.toUpperCase()),
-              );
-              return (
-                (values.searchTerm === "" || searchResults.length > 0) && (
-                  <Section key={org.id}>
-                    <SectionHeading>
-                      <Link to={`/orgs/${org.id}`}>{org.name}</Link>
-                    </SectionHeading>
-                    <FlexBetween>
-                      <Text gray>Created on {localize(org.createdAt)}</Text>
-                      <Text gray>
-                        {pluralize("project", searchResults.length)}
-                      </Text>
-                    </FlexBetween>
-                    {searchResults.map(project => (
-                      <ProjectContent
-                        key={project.id}
-                        project={{
-                          ...project,
-                          orgName: org.name,
-                        }}
-                        onUpdate={loadOrgs}
-                        onDelete={loadOrgs}
-                      />
-                    ))}
-                  </Section>
-                )
-              );
-            })}
-          </Width640>
+                <PlaceholderIcon />
+                New organization
+              </PlaceholderButton>
+            </Grid>
+          </Width800>
         )}
       </main>
     </React.Fragment>

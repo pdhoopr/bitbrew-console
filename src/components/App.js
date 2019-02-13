@@ -15,7 +15,9 @@ import DeviceInfoPage from "./devices/DeviceInfoPage";
 import DevicesPage from "./devices/DevicesPage";
 import GlobalContext from "./GlobalContext";
 import OrgInfoPage from "./orgs/OrgInfoPage";
+import OrgMembersPage from "./orgs/OrgMembersPage";
 import WithOrgNav from "./orgs/WithOrgNav";
+import ProjectInfoPage from "./projects/ProjectInfoPage";
 import ProjectsPage from "./projects/ProjectsPage";
 import WithProjectNav from "./projects/WithProjectNav";
 import RuleInfoPage from "./rules/RuleInfoPage";
@@ -171,14 +173,11 @@ export default function App() {
             <Redirect from="/orgs" to="/" noThrow />
             <WithOrgNav path="/orgs/:orgId">
               <OrgInfoPage path="/" />
+              <OrgMembersPage path="/members" />
               <ProjectsPage path="/projects" />
             </WithOrgNav>
-            <Redirect
-              from="/orgs/:orgId/projects/:projectId"
-              to="/orgs/:orgId/projects/:projectId/devices"
-              noThrow
-            />
             <WithProjectNav path="/orgs/:orgId/projects/:projectId">
+              <ProjectInfoPage path="/" />
               <DevicesPage path="/devices" />
               <DeviceInfoPage path="/devices/:deviceId" />
               <DestinationsPage path="/destinations" />

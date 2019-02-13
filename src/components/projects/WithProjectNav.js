@@ -5,6 +5,7 @@ import { viewProject } from "../../api";
 import useLoading from "../hooks/useLoading";
 import Nav from "../ui/Nav";
 import NavLink from "../ui/NavLink";
+import ProjectContext from "./ProjectContext";
 
 const Unnamed = styled.span`
   color: var(--color-gray);
@@ -28,11 +29,22 @@ export default function WithProjectNav({ children, orgId, projectId }) {
         isLoading={isLoading}
         heading={name || <Unnamed>Unnamed project</Unnamed>}
       >
+        <NavLink to={projectUrl} exact>
+          Project Info
+        </NavLink>
         <NavLink to={`${projectUrl}/devices`}>Devices</NavLink>
         <NavLink to={`${projectUrl}/destinations`}>Destinations</NavLink>
         <NavLink to={`${projectUrl}/rules`}>Rules</NavLink>
       </Nav>
-      {children}
+      <ProjectContext.Provider
+        value={{
+          project,
+          loadProject,
+          projectIsLoading: isLoading,
+        }}
+      >
+        {children}
+      </ProjectContext.Provider>
     </React.Fragment>
   );
 }

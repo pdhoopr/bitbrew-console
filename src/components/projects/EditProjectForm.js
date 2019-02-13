@@ -28,11 +28,7 @@ export default function EditProjectForm({ onUpdate, project }) {
         await onUpdate();
       }}
     >
-      <ProjectFormFields
-        org={project.orgName || null}
-        values={values}
-        setValue={setValue}
-      />
+      <ProjectFormFields values={values} setValue={setValue} />
     </FormDrawer>
   );
 }
@@ -44,7 +40,6 @@ EditProjectForm.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     orgId: PropTypes.string.isRequired,
-    orgName: PropTypes.string,
     usesSimulatedDevices: PropTypes.bool.isRequired,
   }).isRequired,
 };

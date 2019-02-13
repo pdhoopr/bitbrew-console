@@ -15,6 +15,7 @@ const Items = styled.div`
   box-shadow: var(--elevation-medium);
   color: var(--color-black);
   margin-top: var(--size-2);
+  min-width: var(--size-160);
   padding-bottom: var(--size-8);
   padding-top: var(--size-8);
   position: absolute;

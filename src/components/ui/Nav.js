@@ -62,7 +62,7 @@ export default function Nav({ children, flat, heading, isLoading }) {
       <Menus>
         <WelcomeLink
           to="/"
-          title="Back to welcome page"
+          title="Go to welcome page"
           getProps={({ isCurrent }) =>
             isCurrent
               ? {

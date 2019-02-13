@@ -1,32 +1,14 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { Input, Label, ReadOnlyInput } from "../ui/Forms";
-import Select from "../ui/Select";
 
-export default function ProjectFormFields({
-  org,
-  selectOrgFrom,
-  setValue,
-  values,
-}) {
+export default function ProjectFormFields({ orgName, setValue, values }) {
   return (
     <React.Fragment>
-      {(org || selectOrgFrom) && (
-        <Label htmlFor="orgId">
+      {orgName && (
+        <Label htmlFor="orgName">
           Organization
-          {org ? (
-            <ReadOnlyInput id="orgId" value={org} />
-          ) : (
-            <Select id="orgId" value={values.orgId} onChange={setValue}>
-              {[...selectOrgFrom]
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map(option => (
-                  <option key={option.id} value={option.id}>
-                    {option.name}
-                  </option>
-                ))}
-            </Select>
-          )}
+          <ReadOnlyInput id="orgName" value={orgName} />
         </Label>
       )}
       <Label htmlFor="name">
@@ -51,13 +33,7 @@ export default function ProjectFormFields({
 }
 
 ProjectFormFields.propTypes = {
-  org: PropTypes.string,
-  selectOrgFrom: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    }),
-  ),
+  orgName: PropTypes.string,
   setValue: PropTypes.func.isRequired,
   values: PropTypes.shape({
     description: PropTypes.string.isRequired,
@@ -67,6 +43,5 @@ ProjectFormFields.propTypes = {
 };
 
 ProjectFormFields.defaultProps = {
-  org: null,
-  selectOrgFrom: null,
+  orgName: null,
 };

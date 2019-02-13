@@ -23,6 +23,9 @@ export default function WithOrgNav({ children, orgId }) {
         <NavLink to={orgUrl} exact>
           Organization Info
         </NavLink>
+        <NavLink to={`${orgUrl}/members`} exact>
+          Members
+        </NavLink>
         <NavLink to={`${orgUrl}/projects`} exact>
           Projects
         </NavLink>

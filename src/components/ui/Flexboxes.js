@@ -3,6 +3,10 @@ import styled, { css } from "styled-components";
 const baseStyles = css`
   align-items: center;
   display: flex;
+
+  > :not(:last-child) {
+    margin-right: ${({ gap }) => gap && "var(--size-16)"};
+  }
 `;
 
 export const FlexBetween = styled.div`

@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import AddSvg from "../../icons/add.svg";
 import ArrowDownSvg from "../../icons/arrow-down.svg";
 import ArrowUpSvg from "../../icons/arrow-up.svg";
 import BackSvg from "../../icons/back.svg";
@@ -7,10 +8,8 @@ import CheckboxSvg from "../../icons/checkbox.svg";
 import CloseSvg from "../../icons/close.svg";
 import ErrorSvg from "../../icons/error.svg";
 import LogoSvg from "../../icons/logo.svg";
-import MoreSvg from "../../icons/more.svg";
 import RadioButtonSelectedSvg from "../../icons/radio-button-selected.svg";
 import RadioButtonSvg from "../../icons/radio-button.svg";
-import SearchSvg from "../../icons/search.svg";
 import SyncDisabledSvg from "../../icons/sync-disabled.svg";
 import SyncSvg from "../../icons/sync.svg";
 
@@ -19,6 +18,10 @@ const baseStyles = css`
   height: var(--size-20);
   vertical-align: middle;
   width: var(--size-20);
+`;
+
+export const AddIcon = styled(AddSvg)`
+  ${baseStyles}
 `;
 
 export const ArrowDownIcon = styled(ArrowDownSvg)`
@@ -78,10 +81,6 @@ export const LogoIcon = styled(LogoSvg)`
   width: auto;
 `;
 
-export const MoreIcon = styled(MoreSvg)`
-  ${baseStyles};
-`;
-
 export const RadioButtonIcon = styled(RadioButtonSvg)`
   ${baseStyles};
 `;
@@ -89,10 +88,6 @@ export const RadioButtonIcon = styled(RadioButtonSvg)`
 export const RadioButtonSelectedIcon = styled(RadioButtonSelectedSvg)`
   ${baseStyles};
   fill: var(--color-green);
-`;
-
-export const SearchIcon = styled(SearchSvg)`
-  ${baseStyles};
 `;
 
 export const SyncIcon = styled(SyncSvg)`

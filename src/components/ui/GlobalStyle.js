@@ -15,11 +15,8 @@ export default createGlobalStyle`
     --color-black: #333;
     --corner-radius: 2px;
     --duration-short: 0.15s;
-    --duration-long: 1.5s;
     --elevation-low: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
       0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-    --elevation-low-darker: 0 3px 1px -2px rgba(0, 0, 0, 0.28),
-      0 2px 2px 0 rgba(0, 0, 0, 0.22), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
     --elevation-medium: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
       0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
     --elevation-high: 0 8px 10px -5px rgba(0, 0, 0, 0.2),
@@ -50,14 +47,15 @@ export default createGlobalStyle`
     --size-40: 2.5rem;
     --size-44: 2.75rem;
     --size-48: 3rem;
-    --size-56: 3.5rem;
-    --size-60: 3.75rem;
+    --size-52: 3.25rem;
     --size-68: 4.25rem;
+    --size-72: 4.5rem;
     --size-128: 8rem;
-    --size-240: 15rem;
+    --size-160: 10rem;
     --size-320: 20rem;
     --size-480: 30rem;
     --size-640: 40rem;
+    --size-800: 50rem;
     --weight-regular: 400;
     --weight-bold: 500;
   }

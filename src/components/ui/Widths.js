@@ -4,7 +4,7 @@ const baseStyles = css`
   margin-left: auto;
   margin-right: auto;
   position: relative;
-  width: 100%;
+  width: calc(100% - var(--size-48));
 `;
 
 export const Width320 = styled.div`
@@ -12,7 +12,7 @@ export const Width320 = styled.div`
   max-width: var(--size-320);
 `;
 
-export const Width640 = styled.div`
+export const Width800 = styled.div`
   ${baseStyles};
-  max-width: var(--size-640);
+  max-width: var(--size-800);
 `;

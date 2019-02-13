@@ -5,7 +5,7 @@ import { BackIcon } from "./Icons";
 import { IconLink } from "./Links";
 
 const Wrapper = styled(IconLink)`
-  left: calc(-1 * var(--size-60));
+  left: calc(-1 * var(--size-52));
   position: absolute;
   top: var(--size-34);
 `;

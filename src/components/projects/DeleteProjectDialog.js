@@ -7,7 +7,6 @@ import { Text } from "../ui/Texts";
 
 export default function DeleteProjectDialog({ onDelete, project }) {
   const name = project.name.trim();
-  const orgName = project.orgName ? project.orgName.trim() : null;
   return (
     <DeleteDialog
       heading="Delete Project"
@@ -24,12 +23,6 @@ export default function DeleteProjectDialog({ onDelete, project }) {
       <Text as="strong" gray={!name}>
         {name || "Unnamed project"}
       </Text>
-      {orgName && (
-        <span>
-          {" "}
-          from the organization <strong>{orgName}</strong>
-        </span>
-      )}
       ?
     </DeleteDialog>
   );
@@ -41,6 +34,5 @@ DeleteProjectDialog.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     orgId: PropTypes.string.isRequired,
-    orgName: PropTypes.string,
   }).isRequired,
 };

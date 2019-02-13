@@ -49,7 +49,7 @@ const baseStyles = css`
     outline: none;
     overflow: auto;
     position: relative;
-    width: 100%;
+    width: calc(100% - var(--size-48));
   }
 `;
 
