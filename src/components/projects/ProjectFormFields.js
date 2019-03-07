@@ -1,34 +1,27 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Input, Label, ReadOnlyInput } from "../ui/Forms";
+import { TextField } from "../../design-system";
 
 export default function ProjectFormFields({ orgName, setValue, values }) {
   return (
-    <React.Fragment>
+    <>
       {orgName && (
-        <Label htmlFor="orgName">
-          Organization
-          <ReadOnlyInput id="orgName" value={orgName} />
-        </Label>
+        <TextField id="orgName" label="Organization" value={orgName} />
       )}
-      <Label htmlFor="name">
-        Name
-        <Input
-          id="name"
-          value={values.name}
-          onChange={setValue}
-          placeholder="Unnamed project"
-        />
-      </Label>
-      <Label htmlFor="description">
-        Description
-        <Input
-          id="description"
-          value={values.description}
-          onChange={setValue}
-        />
-      </Label>
-    </React.Fragment>
+      <TextField
+        id="name"
+        label="Name"
+        value={values.name}
+        onChange={setValue}
+        placeholder="Unnamed project"
+      />
+      <TextField
+        id="description"
+        label="Description"
+        value={values.description}
+        onChange={setValue}
+      />
+    </>
   );
 }
 

@@ -1,4 +1,4 @@
 export default function pluralize(string, count) {
-  const phrase = `${count} ${string}`;
-  return count === 1 ? phrase : `${phrase}s`;
+  const phrase = count === 1 ? string : `${string}s`;
+  return count == null ? phrase : `${count} ${phrase}`;
 }

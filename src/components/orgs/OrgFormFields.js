@@ -1,13 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Input, Label } from "../ui/Forms";
+import { TextField } from "../../design-system";
 
 export default function OrgFormFields({ setValue, values }) {
   return (
-    <Label htmlFor="name">
-      Name
-      <Input id="name" value={values.name} onChange={setValue} />
-    </Label>
+    <TextField id="name" label="Name" value={values.name} onChange={setValue} />
   );
 }
 

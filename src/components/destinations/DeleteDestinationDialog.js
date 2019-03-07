@@ -2,13 +2,17 @@ import PropTypes from "prop-types";
 import React from "react";
 import { deleteDestination, listDestinations } from "../../api";
 import { poll } from "../../utils";
-import DeleteDialog from "../ui/DeleteDialog";
+import DeleteDialog from "../shared/DeleteDialog";
+import resourceTypes from "../shared/resourceTypes";
 
 export default function DeleteDestinationDialog({ destination, onDelete }) {
   return (
     <DeleteDialog
-      heading="Delete Destination"
-      onDelete={async () => {
+      resource={{
+        impl: resourceTypes.destination,
+        ...destination,
+      }}
+      onConfirm={async () => {
         await deleteDestination(destination.id);
         await poll(async () => {
           const { items } = await listDestinations(destination.projectId);
@@ -16,17 +20,13 @@ export default function DeleteDestinationDialog({ destination, onDelete }) {
         });
         await onDelete();
       }}
-    >
-      Are you sure you want to delete the destination
-      <strong> {destination.name}</strong>?
-    </DeleteDialog>
+    />
   );
 }
 
 DeleteDestinationDialog.propTypes = {
   destination: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,

@@ -7,24 +7,23 @@ import {
 } from "@reach/router";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { off, on, removeToken, retry, setToken } from "../api";
+import { off, on, retry, setToken } from "../api";
+import { GlobalStyle, Snackbar } from "../design-system";
 import { silentRefresh, summarize } from "../utils";
-import DestinationInfoPage from "./destinations/DestinationInfoPage";
-import DestinationsPage from "./destinations/DestinationsPage";
-import DeviceInfoPage from "./devices/DeviceInfoPage";
-import DevicesPage from "./devices/DevicesPage";
+import ListDestinationsPage from "./destinations/ListDestinationsPage";
+import ViewDestinationPage from "./destinations/ViewDestinationPage";
+import ListDevicesPage from "./devices/ListDevicesPage";
+import ViewDevicePage from "./devices/ViewDevicePage";
 import GlobalContext from "./GlobalContext";
-import OrgInfoPage from "./orgs/OrgInfoPage";
-import OrgMembersPage from "./orgs/OrgMembersPage";
-import WithOrgNav from "./orgs/WithOrgNav";
-import ProjectInfoPage from "./projects/ProjectInfoPage";
-import ProjectsPage from "./projects/ProjectsPage";
-import WithProjectNav from "./projects/WithProjectNav";
-import RuleInfoPage from "./rules/RuleInfoPage";
-import RulesPage from "./rules/RulesPage";
-import Banner from "./ui/Banner";
-import Footer from "./ui/Footer";
-import GlobalStyle from "./ui/GlobalStyle";
+import ListOrgMembersPage from "./orgs/ListOrgMembersPage";
+import ViewOrgPage from "./orgs/ViewOrgPage";
+import WithOrgHeader from "./orgs/WithOrgHeader";
+import ListProjectsPage from "./projects/ListProjectsPage";
+import ViewProjectPage from "./projects/ViewProjectPage";
+import WithProjectHeader from "./projects/WithProjectHeader";
+import ListRulesPage from "./rules/ListRulesPage";
+import ViewRulePage from "./rules/ViewRulePage";
+import Footer from "./shared/Footer";
 import WelcomePage from "./WelcomePage";
 
 const Router = styled(ReachRouter)`
@@ -33,11 +32,12 @@ const Router = styled(ReachRouter)`
 
 export default function App() {
   const history = useRef(createHistory(window));
+  const snackbarElement = useRef(document.getElementById("alert-region"));
 
   const [auth, setAuth] = useState(null);
   const [drawer, setDrawer] = useState(null);
   const [dialog, setDialog] = useState(null);
-  const [banner, setBanner] = useState(null);
+  const [snackbar, setSnackbar] = useState(null);
 
   function logInWithToken(token) {
     setToken(token);
@@ -77,7 +77,7 @@ export default function App() {
   }
 
   function logOut() {
-    removeToken();
+    setToken(null);
     setAuth(null);
     const rootUrl = window.location.origin;
     navigate(
@@ -101,12 +101,12 @@ export default function App() {
     setDialog(null);
   }
 
-  function openBanner(component) {
-    setBanner(component);
+  function openSnackbar(component) {
+    setSnackbar(component);
   }
 
-  function closeBanner() {
-    setBanner(null);
+  function closeSnackbar() {
+    setSnackbar(null);
   }
 
   async function errorBoundary(code) {
@@ -114,7 +114,15 @@ export default function App() {
       await code();
       return null;
     } catch (error) {
-      openBanner(<Banner>{summarize(error)}</Banner>);
+      openSnackbar(
+        <Snackbar
+          containerElement={snackbarElement.current}
+          infoLevel="error"
+          onDismiss={closeSnackbar}
+        >
+          {summarize(error)}
+        </Snackbar>,
+      );
       return error;
     }
   }
@@ -145,7 +153,7 @@ export default function App() {
       history.current.listen(() => {
         closeDrawer();
         closeDialog();
-        closeBanner();
+        closeSnackbar();
       }),
     [],
   );
@@ -160,8 +168,6 @@ export default function App() {
         closeDrawer,
         openDialog,
         closeDialog,
-        openBanner,
-        closeBanner,
         errorBoundary,
       }}
     >
@@ -171,25 +177,25 @@ export default function App() {
           <Router>
             <WelcomePage path="/" />
             <Redirect from="/orgs" to="/" noThrow />
-            <WithOrgNav path="/orgs/:orgId">
-              <OrgInfoPage path="/" />
-              <OrgMembersPage path="/members" />
-              <ProjectsPage path="/projects" />
-            </WithOrgNav>
-            <WithProjectNav path="/orgs/:orgId/projects/:projectId">
-              <ProjectInfoPage path="/" />
-              <DevicesPage path="/devices" />
-              <DeviceInfoPage path="/devices/:deviceId" />
-              <DestinationsPage path="/destinations" />
-              <DestinationInfoPage path="/destinations/:destinationId" />
-              <RulesPage path="/rules" />
-              <RuleInfoPage path="/rules/:ruleId" />
-            </WithProjectNav>
+            <WithOrgHeader path="/orgs/:orgId">
+              <ViewOrgPage path="/" />
+              <ListOrgMembersPage path="/members" />
+              <ListProjectsPage path="/projects" />
+            </WithOrgHeader>
+            <WithProjectHeader path="/orgs/:orgId/projects/:projectId">
+              <ViewProjectPage path="/" />
+              <ListDevicesPage path="/devices" />
+              <ViewDevicePage path="/devices/:deviceId" />
+              <ListDestinationsPage path="/destinations" />
+              <ViewDestinationPage path="/destinations/:destinationId" />
+              <ListRulesPage path="/rules" />
+              <ViewRulePage path="/rules/:ruleId" />
+            </WithProjectHeader>
           </Router>
           <Footer />
           {drawer}
           {dialog}
-          {banner}
+          {snackbar}
         </LocationProvider>
       )}
     </GlobalContext.Provider>

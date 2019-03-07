@@ -1,8 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import Checkbox from "../ui/Checkbox";
-import { Choice, Input, Label, TextArea } from "../ui/Forms";
-import Select from "../ui/Select";
+import { CheckboxField, SelectField, TextField } from "../../design-system";
 
 export default function RuleFormFields({
   selectDestinationFrom,
@@ -10,55 +8,51 @@ export default function RuleFormFields({
   values,
 }) {
   return (
-    <React.Fragment>
-      <Label htmlFor="name">
-        Name
-        <Input
-          id="name"
-          value={values.name}
-          onChange={setValue}
-          placeholder="Unnamed rule"
-        />
-      </Label>
-      <Choice htmlFor="enabled">
-        <Checkbox id="enabled" checked={values.enabled} onChange={setValue} />
-        Enable
-      </Choice>
-      <Label htmlFor="triggerRuleWhen">
-        Trigger When
-        <TextArea
-          id="triggerRuleWhen"
-          value={values.triggerRuleWhen}
-          onChange={setValue}
-          code
-        />
-      </Label>
-      <Label htmlFor="dataTransformation">
-        Data Transformation
-        <TextArea
-          id="dataTransformation"
-          value={values.dataTransformation}
-          onChange={setValue}
-          code
-        />
-      </Label>
-      <Label htmlFor="destinationId">
-        Destination
-        <Select
-          id="destinationId"
-          value={values.destinationId}
-          onChange={setValue}
-        >
-          {[...selectDestinationFrom]
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map(option => (
-              <option key={option.id} value={option.id}>
-                {option.name}
-              </option>
-            ))}
-        </Select>
-      </Label>
-    </React.Fragment>
+    <>
+      <TextField
+        id="name"
+        label="Name"
+        value={values.name}
+        onChange={setValue}
+        placeholder="Unnamed rule"
+      />
+      <CheckboxField
+        id="enabled"
+        label="Enable"
+        checked={values.enabled}
+        onChange={setValue}
+      />
+      <TextField
+        isMultiline
+        id="triggerRuleWhen"
+        label="Trigger When"
+        value={values.triggerRuleWhen}
+        onChange={setValue}
+        monospace
+      />
+      <TextField
+        isMultiline
+        id="dataTransformation"
+        label="Data Transformation"
+        value={values.dataTransformation}
+        onChange={setValue}
+        monospace
+      />
+      <SelectField
+        id="destinationId"
+        label="Destination"
+        value={values.destinationId}
+        onChange={setValue}
+      >
+        {[...selectDestinationFrom]
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map(option => (
+            <option key={option.id} value={option.id}>
+              {option.name}
+            </option>
+          ))}
+      </SelectField>
+    </>
   );
 }
 

@@ -2,15 +2,17 @@ import PropTypes from "prop-types";
 import React from "react";
 import { deleteRule, listRules } from "../../api";
 import { poll } from "../../utils";
-import DeleteDialog from "../ui/DeleteDialog";
-import { Text } from "../ui/Texts";
+import DeleteDialog from "../shared/DeleteDialog";
+import resourceTypes from "../shared/resourceTypes";
 
 export default function DeleteRuleDialog({ onDelete, rule }) {
-  const name = rule.name.trim();
   return (
     <DeleteDialog
-      heading="Delete Rule"
-      onDelete={async () => {
+      resource={{
+        impl: resourceTypes.rule,
+        ...rule,
+      }}
+      onConfirm={async () => {
         await deleteRule(rule.id);
         await poll(async () => {
           const { items } = await listRules(rule.projectId);
@@ -18,13 +20,7 @@ export default function DeleteRuleDialog({ onDelete, rule }) {
         });
         await onDelete();
       }}
-    >
-      Are you sure you want to delete the rule{" "}
-      <Text as="strong" gray={!name}>
-        {name || "Unnamed rule"}
-      </Text>
-      ?
-    </DeleteDialog>
+    />
   );
 }
 
@@ -32,7 +28,6 @@ DeleteRuleDialog.propTypes = {
   onDelete: PropTypes.func.isRequired,
   rule: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
   }).isRequired,
 };

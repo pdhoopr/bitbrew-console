@@ -1,66 +1,65 @@
 import PropTypes from "prop-types";
 import React from "react";
+import {
+  CheckboxField,
+  FieldGroup,
+  RadioField,
+  RadioGroup,
+  TextField,
+} from "../../design-system";
 import { capitalize } from "../../utils";
-import Checkbox from "../ui/Checkbox";
-import { Choice, Fieldset, Input, Label, Legend } from "../ui/Forms";
-import FormSection from "../ui/FormSection";
-import RadioButton from "../ui/RadioButton";
 
-export default function DeviceFormFields({ edit, setValue, values }) {
-  const type = capitalize(values.type.trim());
-  const isDatalogger = type.toUpperCase() === "DATALOGGER";
+export default function DeviceFormFields({ setValue, showType, values }) {
+  const isDatalogger = values.type.toUpperCase() === "DATALOGGER";
   return (
-    <React.Fragment>
-      <Label htmlFor="codename">
-        Codename
-        <Input
-          id="codename"
-          value={values.codename}
-          onChange={setValue}
-          placeholder="Unnamed device"
-        />
-      </Label>
-      <Choice htmlFor="enabled">
-        <Checkbox id="enabled" checked={values.enabled} onChange={setValue} />
-        Enable
-      </Choice>
-      {!edit && (
-        <Fieldset>
-          <Legend>Type</Legend>
-          <Choice htmlFor="datalogger">
-            <RadioButton
-              name="type"
-              id="datalogger"
-              checked={isDatalogger}
-              onChange={setValue}
-            />
-            Datalogger
-          </Choice>
-        </Fieldset>
+    <>
+      <TextField
+        id="codename"
+        label="Codename"
+        value={values.codename}
+        onChange={setValue}
+        placeholder="Unnamed device"
+      />
+      <CheckboxField
+        id="enabled"
+        label="Enable"
+        checked={values.enabled}
+        onChange={setValue}
+      />
+      {showType && (
+        <RadioGroup heading="Type">
+          <RadioField
+            name="type"
+            id="datalogger"
+            label="Datalogger"
+            checked={isDatalogger}
+            onChange={setValue}
+          />
+        </RadioGroup>
       )}
       {isDatalogger && (
-        <FormSection heading={`${type} Settings`}>
-          <Label htmlFor="serialNumber">
-            Serial Number
-            <Input
-              id="serialNumber"
-              value={values.serialNumber}
-              onChange={setValue}
-            />
-          </Label>
-          <Label htmlFor="imei">
-            IMEI
-            <Input id="imei" value={values.imei} onChange={setValue} />
-          </Label>
-        </FormSection>
+        <FieldGroup heading={`${capitalize(values.type)} Settings`}>
+          <TextField
+            id="serialNumber"
+            label="Serial Number"
+            value={values.serialNumber}
+            onChange={setValue}
+          />
+          <TextField
+            id="imei"
+            label="IMEI"
+            value={values.imei}
+            onChange={setValue}
+          />
+        </FieldGroup>
       )}
-    </React.Fragment>
+    </>
   );
 }
 
 DeviceFormFields.propTypes = {
-  edit: PropTypes.bool,
   setValue: PropTypes.func.isRequired,
+  showType: PropTypes.bool,
   values: PropTypes.shape({
     codename: PropTypes.string.isRequired,
     enabled: PropTypes.bool.isRequired,
@@ -71,5 +70,5 @@ DeviceFormFields.propTypes = {
 };
 
 DeviceFormFields.defaultProps = {
-  edit: false,
+  showType: false,
 };

@@ -1,6 +1,14 @@
+const specialCases = {
+  AMQP: "AMQP",
+};
+
 export default function capitalize(string) {
-  const upperCase = string.toUpperCase();
-  return upperCase === "AMQP"
-    ? upperCase
-    : string.toLowerCase().replace(/^[a-z]/, letter => letter.toUpperCase());
+  return string
+    .split(/\s+/)
+    .map(
+      word =>
+        specialCases[word.toUpperCase()] ||
+        word.toLowerCase().replace(/^[a-z]/, letter => letter.toUpperCase()),
+    )
+    .join(" ");
 }
