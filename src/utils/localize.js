@@ -14,6 +14,11 @@ export default function localize(dateString, { time = false } = {}) {
   };
   return new Date(dateString).toLocaleString(
     locale,
-    time ? { ...dateOptions, ...timeOptions } : dateOptions,
+    time
+      ? {
+          ...dateOptions,
+          ...timeOptions,
+        }
+      : dateOptions,
   );
 }

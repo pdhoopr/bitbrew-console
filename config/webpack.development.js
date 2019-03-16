@@ -54,10 +54,7 @@ module.exports = {
   },
   plugins: [
     new CaseSensitivePathsPlugin(),
-    new CleanPlugin([paths.distFolder], {
-      root: paths.rootFolder,
-      verbose: false,
-    }),
+    new CleanPlugin(),
     new CopyPlugin([
       {
         from: paths.staticFolder,

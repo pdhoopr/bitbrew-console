@@ -2,13 +2,11 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import {
-  BackIcon,
   BlockLink,
   Button,
   Card,
   Heading1,
   Heading2,
-  IconLink,
   List,
   ListItem,
   RaisedButton,
@@ -18,15 +16,8 @@ import {
 import { localize, pluralize } from "../../utils";
 import Main from "./Main";
 import Name from "./Name";
-import parentResourceTypes from "./parentResourceTypes";
 import resourceTypes from "./resourceTypes";
 import Section from "./Section";
-
-const BackLink = styled(IconLink)`
-  left: calc(-1 * var(--size-52));
-  position: absolute;
-  top: var(--size-34);
-`;
 
 const Intro = styled.div`
   align-items: flex-start;
@@ -76,80 +67,70 @@ export default function ViewPage({
   onOpenForm,
   resource,
 }) {
-  const plural = pluralize(resource.impl);
-  const parent = parentResourceTypes[resource.impl] || "";
   const status = resource.enabled ? "enabled" : "disabled";
   return (
-    <Main>
-      <BackLink
-        to={parent ? "../" : "/"}
-        title={`View all ${plural}${parent && ` in this ${parent}`}`}
-      >
-        <BackIcon />
-      </BackLink>
-      {!isLoading && (
-        <>
-          <Intro>
-            {resource.description ? (
-              <div>
-                <Heading1>
-                  <Name resource={resource} />
-                </Heading1>
-                <Subheading>{resource.description}</Subheading>
-              </div>
-            ) : (
+    !isLoading && (
+      <Main>
+        <Intro>
+          {resource.description ? (
+            <div>
               <Heading1>
                 <Name resource={resource} />
               </Heading1>
-            )}
-            {onOpenForm && <EditButton onClick={onOpenForm}>Edit</EditButton>}
-          </Intro>
-          {metrics && (
-            <Metrics>
-              {metrics.map(({ label, value }) => (
-                <MetricHeading key={label} as={Heading2}>
-                  <BlockLink to={`${label}s`}>
-                    {value}
-                    <Subheading as="span">
-                      {pluralize(label, value).replace(/^\d+\s/, "")}
-                    </Subheading>
-                  </BlockLink>
-                </MetricHeading>
-              ))}
-            </Metrics>
+              <Subheading>{resource.description}</Subheading>
+            </div>
+          ) : (
+            <Heading1>
+              <Name resource={resource} />
+            </Heading1>
           )}
-          <Section heading="Overview">
-            <List>
-              <ListItem heading="ID">{resource.id}</ListItem>
-              {resource.enabled != null && (
-                <ListItem heading="Enabled">
-                  <StatusIndicator
-                    status={status}
-                    title={`This ${resource.impl} is ${status}`}
-                  />
-                </ListItem>
-              )}
-              <ListItem heading="Created On">
-                {localize(resource.createdAt, {
-                  time: !!resource.updatedAt,
+          {onOpenForm && <EditButton onClick={onOpenForm}>Edit</EditButton>}
+        </Intro>
+        {metrics && (
+          <Metrics>
+            {metrics.map(({ label, value }) => (
+              <MetricHeading key={label} as={Heading2}>
+                <BlockLink to={`${label}s`}>
+                  {value}
+                  <Subheading as="span">
+                    {pluralize(label, value).replace(/^\d+\s/, "")}
+                  </Subheading>
+                </BlockLink>
+              </MetricHeading>
+            ))}
+          </Metrics>
+        )}
+        <Section heading="Overview">
+          <List>
+            <ListItem heading="ID">{resource.id}</ListItem>
+            {resource.enabled != null && (
+              <ListItem heading="Enabled">
+                <StatusIndicator
+                  status={status}
+                  title={`This ${resource.impl} is ${status}`}
+                />
+              </ListItem>
+            )}
+            <ListItem heading="Created On">
+              {localize(resource.createdAt, {
+                time: !!resource.updatedAt,
+              })}
+            </ListItem>
+            {resource.updatedAt && (
+              <ListItem heading="Last Modified On">
+                {localize(resource.updatedAt, {
+                  time: true,
                 })}
               </ListItem>
-              {resource.updatedAt && (
-                <ListItem heading="Last Modified On">
-                  {localize(resource.updatedAt, {
-                    time: true,
-                  })}
-                </ListItem>
-              )}
-            </List>
-          </Section>
-          {children}
-          <DeleteButton onClick={onOpenDialog}>
-            Delete this {resource.impl}
-          </DeleteButton>
-        </>
-      )}
-    </Main>
+            )}
+          </List>
+        </Section>
+        {children}
+        <DeleteButton onClick={onOpenDialog}>
+          Delete this {resource.impl}
+        </DeleteButton>
+      </Main>
+    )
   );
 }
 
@@ -169,7 +150,7 @@ ViewPage.propTypes = {
     description: PropTypes.string,
     enabled: PropTypes.bool,
     id: PropTypes.string,
-    impl: PropTypes.oneOf(Object.values(resourceTypes)).isRequired,
+    impl: PropTypes.oneOf(resourceTypes).isRequired,
     updatedAt: PropTypes.string,
   }).isRequired,
 };

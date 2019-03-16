@@ -21,7 +21,8 @@ const Wrapper = styled(BlockLink)`
     border-bottom-color: currentColor;
     color: var(--color-green);
 
-    &:hover {
+    &:hover,
+    &:focus {
       border-bottom-color: transparent;
     }
   }
@@ -29,7 +30,8 @@ const Wrapper = styled(BlockLink)`
   &[data-current] {
     cursor: default;
 
-    &:hover {
+    &:hover,
+    &:focus {
       border-bottom-color: currentColor;
     }
 

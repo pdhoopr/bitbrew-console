@@ -1,12 +1,15 @@
-const resourceTypes = {
-  destination: "destination",
-  device: "device",
-  org: "organization",
-  orgMember: "member",
-  project: "project",
-  rule: "rule",
-};
+export const destinationType = "destination";
+export const deviceType = "device";
+export const orgMemberType = "member";
+export const orgType = "organization";
+export const projectType = "project";
+export const ruleType = "rule";
 
-Object.freeze(resourceTypes);
-
-export default resourceTypes;
+export default [
+  destinationType,
+  deviceType,
+  orgMemberType,
+  orgType,
+  projectType,
+  ruleType,
+];

@@ -3,13 +3,13 @@ import React from "react";
 import { createDestination, listDestinations } from "../../api";
 import { poll } from "../../utils";
 import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
-import resourceTypes from "../shared/resourceTypes";
+import { destinationType } from "../shared/resourceTypes";
 import useForm from "../shared/useForm";
 import DestinationFormFields from "./DestinationFormFields";
 
-export default function CreateDestinationForm({ onCreate, project }) {
+export default function CreateDestinationForm({ onCreate, projectId }) {
   const [values, setValue] = useForm({
-    projectId: project,
+    projectId,
     name: "",
     enabled: true,
     type: "",
@@ -28,7 +28,7 @@ export default function CreateDestinationForm({ onCreate, project }) {
 
   return (
     <CreateOrUpdateForm
-      resource={resourceTypes.destination}
+      resourceType={destinationType}
       onSubmit={async () => {
         const defaultAmqpPort = values.amqpSecure ? 5671 : 5672;
         const data = await createDestination({
@@ -49,5 +49,5 @@ export default function CreateDestinationForm({ onCreate, project }) {
 
 CreateDestinationForm.propTypes = {
   onCreate: PropTypes.func.isRequired,
-  project: PropTypes.string.isRequired,
+  projectId: PropTypes.string.isRequired,
 };

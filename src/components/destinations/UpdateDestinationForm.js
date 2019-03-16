@@ -3,7 +3,7 @@ import React from "react";
 import { listDestinations, updateDestination } from "../../api";
 import { poll } from "../../utils";
 import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
-import resourceTypes from "../shared/resourceTypes";
+import { destinationType } from "../shared/resourceTypes";
 import useForm from "../shared/useForm";
 import DestinationFormFields from "./DestinationFormFields";
 
@@ -29,7 +29,7 @@ export default function UpdateDestinationForm({ destination, onUpdate }) {
   return (
     <CreateOrUpdateForm
       isUpdate
-      resource={resourceTypes.destination}
+      resourceType={destinationType}
       onSubmit={async () => {
         const defaultAmqpPort = values.amqpSecure ? 5671 : 5672;
         const data = await updateDestination(destination.id, {

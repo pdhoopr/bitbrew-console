@@ -3,17 +3,17 @@ import React from "react";
 import { createRule, listRules } from "../../api";
 import { poll } from "../../utils";
 import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
-import resourceTypes from "../shared/resourceTypes";
+import { ruleType } from "../shared/resourceTypes";
 import useForm from "../shared/useForm";
 import RuleFormFields from "./RuleFormFields";
 
 export default function CreateRuleForm({
   onCreate,
-  project,
+  projectId,
   selectDestinationFrom,
 }) {
   const [values, setValue] = useForm({
-    projectId: project,
+    projectId,
     name: "",
     enabled: true,
     triggerRuleWhen: "",
@@ -23,7 +23,7 @@ export default function CreateRuleForm({
 
   return (
     <CreateOrUpdateForm
-      resource={resourceTypes.rule}
+      resourceType={ruleType}
       onSubmit={async () => {
         const data = await createRule(values);
         await poll(async () => {
@@ -44,6 +44,6 @@ export default function CreateRuleForm({
 
 CreateRuleForm.propTypes = {
   onCreate: PropTypes.func.isRequired,
-  project: PropTypes.string.isRequired,
+  projectId: PropTypes.string.isRequired,
   selectDestinationFrom: PropTypes.array.isRequired,
 };

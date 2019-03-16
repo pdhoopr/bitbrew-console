@@ -3,7 +3,7 @@ import React from "react";
 import { listDevices, updateDevice } from "../../api";
 import { poll } from "../../utils";
 import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
-import resourceTypes from "../shared/resourceTypes";
+import { deviceType } from "../shared/resourceTypes";
 import useForm from "../shared/useForm";
 import DeviceFormFields from "./DeviceFormFields";
 
@@ -20,7 +20,7 @@ export default function UpdateDeviceForm({ device, onUpdate }) {
   return (
     <CreateOrUpdateForm
       isUpdate
-      resource={resourceTypes.device}
+      resourceType={deviceType}
       onSubmit={async () => {
         const data = await updateDevice(device.id, values);
         await poll(async () => {

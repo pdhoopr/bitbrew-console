@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { listOrgs, listProjects } from "../api";
 import {
@@ -14,14 +14,15 @@ import {
   Text,
 } from "../design-system";
 import { flatMap, localize, pluralize } from "../utils";
-import GlobalContext from "./GlobalContext";
+import AppContext from "./AppContext";
 import CreateOrgForm from "./orgs/CreateOrgForm";
 import CreateProjectForm from "./projects/CreateProjectForm";
 import Header from "./shared/Header";
 import Main from "./shared/Main";
 import Name from "./shared/Name";
-import resourceTypes from "./shared/resourceTypes";
+import { orgType, projectType } from "./shared/resourceTypes";
 import useLoading from "./shared/useLoading";
+import useResource from "./shared/useResource";
 
 const Intro = styled(Main)`
   padding-bottom: var(--size-32);
@@ -53,6 +54,10 @@ const OrgDetails = styled.ul`
   margin-bottom: 0;
   margin-top: 0;
   padding-left: 0;
+`;
+
+const ProjectLink = styled(BlockLink)`
+  min-height: var(--size-160);
 `;
 
 const ProjectDetails = styled(Text)`
@@ -103,10 +108,10 @@ const NewIcon = styled(AddIcon).attrs({
 `;
 
 export default function WelcomePage() {
-  const { openDrawer } = useContext(GlobalContext);
+  const { openDrawer } = useContext(AppContext);
 
-  const [orgs, setOrgs] = useState([]);
-  const [projects, setProjects] = useState([]);
+  const [orgs, setOrgs] = useResource(orgType, []);
+  const [projects, setProjects] = useResource(projectType, []);
 
   async function loadOrgs() {
     const { items } = await listOrgs();
@@ -151,14 +156,9 @@ export default function WelcomePage() {
                 </OrgIntro>
                 {orgProjects.map(project => (
                   <Card key={project.id} as="section">
-                    <BlockLink to={`${orgUrl}/projects/${project.id}`}>
+                    <ProjectLink to={`${orgUrl}/projects/${project.id}`}>
                       <Heading3>
-                        <Name
-                          resource={{
-                            impl: resourceTypes.project,
-                            ...project,
-                          }}
-                        />
+                        <Name resource={project} />
                       </Heading3>
                       {project.description && (
                         <Subheading>{project.description}</Subheading>
@@ -166,14 +166,14 @@ export default function WelcomePage() {
                       <ProjectDetails gray>
                         Created on {localize(project.createdAt)}
                       </ProjectDetails>
-                    </BlockLink>
+                    </ProjectLink>
                   </Card>
                 ))}
                 <NewProjectButton
                   onClick={() => {
                     openDrawer(
                       <CreateProjectForm
-                        org={org.id}
+                        orgId={org.id}
                         orgName={org.name}
                         onCreate={loadOrgs}
                       />,

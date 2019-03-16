@@ -10,17 +10,17 @@ import styled from "styled-components";
 import { off, on, retry, setToken } from "../api";
 import { GlobalStyle, Snackbar } from "../design-system";
 import { silentRefresh, summarize } from "../utils";
+import AppContext from "./AppContext";
 import ListDestinationsPage from "./destinations/ListDestinationsPage";
 import ViewDestinationPage from "./destinations/ViewDestinationPage";
 import ListDevicesPage from "./devices/ListDevicesPage";
 import ViewDevicePage from "./devices/ViewDevicePage";
-import GlobalContext from "./GlobalContext";
 import ListOrgMembersPage from "./orgs/ListOrgMembersPage";
+import Org from "./orgs/Org";
 import ViewOrgPage from "./orgs/ViewOrgPage";
-import WithOrgHeader from "./orgs/WithOrgHeader";
 import ListProjectsPage from "./projects/ListProjectsPage";
+import Project from "./projects/Project";
 import ViewProjectPage from "./projects/ViewProjectPage";
-import WithProjectHeader from "./projects/WithProjectHeader";
 import ListRulesPage from "./rules/ListRulesPage";
 import ViewRulePage from "./rules/ViewRulePage";
 import Footer from "./shared/Footer";
@@ -159,7 +159,7 @@ export default function App() {
   );
 
   return (
-    <GlobalContext.Provider
+    <AppContext.Provider
       value={{
         auth,
         logInWithToken,
@@ -177,20 +177,20 @@ export default function App() {
           <Router>
             <WelcomePage path="/" />
             <Redirect from="/orgs" to="/" noThrow />
-            <WithOrgHeader path="/orgs/:orgId">
+            <Org path="/orgs/:orgId">
               <ViewOrgPage path="/" />
               <ListOrgMembersPage path="/members" />
               <ListProjectsPage path="/projects" />
-            </WithOrgHeader>
-            <WithProjectHeader path="/orgs/:orgId/projects/:projectId">
-              <ViewProjectPage path="/" />
-              <ListDevicesPage path="/devices" />
-              <ViewDevicePage path="/devices/:deviceId" />
-              <ListDestinationsPage path="/destinations" />
-              <ViewDestinationPage path="/destinations/:destinationId" />
-              <ListRulesPage path="/rules" />
-              <ViewRulePage path="/rules/:ruleId" />
-            </WithProjectHeader>
+              <Project path="/projects/:projectId">
+                <ViewProjectPage path="/" />
+                <ListDevicesPage path="/devices" />
+                <ViewDevicePage path="/devices/:deviceId" />
+                <ListDestinationsPage path="/destinations" />
+                <ViewDestinationPage path="/destinations/:destinationId" />
+                <ListRulesPage path="/rules" />
+                <ViewRulePage path="/rules/:ruleId" />
+              </Project>
+            </Org>
           </Router>
           <Footer />
           {drawer}
@@ -198,6 +198,6 @@ export default function App() {
           {snackbar}
         </LocationProvider>
       )}
-    </GlobalContext.Provider>
+    </AppContext.Provider>
   );
 }

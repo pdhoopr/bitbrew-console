@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { Button, Dialog, FocusTrap, Heading3, Text } from "../../design-system";
 import { capitalize } from "../../utils";
-import GlobalContext from "../GlobalContext";
+import AppContext from "../AppContext";
 import Name from "./Name";
 import resourceTypes from "./resourceTypes";
 
@@ -29,7 +29,7 @@ const DeleteButton = styled(Button)`
 `;
 
 export default function DeleteDialog({ children, onConfirm, resource }) {
-  const { closeDialog, errorBoundary } = useContext(GlobalContext);
+  const { closeDialog, errorBoundary } = useContext(AppContext);
 
   const [isDeleting, setDeleting] = useState(false);
 
@@ -74,7 +74,7 @@ DeleteDialog.propTypes = {
   children: PropTypes.node,
   onConfirm: PropTypes.func.isRequired,
   resource: PropTypes.shape({
-    impl: PropTypes.oneOf(Object.values(resourceTypes)).isRequired,
+    impl: PropTypes.oneOf(resourceTypes).isRequired,
   }).isRequired,
 };
 

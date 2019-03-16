@@ -3,7 +3,7 @@ import React from "react";
 import { listOrgs, updateOrg } from "../../api";
 import { poll } from "../../utils";
 import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
-import resourceTypes from "../shared/resourceTypes";
+import { orgType } from "../shared/resourceTypes";
 import useForm from "../shared/useForm";
 import OrgFormFields from "./OrgFormFields";
 
@@ -15,7 +15,7 @@ export default function UpdateOrgForm({ onUpdate, org }) {
   return (
     <CreateOrUpdateForm
       isUpdate
-      resource={resourceTypes.org}
+      resourceType={orgType}
       onSubmit={async () => {
         const data = await updateOrg(org.id, values);
         await poll(async () => {

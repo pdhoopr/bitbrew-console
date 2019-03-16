@@ -3,13 +3,13 @@ import React from "react";
 import { createDevice, listDevices } from "../../api";
 import { poll } from "../../utils";
 import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
-import resourceTypes from "../shared/resourceTypes";
+import { deviceType } from "../shared/resourceTypes";
 import useForm from "../shared/useForm";
 import DeviceFormFields from "./DeviceFormFields";
 
-export default function CreateDeviceForm({ onCreate, project }) {
+export default function CreateDeviceForm({ onCreate, projectId }) {
   const [values, setValue] = useForm({
-    projectId: project,
+    projectId,
     codename: "",
     enabled: true,
     type: "datalogger",
@@ -19,7 +19,7 @@ export default function CreateDeviceForm({ onCreate, project }) {
 
   return (
     <CreateOrUpdateForm
-      resource={resourceTypes.device}
+      resourceType={deviceType}
       onSubmit={async () => {
         const data = await createDevice(values);
         await poll(async () => {
@@ -36,5 +36,5 @@ export default function CreateDeviceForm({ onCreate, project }) {
 
 CreateDeviceForm.propTypes = {
   onCreate: PropTypes.func.isRequired,
-  project: PropTypes.string.isRequired,
+  projectId: PropTypes.string.isRequired,
 };

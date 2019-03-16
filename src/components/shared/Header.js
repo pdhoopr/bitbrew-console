@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import React, { useContext } from "react";
 import styled from "styled-components";
 import {
+  BlockLink,
   Heading3,
   IconLink,
   LogoIcon,
   Menu,
   MenuItem,
 } from "../../design-system";
-import GlobalContext from "../GlobalContext";
+import AppContext from "../AppContext";
 import Name from "./Name";
 
 const Wrapper = styled.header`
@@ -46,18 +47,61 @@ const WelcomeLink = styled(IconLink)`
   }
 `;
 
-const Heading = styled(Heading3)`
+const Breadcrumbs = styled.ul`
+  display: flex;
+  list-style-type: none;
+  margin-bottom: 0;
   margin-right: auto;
+  margin-top: 0;
   padding-left: var(--size-12);
   padding-top: var(--size-8);
 `;
 
-const MaybeUnnamed = styled(Name)`
+const BreadcrumbHeading = styled(Heading3)`
+  &:not(:first-of-type)::before {
+    content: "/";
+    padding-left: var(--size-8);
+    padding-right: var(--size-8);
+  }
+
+  &:last-of-type {
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--letter-spacing);
+  }
+`;
+
+const BreadcrumbLink = styled(BlockLink)`
+  display: inline-block;
+  padding: var(--size-4) var(--size-8);
+
+  &[data-current] {
+    cursor: default;
+
+    &::before {
+      content: none;
+    }
+  }
+`;
+
+const UnnamedBreadcrumb = styled(Name)`
   color: var(--color-medium-dark-gray);
 `;
 
-export default function Header({ children, isLoading, resource }) {
-  const { auth, logOut } = useContext(GlobalContext);
+function getCurrentAttributes({ isCurrent }) {
+  return isCurrent
+    ? {
+        "data-active": "",
+        "data-current": "",
+      }
+    : null;
+}
+
+function loseFocus(event) {
+  event.currentTarget.blur();
+}
+
+export default function Header({ breadcrumbs, children }) {
+  const { auth, logOut } = useContext(AppContext);
 
   return (
     <Wrapper>
@@ -65,21 +109,24 @@ export default function Header({ children, isLoading, resource }) {
         <WelcomeLink
           to="/"
           title="Go to welcome page"
-          getProps={({ isCurrent }) =>
-            isCurrent
-              ? {
-                  "data-active": "",
-                  "data-current": "",
-                }
-              : null
-          }
+          getProps={getCurrentAttributes}
         >
           <LogoIcon />
         </WelcomeLink>
-        {!isLoading && resource && (
-          <Heading as="p">
-            <MaybeUnnamed resource={resource} />
-          </Heading>
+        {breadcrumbs && (
+          <Breadcrumbs>
+            {breadcrumbs.map(breadcrumb => (
+              <BreadcrumbHeading as="li" key={breadcrumb.resource.id}>
+                <BreadcrumbLink
+                  getProps={getCurrentAttributes}
+                  to={breadcrumb.to}
+                  onClick={loseFocus}
+                >
+                  <UnnamedBreadcrumb resource={breadcrumb.resource} />
+                </BreadcrumbLink>
+              </BreadcrumbHeading>
+            ))}
+          </Breadcrumbs>
         )}
         <Menu heading={jwtDecode(auth).email}>
           <MenuItem onClick={logOut}>Log out</MenuItem>
@@ -91,13 +138,18 @@ export default function Header({ children, isLoading, resource }) {
 }
 
 Header.propTypes = {
+  breadcrumbs: PropTypes.arrayOf(
+    PropTypes.shape({
+      resource: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+      }).isRequired,
+      to: PropTypes.string.isRequired,
+    }),
+  ),
   children: PropTypes.node,
-  isLoading: PropTypes.bool,
-  resource: PropTypes.object,
 };
 
 Header.defaultProps = {
+  breadcrumbs: null,
   children: null,
-  isLoading: false,
-  resource: null,
 };

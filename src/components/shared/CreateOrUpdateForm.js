@@ -12,7 +12,7 @@ import {
   RaisedButton,
 } from "../../design-system";
 import { capitalize } from "../../utils";
-import GlobalContext from "../GlobalContext";
+import AppContext from "../AppContext";
 import Main from "./Main";
 import resourceTypes from "./resourceTypes";
 
@@ -45,14 +45,14 @@ export default function CreateOrUpdateForm({
   children,
   isUpdate,
   onSubmit,
-  resource,
+  resourceType,
 }) {
-  const { closeDrawer, errorBoundary } = useContext(GlobalContext);
+  const { closeDrawer, errorBoundary } = useContext(AppContext);
 
   const [isSubmitting, setSubmitting] = useState(false);
 
-  const heading = `${isUpdate ? "Edit" : "New"} ${capitalize(resource)}`;
-  const action = `${resource} ${isUpdate ? "changes" : "creation"}`;
+  const heading = `${isUpdate ? "Edit" : "New"} ${capitalize(resourceType)}`;
+  const action = `${resourceType} ${isUpdate ? "changes" : "creation"}`;
   return (
     <Drawer onRequestClose={closeDrawer} contentLabel={heading}>
       <Wrapper as="section">
@@ -90,7 +90,7 @@ CreateOrUpdateForm.propTypes = {
   children: PropTypes.node.isRequired,
   isUpdate: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
-  resource: PropTypes.oneOf(Object.values(resourceTypes)).isRequired,
+  resourceType: PropTypes.oneOf(resourceTypes).isRequired,
 };
 
 CreateOrUpdateForm.defaultProps = {

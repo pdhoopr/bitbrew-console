@@ -3,15 +3,11 @@ import React from "react";
 import { deleteOrg, listOrgs } from "../../api";
 import { poll } from "../../utils";
 import DeleteDialog from "../shared/DeleteDialog";
-import resourceTypes from "../shared/resourceTypes";
 
 export default function DeleteOrgDialog({ onDelete, org }) {
   return (
     <DeleteDialog
-      resource={{
-        impl: resourceTypes.org,
-        ...org,
-      }}
+      resource={org}
       onConfirm={async () => {
         await deleteOrg(org.id);
         await poll(async () => {

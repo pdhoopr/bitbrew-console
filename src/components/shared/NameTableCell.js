@@ -20,7 +20,7 @@ NameTableCell.propTypes = {
     codename: PropTypes.string,
     enabled: PropTypes.bool,
     id: PropTypes.string.isRequired,
-    impl: PropTypes.oneOf(Object.values(resourceTypes)).isRequired,
+    impl: PropTypes.oneOf(resourceTypes).isRequired,
     name: PropTypes.string,
   }).isRequired,
 };

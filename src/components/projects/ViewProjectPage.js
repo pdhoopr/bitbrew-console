@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import { listDestinations, listDevices, listRules } from "../../api";
-import GlobalContext from "../GlobalContext";
-import resourceTypes from "../shared/resourceTypes";
+import AppContext from "../AppContext";
+import { destinationType, deviceType, ruleType } from "../shared/resourceTypes";
 import useLoading from "../shared/useLoading";
 import ViewPage from "../shared/ViewPage";
 import DeleteProjectDialog from "./DeleteProjectDialog";
@@ -10,7 +10,7 @@ import ProjectContext from "./ProjectContext";
 import UpdateProjectForm from "./UpdateProjectForm";
 
 export default function ViewProjectPage({ navigate, projectId }) {
-  const { openDialog, openDrawer } = useContext(GlobalContext);
+  const { openDialog, openDrawer } = useContext(AppContext);
   const { loadProject, project, projectIsLoading } = useContext(ProjectContext);
 
   const [numDevices, setNumDevices] = useState(0);
@@ -38,22 +38,20 @@ export default function ViewProjectPage({ navigate, projectId }) {
     <ViewPage
       isLoading={projectIsLoading || metricsAreLoading}
       resource={{
-        impl: resourceTypes.project,
         ...project,
-        enabled: null,
         updatedAt: null,
       }}
       metrics={[
         {
-          label: resourceTypes.device,
+          label: deviceType,
           value: numDevices,
         },
         {
-          label: resourceTypes.destination,
+          label: destinationType,
           value: numDestinations,
         },
         {
-          label: resourceTypes.rule,
+          label: ruleType,
           value: numRules,
         },
       ]}

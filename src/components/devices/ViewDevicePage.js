@@ -1,20 +1,21 @@
 import PropTypes from "prop-types";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { viewDevice } from "../../api";
 import { List, ListItem } from "../../design-system";
 import { capitalize } from "../../utils";
-import GlobalContext from "../GlobalContext";
-import resourceTypes from "../shared/resourceTypes";
+import AppContext from "../AppContext";
+import { deviceType } from "../shared/resourceTypes";
 import Section from "../shared/Section";
 import useLoading from "../shared/useLoading";
+import useResource from "../shared/useResource";
 import ViewPage from "../shared/ViewPage";
 import DeleteDeviceDialog from "./DeleteDeviceDialog";
 import UpdateDeviceForm from "./UpdateDeviceForm";
 
 export default function ViewDevicePage({ deviceId, navigate }) {
-  const { openDialog, openDrawer } = useContext(GlobalContext);
+  const { openDialog, openDrawer } = useContext(AppContext);
 
-  const [device, setDevice] = useState({});
+  const [device, setDevice] = useResource(deviceType, {});
 
   async function loadDevice() {
     const data = await viewDevice(deviceId);
@@ -27,10 +28,7 @@ export default function ViewDevicePage({ deviceId, navigate }) {
   return (
     <ViewPage
       isLoading={isLoading}
-      resource={{
-        impl: resourceTypes.device,
-        ...device,
-      }}
+      resource={device}
       onOpenForm={() => {
         openDrawer(<UpdateDeviceForm device={device} onUpdate={loadDevice} />);
       }}

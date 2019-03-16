@@ -3,15 +3,11 @@ import React from "react";
 import { deleteRule, listRules } from "../../api";
 import { poll } from "../../utils";
 import DeleteDialog from "../shared/DeleteDialog";
-import resourceTypes from "../shared/resourceTypes";
 
 export default function DeleteRuleDialog({ onDelete, rule }) {
   return (
     <DeleteDialog
-      resource={{
-        impl: resourceTypes.rule,
-        ...rule,
-      }}
+      resource={rule}
       onConfirm={async () => {
         await deleteRule(rule.id);
         await poll(async () => {

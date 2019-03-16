@@ -1,13 +1,14 @@
 import PropTypes from "prop-types";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { viewDestination, viewRule } from "../../api";
 import { Link, List, ListItem } from "../../design-system";
 import { capitalize } from "../../utils";
-import GlobalContext from "../GlobalContext";
-import resourceTypes from "../shared/resourceTypes";
+import AppContext from "../AppContext";
+import { destinationType, ruleType } from "../shared/resourceTypes";
 import Section from "../shared/Section";
 import useLoading from "../shared/useLoading";
+import useResource from "../shared/useResource";
 import ViewPage from "../shared/ViewPage";
 import DeleteRuleDialog from "./DeleteRuleDialog";
 
@@ -25,10 +26,10 @@ const NotFound = styled.span`
 `;
 
 export default function ViewRulePage({ navigate, ruleId }) {
-  const { openDialog } = useContext(GlobalContext);
+  const { openDialog } = useContext(AppContext);
 
-  const [rule, setRule] = useState({});
-  const [destination, setDestination] = useState({});
+  const [rule, setRule] = useResource(ruleType, {});
+  const [destination, setDestination] = useResource(destinationType, {});
 
   async function loadRule() {
     const data = await viewRule(ruleId);
@@ -45,10 +46,7 @@ export default function ViewRulePage({ navigate, ruleId }) {
   return (
     <ViewPage
       isLoading={isLoading}
-      resource={{
-        impl: resourceTypes.rule,
-        ...rule,
-      }}
+      resource={rule}
       onOpenDialog={() => {
         openDialog(
           <DeleteRuleDialog

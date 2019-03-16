@@ -1,20 +1,21 @@
 import PropTypes from "prop-types";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { viewDestination } from "../../api";
 import { List, ListItem } from "../../design-system";
 import { capitalize } from "../../utils";
-import GlobalContext from "../GlobalContext";
-import resourceTypes from "../shared/resourceTypes";
+import AppContext from "../AppContext";
+import { destinationType } from "../shared/resourceTypes";
 import Section from "../shared/Section";
 import useLoading from "../shared/useLoading";
+import useResource from "../shared/useResource";
 import ViewPage from "../shared/ViewPage";
 import DeleteDestinationDialog from "./DeleteDestinationDialog";
 import UpdateDestinationForm from "./UpdateDestinationForm";
 
 export default function ViewDestinationPage({ destinationId, navigate }) {
-  const { openDialog, openDrawer } = useContext(GlobalContext);
+  const { openDialog, openDrawer } = useContext(AppContext);
 
-  const [destination, setDestination] = useState({});
+  const [destination, setDestination] = useResource(destinationType, {});
 
   async function loadDestination() {
     const data = await viewDestination(destinationId);
@@ -28,10 +29,7 @@ export default function ViewDestinationPage({ destinationId, navigate }) {
   return (
     <ViewPage
       isLoading={isLoading}
-      resource={{
-        impl: resourceTypes.destination,
-        ...destination,
-      }}
+      resource={destination}
       onOpenForm={() => {
         openDrawer(
           <UpdateDestinationForm

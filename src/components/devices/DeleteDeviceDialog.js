@@ -3,15 +3,11 @@ import React from "react";
 import { deleteDevice, listDevices } from "../../api";
 import { poll } from "../../utils";
 import DeleteDialog from "../shared/DeleteDialog";
-import resourceTypes from "../shared/resourceTypes";
 
 export default function DeleteDeviceDialog({ device, onDelete }) {
   return (
     <DeleteDialog
-      resource={{
-        impl: resourceTypes.device,
-        ...device,
-      }}
+      resource={device}
       onConfirm={async () => {
         await deleteDevice(device.id);
         await poll(async () => {

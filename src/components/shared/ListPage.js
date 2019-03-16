@@ -9,7 +9,6 @@ import {
 } from "../../design-system";
 import { capitalize, pluralize } from "../../utils";
 import Main from "./Main";
-import parentResourceTypes from "./parentResourceTypes";
 import resourceTypes from "./resourceTypes";
 
 const Intro = styled.div`
@@ -29,10 +28,9 @@ export default function ListPage({
   children,
   isLoading,
   onOpenForm,
-  resource,
+  resourceType,
 }) {
-  const plural = pluralize(resource);
-  const parent = parentResourceTypes[resource];
+  const plural = pluralize(resourceType);
   return (
     <Main>
       <Intro>
@@ -46,8 +44,7 @@ export default function ListPage({
           <Card>{children}</Card>
         ) : (
           <EmptyIndicator>
-            There are no {plural}
-            {parent && ` in this ${parent}`} yet.
+            There aren&apos;t any {plural} here yet.
           </EmptyIndicator>
         ))}
     </Main>
@@ -58,7 +55,7 @@ ListPage.propTypes = {
   children: PropTypes.node.isRequired,
   isLoading: PropTypes.bool.isRequired,
   onOpenForm: PropTypes.func,
-  resource: PropTypes.oneOf(Object.values(resourceTypes)).isRequired,
+  resourceType: PropTypes.oneOf(resourceTypes).isRequired,
 };
 
 ListPage.defaultProps = {

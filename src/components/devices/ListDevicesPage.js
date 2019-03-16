@@ -1,19 +1,20 @@
 import PropTypes from "prop-types";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { listDevices } from "../../api";
 import { Table, TableCell, TableRow } from "../../design-system";
 import { capitalize, localize } from "../../utils";
-import GlobalContext from "../GlobalContext";
+import AppContext from "../AppContext";
 import ListPage from "../shared/ListPage";
 import NameTableCell from "../shared/NameTableCell";
-import resourceTypes from "../shared/resourceTypes";
+import { deviceType } from "../shared/resourceTypes";
 import useLoading from "../shared/useLoading";
+import useResource from "../shared/useResource";
 import CreateDeviceForm from "./CreateDeviceForm";
 
 export default function ListDevicesPage({ projectId }) {
-  const { openDrawer } = useContext(GlobalContext);
+  const { openDrawer } = useContext(AppContext);
 
-  const [devices, setDevices] = useState([]);
+  const [devices, setDevices] = useResource(deviceType, []);
 
   async function loadDevices() {
     const { items } = await listDevices(projectId);
@@ -25,10 +26,10 @@ export default function ListDevicesPage({ projectId }) {
   return (
     <ListPage
       isLoading={isLoading}
-      resource={resourceTypes.device}
+      resourceType={deviceType}
       onOpenForm={() => {
         openDrawer(
-          <CreateDeviceForm project={projectId} onCreate={loadDevices} />,
+          <CreateDeviceForm projectId={projectId} onCreate={loadDevices} />,
         );
       }}
     >
@@ -36,12 +37,7 @@ export default function ListDevicesPage({ projectId }) {
         <Table headings={["Codename", "Created On", "Type"]}>
           {devices.map(device => (
             <TableRow key={device.id} italic={!device.enabled}>
-              <NameTableCell
-                resource={{
-                  impl: resourceTypes.device,
-                  ...device,
-                }}
-              />
+              <NameTableCell resource={device} />
               <TableCell>{localize(device.createdAt)}</TableCell>
               <TableCell>{capitalize(device.type)}</TableCell>
             </TableRow>

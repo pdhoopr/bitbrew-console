@@ -14,7 +14,6 @@ export { default as SelectField } from "./forms/SelectField";
 export { default as TextField } from "./forms/TextField";
 export { default as GlobalStyle } from "./GlobalStyle";
 export { default as AddIcon } from "./icons/AddIcon";
-export { default as BackIcon } from "./icons/BackIcon";
 export { default as CheckboxCheckedIcon } from "./icons/CheckboxCheckedIcon";
 export { default as CheckboxIcon } from "./icons/CheckboxIcon";
 export { default as CheckIcon } from "./icons/CheckIcon";

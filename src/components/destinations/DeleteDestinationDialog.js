@@ -3,15 +3,11 @@ import React from "react";
 import { deleteDestination, listDestinations } from "../../api";
 import { poll } from "../../utils";
 import DeleteDialog from "../shared/DeleteDialog";
-import resourceTypes from "../shared/resourceTypes";
 
 export default function DeleteDestinationDialog({ destination, onDelete }) {
   return (
     <DeleteDialog
-      resource={{
-        impl: resourceTypes.destination,
-        ...destination,
-      }}
+      resource={destination}
       onConfirm={async () => {
         await deleteDestination(destination.id);
         await poll(async () => {

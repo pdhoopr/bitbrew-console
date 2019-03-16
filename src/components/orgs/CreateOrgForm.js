@@ -3,14 +3,14 @@ import PropTypes from "prop-types";
 import React, { useContext } from "react";
 import { createOrg } from "../../api";
 import { poll, silentRefresh } from "../../utils";
-import GlobalContext from "../GlobalContext";
+import AppContext from "../AppContext";
 import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
-import resourceTypes from "../shared/resourceTypes";
+import { orgType } from "../shared/resourceTypes";
 import useForm from "../shared/useForm";
 import OrgFormFields from "./OrgFormFields";
 
 export default function CreateOrgForm({ onCreate }) {
-  const { logInWithToken, logOut } = useContext(GlobalContext);
+  const { logInWithToken, logOut } = useContext(AppContext);
 
   const [values, setValue] = useForm({
     name: "",
@@ -18,7 +18,7 @@ export default function CreateOrgForm({ onCreate }) {
 
   return (
     <CreateOrUpdateForm
-      resource={resourceTypes.org}
+      resourceType={orgType}
       onSubmit={async () => {
         const data = await createOrg(values);
         await poll(async () => {

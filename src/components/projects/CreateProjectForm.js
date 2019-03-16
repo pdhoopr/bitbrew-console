@@ -3,13 +3,13 @@ import React from "react";
 import { createProject, listProjects } from "../../api";
 import { poll } from "../../utils";
 import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
-import resourceTypes from "../shared/resourceTypes";
+import { projectType } from "../shared/resourceTypes";
 import useForm from "../shared/useForm";
 import ProjectFormFields from "./ProjectFormFields";
 
-export default function CreateProjectForm({ onCreate, org, orgName }) {
+export default function CreateProjectForm({ onCreate, orgId, orgName }) {
   const [values, setValue] = useForm({
-    orgId: org,
+    orgId,
     name: "",
     description: "",
     usesSimulatedDevices: false,
@@ -17,7 +17,7 @@ export default function CreateProjectForm({ onCreate, org, orgName }) {
 
   return (
     <CreateOrUpdateForm
-      resource={resourceTypes.project}
+      resourceType={projectType}
       onSubmit={async () => {
         const data = await createProject(values);
         await poll(async () => {
@@ -38,7 +38,7 @@ export default function CreateProjectForm({ onCreate, org, orgName }) {
 
 CreateProjectForm.propTypes = {
   onCreate: PropTypes.func.isRequired,
-  org: PropTypes.string.isRequired,
+  orgId: PropTypes.string.isRequired,
   orgName: PropTypes.string,
 };
 

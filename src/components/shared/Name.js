@@ -20,7 +20,7 @@ Name.propTypes = {
   className: PropTypes.string,
   resource: PropTypes.shape({
     codename: PropTypes.string,
-    impl: PropTypes.oneOf(Object.values(resourceTypes)).isRequired,
+    impl: PropTypes.oneOf(resourceTypes).isRequired,
     name: PropTypes.string,
   }).isRequired,
 };

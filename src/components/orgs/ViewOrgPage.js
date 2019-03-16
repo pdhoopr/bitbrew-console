@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import { listOrgMembers, listProjects } from "../../api";
-import GlobalContext from "../GlobalContext";
-import resourceTypes from "../shared/resourceTypes";
+import AppContext from "../AppContext";
+import { orgMemberType, projectType } from "../shared/resourceTypes";
 import useLoading from "../shared/useLoading";
 import ViewPage from "../shared/ViewPage";
 import DeleteOrgDialog from "./DeleteOrgDialog";
@@ -10,7 +10,7 @@ import OrgContext from "./OrgContext";
 import UpdateOrgForm from "./UpdateOrgForm";
 
 export default function ViewOrgPage({ navigate, orgId }) {
-  const { openDialog, openDrawer } = useContext(GlobalContext);
+  const { openDialog, openDrawer } = useContext(AppContext);
   const { loadOrg, org, orgIsLoading } = useContext(OrgContext);
 
   const [numMembers, setNumMembers] = useState(0);
@@ -31,18 +31,16 @@ export default function ViewOrgPage({ navigate, orgId }) {
     <ViewPage
       isLoading={orgIsLoading || metricsAreLoading}
       resource={{
-        impl: resourceTypes.org,
         ...org,
-        enabled: null,
         updatedAt: null,
       }}
       metrics={[
         {
-          label: resourceTypes.orgMember,
+          label: orgMemberType,
           value: numMembers,
         },
         {
-          label: resourceTypes.project,
+          label: projectType,
           value: numProjects,
         },
       ]}

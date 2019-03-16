@@ -3,7 +3,7 @@ import React from "react";
 import { listProjects, updateProject } from "../../api";
 import { poll } from "../../utils";
 import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
-import resourceTypes from "../shared/resourceTypes";
+import { projectType } from "../shared/resourceTypes";
 import useForm from "../shared/useForm";
 import ProjectFormFields from "./ProjectFormFields";
 
@@ -18,7 +18,7 @@ export default function UpdateProjectForm({ onUpdate, project }) {
   return (
     <CreateOrUpdateForm
       isUpdate
-      resource={resourceTypes.project}
+      resourceType={projectType}
       onSubmit={async () => {
         const data = await updateProject(project.id, values);
         await poll(async () => {

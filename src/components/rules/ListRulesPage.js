@@ -1,22 +1,23 @@
 import PropTypes from "prop-types";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef } from "react";
 import { listDestinations, listRules } from "../../api";
 import { Link, Table, TableCell, TableRow } from "../../design-system";
 import { capitalize, localize } from "../../utils";
-import GlobalContext from "../GlobalContext";
+import AppContext from "../AppContext";
 import ListPage from "../shared/ListPage";
 import NameTableCell from "../shared/NameTableCell";
-import resourceTypes from "../shared/resourceTypes";
+import { destinationType, ruleType } from "../shared/resourceTypes";
 import useLoading from "../shared/useLoading";
+import useResource from "../shared/useResource";
 import CreateRuleForm from "./CreateRuleForm";
 
 export default function ListRulesPage({ projectId }) {
-  const { openDrawer } = useContext(GlobalContext);
+  const { openDrawer } = useContext(AppContext);
 
   const destinationsById = useRef({});
 
-  const [rules, setRules] = useState([]);
-  const [destinations, setDestinations] = useState([]);
+  const [rules, setRules] = useResource(ruleType, []);
+  const [destinations, setDestinations] = useResource(destinationType, []);
 
   async function loadRules() {
     const [{ items }, { items: destinationItems }] = await Promise.all([
@@ -39,11 +40,11 @@ export default function ListRulesPage({ projectId }) {
   return (
     <ListPage
       isLoading={isLoading}
-      resource={resourceTypes.rule}
+      resourceType={ruleType}
       onOpenForm={() => {
         openDrawer(
           <CreateRuleForm
-            project={projectId}
+            projectId={projectId}
             selectDestinationFrom={destinations}
             onCreate={loadRules}
           />,
@@ -58,12 +59,7 @@ export default function ListRulesPage({ projectId }) {
             const destination = destinationsById.current[rule.destinationId];
             return (
               <TableRow key={rule.id} italic={!rule.enabled}>
-                <NameTableCell
-                  resource={{
-                    impl: resourceTypes.rule,
-                    ...rule,
-                  }}
-                />
+                <NameTableCell resource={rule} />
                 <TableCell>{localize(rule.createdAt)}</TableCell>
                 <TableCell gray={!destination}>
                   {destination ? (

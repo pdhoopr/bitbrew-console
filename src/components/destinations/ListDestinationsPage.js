@@ -1,19 +1,20 @@
 import PropTypes from "prop-types";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { listDestinations } from "../../api";
 import { Table, TableCell, TableRow } from "../../design-system";
 import { capitalize, localize } from "../../utils";
-import GlobalContext from "../GlobalContext";
+import AppContext from "../AppContext";
 import ListPage from "../shared/ListPage";
 import NameTableCell from "../shared/NameTableCell";
-import resourceTypes from "../shared/resourceTypes";
+import { destinationType } from "../shared/resourceTypes";
 import useLoading from "../shared/useLoading";
+import useResource from "../shared/useResource";
 import CreateDestinationForm from "./CreateDestinationForm";
 
 export default function ListDestinationsPage({ projectId }) {
-  const { openDrawer } = useContext(GlobalContext);
+  const { openDrawer } = useContext(AppContext);
 
-  const [destinations, setDestinations] = useState([]);
+  const [destinations, setDestinations] = useResource(destinationType, []);
 
   async function loadDestinations() {
     const { items } = await listDestinations(projectId);
@@ -25,11 +26,11 @@ export default function ListDestinationsPage({ projectId }) {
   return (
     <ListPage
       isLoading={isLoading}
-      resource={resourceTypes.destination}
+      resourceType={destinationType}
       onOpenForm={() => {
         openDrawer(
           <CreateDestinationForm
-            project={projectId}
+            projectId={projectId}
             onCreate={loadDestinations}
           />,
         );
@@ -39,12 +40,7 @@ export default function ListDestinationsPage({ projectId }) {
         <Table headings={["Name", "Created On", "Type"]}>
           {destinations.map(destination => (
             <TableRow key={destination.id} italic={!destination.enabled}>
-              <NameTableCell
-                resource={{
-                  impl: resourceTypes.destination,
-                  ...destination,
-                }}
-              />
+              <NameTableCell resource={destination} />
               <TableCell>{localize(destination.createdAt)}</TableCell>
               <TableCell>{capitalize(destination.type)}</TableCell>
             </TableRow>
