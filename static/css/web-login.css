@@ -30,7 +30,7 @@
   --size-32: 2rem;
   --size-40: 2.5rem;
   --size-72: 4.5rem;
-  --size-96: 6rem;
+  --size-128: 8rem;
   --size-140: 8.75rem;
   --size-320: 20rem;
   --weight-regular: 400;
@@ -285,7 +285,7 @@ strong {
   margin-top: 0;
   padding-bottom: var(--size-32);
   padding-left: 0;
-  padding-top: var(--size-96);
+  padding-top: var(--size-128);
   text-align: center;
 }
 

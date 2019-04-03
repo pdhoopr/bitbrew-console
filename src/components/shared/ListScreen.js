@@ -1,12 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import {
-  Card,
-  EmptyIndicator,
-  Heading1,
-  RaisedButton,
-} from "../../design-system";
+import { EmptyIndicator, Heading1, RaisedButton } from "../../design-system";
 import { capitalize, pluralize } from "../../utils";
 import Main from "./Main";
 import resourceTypes from "./resourceTypes";
@@ -24,7 +19,7 @@ const NewButton = styled(RaisedButton)`
   margin-top: var(--size-2);
 `;
 
-export default function ListPage({
+export default function ListScreen({
   children,
   isLoading,
   onOpenForm,
@@ -40,9 +35,7 @@ export default function ListPage({
         )}
       </Intro>
       {!isLoading &&
-        (children ? (
-          <Card>{children}</Card>
-        ) : (
+        (children || (
           <EmptyIndicator>
             There aren&apos;t any {plural} here yet.
           </EmptyIndicator>
@@ -51,13 +44,13 @@ export default function ListPage({
   );
 }
 
-ListPage.propTypes = {
+ListScreen.propTypes = {
   children: PropTypes.node.isRequired,
   isLoading: PropTypes.bool.isRequired,
   onOpenForm: PropTypes.func,
   resourceType: PropTypes.oneOf(resourceTypes).isRequired,
 };
 
-ListPage.defaultProps = {
+ListScreen.defaultProps = {
   onOpenForm: null,
 };

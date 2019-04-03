@@ -108,7 +108,7 @@ export default function Header({ breadcrumbs, children }) {
       <Actions>
         <WelcomeLink
           to="/"
-          title="Go to welcome page"
+          title="Go to welcome screen"
           getProps={getCurrentAttributes}
         >
           <LogoIcon />

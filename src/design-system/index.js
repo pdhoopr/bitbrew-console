@@ -18,10 +18,14 @@ export { default as CheckboxCheckedIcon } from "./icons/CheckboxCheckedIcon";
 export { default as CheckboxIcon } from "./icons/CheckboxIcon";
 export { default as CheckIcon } from "./icons/CheckIcon";
 export { default as CloseIcon } from "./icons/CloseIcon";
-export { default as DropdownIcon } from "./icons/DropdownIcon";
 export { default as ErrorIcon } from "./icons/ErrorIcon";
+export { default as ExpandIcon } from "./icons/ExpandIcon";
 export { default as InfoIcon } from "./icons/InfoIcon";
 export { default as LogoIcon } from "./icons/LogoIcon";
+export { default as NavigateFirstIcon } from "./icons/NavigateFirstIcon";
+export { default as NavigateLastIcon } from "./icons/NavigateLastIcon";
+export { default as NavigateNextIcon } from "./icons/NavigateNextIcon";
+export { default as NavigatePreviousIcon } from "./icons/NavigatePreviousIcon";
 export {
   default as RadioButtonCheckedIcon,
 } from "./icons/RadioButtonCheckedIcon";

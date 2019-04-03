@@ -9,6 +9,7 @@ export default createGlobalStyle`
     --color-green: #02ca91;
     --color-blue-gray: #eceff1;
     --color-white: #fff;
+    --color-white-gray: #fafafa;
     --color-light-gray: #eee;
     --color-medium-light-gray: #e0e0e0;
     --color-medium-dark-gray: #9e9e9e;
@@ -54,7 +55,7 @@ export default createGlobalStyle`
     --size-64: 4rem;
     --size-68: 4.25rem;
     --size-72: 4.5rem;
-    --size-96: 6rem;
+    --size-128: 8rem;
     --size-160: 10rem;
     --size-320: 20rem;
     --size-480: 30rem;

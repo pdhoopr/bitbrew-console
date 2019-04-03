@@ -10,7 +10,7 @@ export default function summarize(error) {
     case 404:
       return "This resource could not be found.";
     case 408:
-      return "Things are taking longer than expected. Please try reloading the page.";
+      return "Things are taking longer than expected. Please try reloading the app.";
     case 409:
       return "This resource already exists.";
     case 422:

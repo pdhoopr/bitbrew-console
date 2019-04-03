@@ -4,12 +4,12 @@ import { listOrgMembers, listProjects } from "../../api";
 import AppContext from "../AppContext";
 import { orgMemberType, projectType } from "../shared/resourceTypes";
 import useLoading from "../shared/useLoading";
-import ViewPage from "../shared/ViewPage";
+import ViewScreen from "../shared/ViewScreen";
 import DeleteOrgDialog from "./DeleteOrgDialog";
 import OrgContext from "./OrgContext";
 import UpdateOrgForm from "./UpdateOrgForm";
 
-export default function ViewOrgPage({ navigate, orgId }) {
+export default function ViewOrgScreen({ navigate, orgId }) {
   const { openDialog, openDrawer } = useContext(AppContext);
   const { loadOrg, org, orgIsLoading } = useContext(OrgContext);
 
@@ -28,7 +28,7 @@ export default function ViewOrgPage({ navigate, orgId }) {
   const metricsAreLoading = useLoading(loadMetrics, [orgId]);
 
   return (
-    <ViewPage
+    <ViewScreen
       isLoading={orgIsLoading || metricsAreLoading}
       resource={{
         ...org,
@@ -61,12 +61,12 @@ export default function ViewOrgPage({ navigate, orgId }) {
   );
 }
 
-ViewOrgPage.propTypes = {
+ViewOrgScreen.propTypes = {
   navigate: PropTypes.func,
   orgId: PropTypes.string,
 };
 
-ViewOrgPage.defaultProps = {
+ViewOrgScreen.defaultProps = {
   navigate: null,
   orgId: null,
 };

@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { generateId } from "../../utils";
 import Button from "../buttons/Button";
-import DropdownIcon from "../icons/DropdownIcon";
+import ExpandIcon from "../icons/ExpandIcon";
 import Heading3 from "../typography/Heading3";
 import Fieldset from "./Fieldset";
 
@@ -16,7 +16,7 @@ const AccordionButton = styled(Button)`
   width: 100%;
 `;
 
-const Icon = styled(DropdownIcon)`
+const Icon = styled(ExpandIcon)`
   fill: currentColor;
   margin-left: calc(-1 * var(--size-2));
   margin-right: var(--size-8);

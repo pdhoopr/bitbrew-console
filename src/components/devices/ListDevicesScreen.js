@@ -1,40 +1,49 @@
 import PropTypes from "prop-types";
 import React, { useContext } from "react";
 import { listDevices } from "../../api";
-import { Table, TableCell, TableRow } from "../../design-system";
+import { TableCell, TableRow } from "../../design-system";
 import { capitalize, localize } from "../../utils";
 import AppContext from "../AppContext";
-import ListPage from "../shared/ListPage";
+import ListScreen from "../shared/ListScreen";
 import NameTableCell from "../shared/NameTableCell";
+import PaginatedTable from "../shared/PaginatedTable";
 import { deviceType } from "../shared/resourceTypes";
-import useLoading from "../shared/useLoading";
+import usePagination from "../shared/usePagination";
 import useResource from "../shared/useResource";
 import CreateDeviceForm from "./CreateDeviceForm";
 
-export default function ListDevicesPage({ projectId }) {
+export default function ListDevicesScreen({ projectId }) {
   const { openDrawer } = useContext(AppContext);
 
   const [devices, setDevices] = useResource(deviceType, []);
 
-  async function loadDevices() {
-    const { items } = await listDevices(projectId);
+  async function loadDevices(params) {
+    const { items, ...pageData } = await listDevices(projectId, params);
     setDevices(items);
+    return pageData;
   }
 
-  const isLoading = useLoading(loadDevices, [projectId]);
+  const pagination = usePagination(loadDevices, [projectId]);
 
   return (
-    <ListPage
-      isLoading={isLoading}
+    <ListScreen
+      isLoading={pagination.isLoading}
       resourceType={deviceType}
       onOpenForm={() => {
         openDrawer(
-          <CreateDeviceForm projectId={projectId} onCreate={loadDevices} />,
+          <CreateDeviceForm
+            projectId={projectId}
+            onCreate={pagination.loadFirstPage}
+          />,
         );
       }}
     >
-      {devices.length > 0 && (
-        <Table headings={["Codename", "Created On", "Type"]}>
+      {pagination.hasItems && (
+        <PaginatedTable
+          resourceType={deviceType}
+          headings={["Codename", "Created On", "Type"]}
+          pagination={pagination}
+        >
           {devices.map(device => (
             <TableRow key={device.id} italic={!device.enabled}>
               <NameTableCell resource={device} />
@@ -42,16 +51,16 @@ export default function ListDevicesPage({ projectId }) {
               <TableCell>{capitalize(device.type)}</TableCell>
             </TableRow>
           ))}
-        </Table>
+        </PaginatedTable>
       )}
-    </ListPage>
+    </ListScreen>
   );
 }
 
-ListDevicesPage.propTypes = {
+ListDevicesScreen.propTypes = {
   projectId: PropTypes.string,
 };
 
-ListDevicesPage.defaultProps = {
+ListDevicesScreen.defaultProps = {
   projectId: null,
 };

@@ -4,8 +4,8 @@ export default function useForm(initialValues) {
   const [values, setValues] = useState(initialValues);
 
   function mergeValue(key, value) {
-    setValues(prevValues => ({
-      ...prevValues,
+    setValues(previousValues => ({
+      ...previousValues,
       [key]: value,
     }));
   }

@@ -1,43 +1,49 @@
 import PropTypes from "prop-types";
 import React, { useContext } from "react";
 import { listDestinations } from "../../api";
-import { Table, TableCell, TableRow } from "../../design-system";
+import { TableCell, TableRow } from "../../design-system";
 import { capitalize, localize } from "../../utils";
 import AppContext from "../AppContext";
-import ListPage from "../shared/ListPage";
+import ListScreen from "../shared/ListScreen";
 import NameTableCell from "../shared/NameTableCell";
+import PaginatedTable from "../shared/PaginatedTable";
 import { destinationType } from "../shared/resourceTypes";
-import useLoading from "../shared/useLoading";
+import usePagination from "../shared/usePagination";
 import useResource from "../shared/useResource";
 import CreateDestinationForm from "./CreateDestinationForm";
 
-export default function ListDestinationsPage({ projectId }) {
+export default function ListDestinationsScreen({ projectId }) {
   const { openDrawer } = useContext(AppContext);
 
   const [destinations, setDestinations] = useResource(destinationType, []);
 
-  async function loadDestinations() {
-    const { items } = await listDestinations(projectId);
+  async function loadDestinations(params) {
+    const { items, ...pageData } = await listDestinations(projectId, params);
     setDestinations(items);
+    return pageData;
   }
 
-  const isLoading = useLoading(loadDestinations, [projectId]);
+  const pagination = usePagination(loadDestinations, [projectId]);
 
   return (
-    <ListPage
-      isLoading={isLoading}
+    <ListScreen
+      isLoading={pagination.isLoading}
       resourceType={destinationType}
       onOpenForm={() => {
         openDrawer(
           <CreateDestinationForm
             projectId={projectId}
-            onCreate={loadDestinations}
+            onCreate={pagination.loadFirstPage}
           />,
         );
       }}
     >
-      {destinations.length > 0 && (
-        <Table headings={["Name", "Created On", "Type"]}>
+      {pagination.hasItems && (
+        <PaginatedTable
+          resourceType={destinationType}
+          headings={["Name", "Created On", "Type"]}
+          pagination={pagination}
+        >
           {destinations.map(destination => (
             <TableRow key={destination.id} italic={!destination.enabled}>
               <NameTableCell resource={destination} />
@@ -45,16 +51,16 @@ export default function ListDestinationsPage({ projectId }) {
               <TableCell>{capitalize(destination.type)}</TableCell>
             </TableRow>
           ))}
-        </Table>
+        </PaginatedTable>
       )}
-    </ListPage>
+    </ListScreen>
   );
 }
 
-ListDestinationsPage.propTypes = {
+ListDestinationsScreen.propTypes = {
   projectId: PropTypes.string,
 };
 
-ListDestinationsPage.defaultProps = {
+ListDestinationsScreen.defaultProps = {
   projectId: null,
 };

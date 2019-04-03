@@ -1,10 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import ReactModal from "react-modal";
-import { setBaseUrl } from "./api";
+import { setBaseUrl, setPageSize } from "./api";
 import App from "./components/App";
+import { defaultPageSize } from "./components/shared/pageSizes";
 
 setBaseUrl("/api");
+setPageSize(defaultPageSize);
 
 function renderToDom() {
   const appElement = document.getElementById("app");

@@ -1,10 +1,6 @@
 import http from "../settings/http";
 
-export default async function listOrgMembers(id) {
-  const response = await http.get(`/orgs/${id}/members`, {
-    params: {
-      pageSize: 50,
-    },
-  });
+export default async function listOrgMembers(id, params) {
+  const response = await http.paginate(`/orgs/${id}/members`, params);
   return response.data;
 }

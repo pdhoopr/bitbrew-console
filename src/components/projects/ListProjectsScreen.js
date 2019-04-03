@@ -1,38 +1,49 @@
 import PropTypes from "prop-types";
 import React, { useContext } from "react";
 import { listProjects } from "../../api";
-import { Table, TableCell, TableRow } from "../../design-system";
+import { TableCell, TableRow } from "../../design-system";
 import { localize } from "../../utils";
 import AppContext from "../AppContext";
-import ListPage from "../shared/ListPage";
+import ListScreen from "../shared/ListScreen";
 import NameTableCell from "../shared/NameTableCell";
+import PaginatedTable from "../shared/PaginatedTable";
 import { projectType } from "../shared/resourceTypes";
-import useLoading from "../shared/useLoading";
+import usePagination from "../shared/usePagination";
 import useResource from "../shared/useResource";
 import CreateProjectForm from "./CreateProjectForm";
 
-export default function ListProjectsPage({ orgId }) {
+export default function ListProjectsScreen({ orgId }) {
   const { openDrawer } = useContext(AppContext);
 
   const [projects, setProjects] = useResource(projectType, []);
 
-  async function loadProjects() {
-    const { items } = await listProjects(orgId);
+  async function loadProjects(params) {
+    const { items, ...pageData } = await listProjects(orgId, params);
     setProjects(items);
+    return pageData;
   }
 
-  const isLoading = useLoading(loadProjects, [orgId]);
+  const pagination = usePagination(loadProjects, [orgId]);
 
   return (
-    <ListPage
-      isLoading={isLoading}
+    <ListScreen
+      isLoading={pagination.isLoading}
       resourceType={projectType}
       onOpenForm={() => {
-        openDrawer(<CreateProjectForm orgId={orgId} onCreate={loadProjects} />);
+        openDrawer(
+          <CreateProjectForm
+            orgId={orgId}
+            onCreate={pagination.loadFirstPage}
+          />,
+        );
       }}
     >
-      {projects.length > 0 && (
-        <Table headings={["Name", "Created On", "Description"]}>
+      {pagination.hasItems && (
+        <PaginatedTable
+          resourceType={projectType}
+          headings={["Name", "Created On", "Description"]}
+          pagination={pagination}
+        >
           {projects.map(project => (
             <TableRow key={project.id}>
               <NameTableCell resource={project} />
@@ -40,16 +51,16 @@ export default function ListProjectsPage({ orgId }) {
               <TableCell>{project.description}</TableCell>
             </TableRow>
           ))}
-        </Table>
+        </PaginatedTable>
       )}
-    </ListPage>
+    </ListScreen>
   );
 }
 
-ListProjectsPage.propTypes = {
+ListProjectsScreen.propTypes = {
   orgId: PropTypes.string,
 };
 
-ListProjectsPage.defaultProps = {
+ListProjectsScreen.defaultProps = {
   orgId: null,
 };

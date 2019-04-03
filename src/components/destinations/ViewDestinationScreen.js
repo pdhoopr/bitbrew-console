@@ -8,11 +8,11 @@ import { destinationType } from "../shared/resourceTypes";
 import Section from "../shared/Section";
 import useLoading from "../shared/useLoading";
 import useResource from "../shared/useResource";
-import ViewPage from "../shared/ViewPage";
+import ViewScreen from "../shared/ViewScreen";
 import DeleteDestinationDialog from "./DeleteDestinationDialog";
 import UpdateDestinationForm from "./UpdateDestinationForm";
 
-export default function ViewDestinationPage({ destinationId, navigate }) {
+export default function ViewDestinationScreen({ destinationId, navigate }) {
   const { openDialog, openDrawer } = useContext(AppContext);
 
   const [destination, setDestination] = useResource(destinationType, {});
@@ -27,7 +27,7 @@ export default function ViewDestinationPage({ destinationId, navigate }) {
   const type = destination.type || "";
   const compareType = type.toUpperCase();
   return (
-    <ViewPage
+    <ViewScreen
       isLoading={isLoading}
       resource={destination}
       onOpenForm={() => {
@@ -90,16 +90,16 @@ export default function ViewDestinationPage({ destinationId, navigate }) {
           )}
         </List>
       </Section>
-    </ViewPage>
+    </ViewScreen>
   );
 }
 
-ViewDestinationPage.propTypes = {
+ViewDestinationScreen.propTypes = {
   destinationId: PropTypes.string,
   navigate: PropTypes.func,
 };
 
-ViewDestinationPage.defaultProps = {
+ViewDestinationScreen.defaultProps = {
   destinationId: null,
   navigate: null,
 };

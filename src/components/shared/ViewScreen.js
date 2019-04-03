@@ -39,9 +39,21 @@ const Metrics = styled.div`
 
 const MetricHeading = styled(Card)`
   flex: 1;
+  transition: box-shadow var(--effect-duration);
+
+  &:hover,
+  &:focus-within {
+    box-shadow: var(--elevation-medium);
+  }
 
   & + & {
     margin-left: var(--size-16);
+  }
+`;
+
+const MetricLink = styled(BlockLink)`
+  &::before {
+    content: none;
   }
 `;
 
@@ -59,7 +71,7 @@ const DeleteButton = styled(Button)`
   }
 `;
 
-export default function ViewPage({
+export default function ViewScreen({
   children,
   isLoading,
   metrics,
@@ -90,12 +102,12 @@ export default function ViewPage({
           <Metrics>
             {metrics.map(({ label, value }) => (
               <MetricHeading key={label} as={Heading2}>
-                <BlockLink to={`${label}s`}>
+                <MetricLink to={`${label}s`}>
                   {value}
                   <Subheading as="span">
                     {pluralize(label, value).replace(/^\d+\s/, "")}
                   </Subheading>
-                </BlockLink>
+                </MetricLink>
               </MetricHeading>
             ))}
           </Metrics>
@@ -134,7 +146,7 @@ export default function ViewPage({
   );
 }
 
-ViewPage.propTypes = {
+ViewScreen.propTypes = {
   children: PropTypes.node,
   isLoading: PropTypes.bool.isRequired,
   metrics: PropTypes.arrayOf(
@@ -155,7 +167,7 @@ ViewPage.propTypes = {
   }).isRequired,
 };
 
-ViewPage.defaultProps = {
+ViewScreen.defaultProps = {
   children: null,
   metrics: null,
   onOpenForm: null,

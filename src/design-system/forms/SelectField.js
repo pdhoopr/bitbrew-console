@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import DropdownIcon from "../icons/DropdownIcon";
+import ExpandIcon from "../icons/ExpandIcon";
 import Input from "./Input";
 import Label from "./Label";
 
@@ -17,7 +17,7 @@ const Options = styled(Input)`
   }
 `;
 
-const Icon = styled(DropdownIcon)`
+const Icon = styled(ExpandIcon)`
   bottom: var(--size-24);
   pointer-events: none;
   position: absolute;

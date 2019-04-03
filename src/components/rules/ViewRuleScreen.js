@@ -9,7 +9,7 @@ import { destinationType, ruleType } from "../shared/resourceTypes";
 import Section from "../shared/Section";
 import useLoading from "../shared/useLoading";
 import useResource from "../shared/useResource";
-import ViewPage from "../shared/ViewPage";
+import ViewScreen from "../shared/ViewScreen";
 import DeleteRuleDialog from "./DeleteRuleDialog";
 
 const Code = styled.pre`
@@ -25,7 +25,7 @@ const NotFound = styled.span`
   color: var(--color-dark-gray);
 `;
 
-export default function ViewRulePage({ navigate, ruleId }) {
+export default function ViewRuleScreen({ navigate, ruleId }) {
   const { openDialog } = useContext(AppContext);
 
   const [rule, setRule] = useResource(ruleType, {});
@@ -44,7 +44,7 @@ export default function ViewRulePage({ navigate, ruleId }) {
   const isLoading = useLoading(loadRule, [ruleId]);
 
   return (
-    <ViewPage
+    <ViewScreen
       isLoading={isLoading}
       resource={rule}
       onOpenDialog={() => {
@@ -94,16 +94,16 @@ export default function ViewRulePage({ navigate, ruleId }) {
           </ListItem>
         </List>
       </Section>
-    </ViewPage>
+    </ViewScreen>
   );
 }
 
-ViewRulePage.propTypes = {
+ViewRuleScreen.propTypes = {
   navigate: PropTypes.func,
   ruleId: PropTypes.string,
 };
 
-ViewRulePage.defaultProps = {
+ViewRuleScreen.defaultProps = {
   navigate: null,
   ruleId: null,
 };

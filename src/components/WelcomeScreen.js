@@ -56,8 +56,21 @@ const OrgDetails = styled.ul`
   padding-left: 0;
 `;
 
+const ProjectCard = styled(Card)`
+  transition: box-shadow var(--effect-duration);
+
+  &:hover,
+  &:focus-within {
+    box-shadow: var(--elevation-medium);
+  }
+`;
+
 const ProjectLink = styled(BlockLink)`
   min-height: var(--size-160);
+
+  &::before {
+    content: none;
+  }
 `;
 
 const ProjectDetails = styled(Text)`
@@ -107,7 +120,7 @@ const NewIcon = styled(AddIcon).attrs({
   width: var(--size-28);
 `;
 
-export default function WelcomePage() {
+export default function WelcomeScreen() {
   const { openDrawer } = useContext(AppContext);
 
   const [orgs, setOrgs] = useResource(orgType, []);
@@ -155,7 +168,7 @@ export default function WelcomePage() {
                   </OrgDetails>
                 </OrgIntro>
                 {orgProjects.map(project => (
-                  <Card key={project.id} as="section">
+                  <ProjectCard key={project.id} as="section">
                     <ProjectLink to={`${orgUrl}/projects/${project.id}`}>
                       <Heading3>
                         <Name resource={project} />
@@ -167,7 +180,7 @@ export default function WelcomePage() {
                         Created on {localize(project.createdAt)}
                       </ProjectDetails>
                     </ProjectLink>
-                  </Card>
+                  </ProjectCard>
                 ))}
                 <NewProjectButton
                   onClick={() => {

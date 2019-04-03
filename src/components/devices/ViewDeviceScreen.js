@@ -8,11 +8,11 @@ import { deviceType } from "../shared/resourceTypes";
 import Section from "../shared/Section";
 import useLoading from "../shared/useLoading";
 import useResource from "../shared/useResource";
-import ViewPage from "../shared/ViewPage";
+import ViewScreen from "../shared/ViewScreen";
 import DeleteDeviceDialog from "./DeleteDeviceDialog";
 import UpdateDeviceForm from "./UpdateDeviceForm";
 
-export default function ViewDevicePage({ deviceId, navigate }) {
+export default function ViewDeviceScreen({ deviceId, navigate }) {
   const { openDialog, openDrawer } = useContext(AppContext);
 
   const [device, setDevice] = useResource(deviceType, {});
@@ -26,7 +26,7 @@ export default function ViewDevicePage({ deviceId, navigate }) {
 
   const type = device.type || "";
   return (
-    <ViewPage
+    <ViewScreen
       isLoading={isLoading}
       resource={device}
       onOpenForm={() => {
@@ -57,16 +57,16 @@ export default function ViewDevicePage({ deviceId, navigate }) {
           )}
         </List>
       </Section>
-    </ViewPage>
+    </ViewScreen>
   );
 }
 
-ViewDevicePage.propTypes = {
+ViewDeviceScreen.propTypes = {
   deviceId: PropTypes.string,
   navigate: PropTypes.func,
 };
 
-ViewDevicePage.defaultProps = {
+ViewDeviceScreen.defaultProps = {
   deviceId: null,
   navigate: null,
 };

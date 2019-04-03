@@ -3,13 +3,13 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { generateId, wait } from "../../utils";
 import Button from "../buttons/Button";
-import DropdownIcon from "../icons/DropdownIcon";
+import ExpandIcon from "../icons/ExpandIcon";
 
 const Wrapper = styled.div`
   position: relative;
 `;
 
-const Icon = styled(DropdownIcon)`
+const Icon = styled(ExpandIcon)`
   fill: currentColor;
   height: var(--size-16);
   margin-left: var(--size-4);
@@ -23,7 +23,6 @@ const Items = styled.div`
   box-shadow: var(--elevation-medium);
   color: var(--color-black);
   margin-top: var(--size-2);
-  min-width: var(--size-160);
   padding-bottom: var(--size-8);
   padding-top: var(--size-8);
   position: absolute;
@@ -31,7 +30,7 @@ const Items = styled.div`
   z-index: 2;
 `;
 
-export default function Menu({ children, heading }) {
+export default function Menu({ children, className, heading }) {
   const wrapperElement = useRef(null);
   const menuButtonElement = useRef(null);
   const menuButtonId = useRef(generateId(`${Menu.name}__button`));
@@ -111,7 +110,7 @@ export default function Menu({ children, heading }) {
   }, [children]);
 
   return (
-    <Wrapper ref={wrapperElement}>
+    <Wrapper ref={wrapperElement} className={className}>
       <Button
         id={menuButtonId.current}
         onClick={() => {
@@ -157,5 +156,10 @@ export default function Menu({ children, heading }) {
 
 Menu.propTypes = {
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
   heading: PropTypes.string.isRequired,
+};
+
+Menu.defaultProps = {
+  className: null,
 };

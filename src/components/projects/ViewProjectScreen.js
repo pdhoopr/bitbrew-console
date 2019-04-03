@@ -4,12 +4,12 @@ import { listDestinations, listDevices, listRules } from "../../api";
 import AppContext from "../AppContext";
 import { destinationType, deviceType, ruleType } from "../shared/resourceTypes";
 import useLoading from "../shared/useLoading";
-import ViewPage from "../shared/ViewPage";
+import ViewScreen from "../shared/ViewScreen";
 import DeleteProjectDialog from "./DeleteProjectDialog";
 import ProjectContext from "./ProjectContext";
 import UpdateProjectForm from "./UpdateProjectForm";
 
-export default function ViewProjectPage({ navigate, projectId }) {
+export default function ViewProjectScreen({ navigate, projectId }) {
   const { openDialog, openDrawer } = useContext(AppContext);
   const { loadProject, project, projectIsLoading } = useContext(ProjectContext);
 
@@ -35,7 +35,7 @@ export default function ViewProjectPage({ navigate, projectId }) {
   const metricsAreLoading = useLoading(loadMetrics, [projectId]);
 
   return (
-    <ViewPage
+    <ViewScreen
       isLoading={projectIsLoading || metricsAreLoading}
       resource={{
         ...project,
@@ -74,12 +74,12 @@ export default function ViewProjectPage({ navigate, projectId }) {
   );
 }
 
-ViewProjectPage.propTypes = {
+ViewProjectScreen.propTypes = {
   navigate: PropTypes.func,
   projectId: PropTypes.string,
 };
 
-ViewProjectPage.defaultProps = {
+ViewProjectScreen.defaultProps = {
   navigate: null,
   projectId: null,
 };

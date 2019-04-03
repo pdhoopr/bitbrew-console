@@ -10,7 +10,7 @@ const Docs = styled.ul`
   list-style-type: none;
   margin-bottom: 0;
   margin-top: 0;
-  padding: var(--size-96) var(--size-24) var(--size-32);
+  padding: var(--size-128) var(--size-24) var(--size-32);
 `;
 
 const DocsLink = styled(Link)`

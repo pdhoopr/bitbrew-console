@@ -11,20 +11,20 @@ import { off, on, retry, setToken } from "../api";
 import { GlobalStyle, Snackbar } from "../design-system";
 import { silentRefresh, summarize } from "../utils";
 import AppContext from "./AppContext";
-import ListDestinationsPage from "./destinations/ListDestinationsPage";
-import ViewDestinationPage from "./destinations/ViewDestinationPage";
-import ListDevicesPage from "./devices/ListDevicesPage";
-import ViewDevicePage from "./devices/ViewDevicePage";
-import ListOrgMembersPage from "./orgs/ListOrgMembersPage";
+import ListDestinationsScreen from "./destinations/ListDestinationsScreen";
+import ViewDestinationScreen from "./destinations/ViewDestinationScreen";
+import ListDevicesScreen from "./devices/ListDevicesScreen";
+import ViewDeviceScreen from "./devices/ViewDeviceScreen";
+import ListOrgMembersScreen from "./orgs/ListOrgMembersScreen";
 import Org from "./orgs/Org";
-import ViewOrgPage from "./orgs/ViewOrgPage";
-import ListProjectsPage from "./projects/ListProjectsPage";
+import ViewOrgScreen from "./orgs/ViewOrgScreen";
+import ListProjectsScreen from "./projects/ListProjectsScreen";
 import Project from "./projects/Project";
-import ViewProjectPage from "./projects/ViewProjectPage";
-import ListRulesPage from "./rules/ListRulesPage";
-import ViewRulePage from "./rules/ViewRulePage";
+import ViewProjectScreen from "./projects/ViewProjectScreen";
+import ListRulesScreen from "./rules/ListRulesScreen";
+import ViewRuleScreen from "./rules/ViewRuleScreen";
 import Footer from "./shared/Footer";
-import WelcomePage from "./WelcomePage";
+import WelcomeScreen from "./WelcomeScreen";
 
 const Router = styled(ReachRouter)`
   flex: 1;
@@ -175,20 +175,20 @@ export default function App() {
       {auth && (
         <LocationProvider history={history.current}>
           <Router>
-            <WelcomePage path="/" />
+            <WelcomeScreen path="/" />
             <Redirect from="/orgs" to="/" noThrow />
             <Org path="/orgs/:orgId">
-              <ViewOrgPage path="/" />
-              <ListOrgMembersPage path="/members" />
-              <ListProjectsPage path="/projects" />
+              <ViewOrgScreen path="/" />
+              <ListOrgMembersScreen path="/members" />
+              <ListProjectsScreen path="/projects" />
               <Project path="/projects/:projectId">
-                <ViewProjectPage path="/" />
-                <ListDevicesPage path="/devices" />
-                <ViewDevicePage path="/devices/:deviceId" />
-                <ListDestinationsPage path="/destinations" />
-                <ViewDestinationPage path="/destinations/:destinationId" />
-                <ListRulesPage path="/rules" />
-                <ViewRulePage path="/rules/:ruleId" />
+                <ViewProjectScreen path="/" />
+                <ListDevicesScreen path="/devices" />
+                <ViewDeviceScreen path="/devices/:deviceId" />
+                <ListDestinationsScreen path="/destinations" />
+                <ViewDestinationScreen path="/destinations/:destinationId" />
+                <ListRulesScreen path="/rules" />
+                <ViewRuleScreen path="/rules/:ruleId" />
               </Project>
             </Org>
           </Router>

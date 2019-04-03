@@ -11,6 +11,7 @@ const Wrapper = styled.table`
 `;
 
 const Heading = styled(TableCell)`
+  background-color: var(--color-white-gray);
   font-weight: var(--weight-bold);
   letter-spacing: var(--letter-spacing);
 `;

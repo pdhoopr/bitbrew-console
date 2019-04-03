@@ -1,91 +1,91 @@
 import PropTypes from "prop-types";
-import React, { useContext, useRef } from "react";
+import React, { useContext } from "react";
 import { listDestinations, listRules } from "../../api";
-import { Link, Table, TableCell, TableRow } from "../../design-system";
+import { Link, TableCell, TableRow } from "../../design-system";
 import { capitalize, localize } from "../../utils";
 import AppContext from "../AppContext";
-import ListPage from "../shared/ListPage";
+import ListScreen from "../shared/ListScreen";
 import NameTableCell from "../shared/NameTableCell";
+import PaginatedTable from "../shared/PaginatedTable";
 import { destinationType, ruleType } from "../shared/resourceTypes";
-import useLoading from "../shared/useLoading";
+import usePagination from "../shared/usePagination";
 import useResource from "../shared/useResource";
 import CreateRuleForm from "./CreateRuleForm";
 
-export default function ListRulesPage({ projectId }) {
+export default function ListRulesScreen({ projectId }) {
   const { openDrawer } = useContext(AppContext);
-
-  const destinationsById = useRef({});
 
   const [rules, setRules] = useResource(ruleType, []);
   const [destinations, setDestinations] = useResource(destinationType, []);
 
-  async function loadRules() {
-    const [{ items }, { items: destinationItems }] = await Promise.all([
-      listRules(projectId),
+  async function loadRules(params) {
+    const [
+      { items, ...pageData },
+      { items: destinationItems },
+    ] = await Promise.all([
+      listRules(projectId, params),
       listDestinations(projectId),
     ]);
     setRules(items);
     setDestinations(destinationItems);
-    destinationsById.current = destinationItems.reduce(
-      (byId, destination) => ({
-        ...byId,
-        [destination.id]: destination,
-      }),
-      {},
-    );
+    return pageData;
   }
 
-  const isLoading = useLoading(loadRules, [projectId]);
+  const pagination = usePagination(loadRules, [projectId]);
 
   return (
-    <ListPage
-      isLoading={isLoading}
+    <ListScreen
+      isLoading={pagination.isLoading}
       resourceType={ruleType}
       onOpenForm={() => {
         openDrawer(
           <CreateRuleForm
             projectId={projectId}
             selectDestinationFrom={destinations}
-            onCreate={loadRules}
+            onCreate={pagination.loadFirstPage}
           />,
         );
       }}
     >
-      {rules.length > 0 && (
-        <Table
+      {pagination.hasItems && (
+        <PaginatedTable
+          resourceType={ruleType}
           headings={["Name", "Created On", "Destination", "Destination Type"]}
+          pagination={pagination}
         >
           {rules.map(rule => {
-            const destination = destinationsById.current[rule.destinationId];
+            const ruleDestination = destinations.find(
+              destination => destination.id === rule.destinationId,
+            );
             return (
               <TableRow key={rule.id} italic={!rule.enabled}>
                 <NameTableCell resource={rule} />
                 <TableCell>{localize(rule.createdAt)}</TableCell>
-                <TableCell gray={!destination}>
-                  {destination ? (
-                    <Link to={`../destinations/${destination.id}`}>
-                      {destination.name}
+                <TableCell gray={!ruleDestination}>
+                  {ruleDestination ? (
+                    <Link to={`../destinations/${ruleDestination.id}`}>
+                      {ruleDestination.name}
                     </Link>
                   ) : (
                     "Not found"
                   )}
                 </TableCell>
-                <TableCell gray={!destination}>
-                  {destination ? capitalize(destination.type) : "N/A"}
+                <TableCell gray={!ruleDestination}>
+                  {ruleDestination ? capitalize(ruleDestination.type) : "N/A"}
                 </TableCell>
               </TableRow>
             );
           })}
-        </Table>
+        </PaginatedTable>
       )}
-    </ListPage>
+    </ListScreen>
   );
 }
 
-ListRulesPage.propTypes = {
+ListRulesScreen.propTypes = {
   projectId: PropTypes.string,
 };
 
-ListRulesPage.defaultProps = {
+ListRulesScreen.defaultProps = {
   projectId: null,
 };
