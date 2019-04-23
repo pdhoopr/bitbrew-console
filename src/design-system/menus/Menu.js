@@ -31,11 +31,11 @@ const Items = styled.div`
 `;
 
 export default function Menu({ children, className, heading }) {
-  const wrapperElement = useRef(null);
-  const menuButtonElement = useRef(null);
-  const menuButtonId = useRef(generateId(`${Menu.name}__button`));
-  const menuId = useRef(generateId(`${Menu.name}__items`));
-  const menuItemElements = useRef([]);
+  const wrapperRef = useRef(null);
+  const menuButtonRef = useRef(null);
+  const menuButtonIdRef = useRef(generateId(`${Menu.name}__button`));
+  const menuIdRef = useRef(generateId(`${Menu.name}__items`));
+  const menuItemRefs = useRef([]);
 
   const [isOpen, setOpen] = useState(false);
 
@@ -46,16 +46,13 @@ export default function Menu({ children, className, heading }) {
       // eslint-disable-next-line no-use-before-define
       closeMenu();
       if (isEsc) {
-        menuButtonElement.current.focus();
+        menuButtonRef.current.focus();
       }
     }
   }, []);
 
   const closeOnOuterClick = useCallback(event => {
-    if (
-      wrapperElement.current &&
-      !wrapperElement.current.contains(event.target)
-    ) {
+    if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
       // eslint-disable-next-line no-use-before-define
       closeMenu();
     }
@@ -82,7 +79,7 @@ export default function Menu({ children, className, heading }) {
       event.preventDefault();
       const { index } = event.currentTarget.dataset;
       const firstItemIndex = 0;
-      const lastItemIndex = menuItemElements.current.length - 1;
+      const lastItemIndex = menuItemRefs.current.length - 1;
       let itemIndexToFocus;
       if (isEnd) {
         itemIndexToFocus = lastItemIndex;
@@ -101,18 +98,18 @@ export default function Menu({ children, className, heading }) {
         openMenu();
         await wait();
       }
-      menuItemElements.current[itemIndexToFocus].current.focus();
+      menuItemRefs.current[itemIndexToFocus].current.focus();
     }
   }
 
   useEffect(() => {
-    menuItemElements.current = React.Children.map(children, React.createRef);
+    menuItemRefs.current = React.Children.map(children, React.createRef);
   }, [children]);
 
   return (
-    <Wrapper ref={wrapperElement} className={className}>
+    <Wrapper ref={wrapperRef} className={className}>
       <Button
-        id={menuButtonId.current}
+        ref={menuButtonRef}
         onClick={() => {
           if (isOpen) {
             closeMenu();
@@ -121,32 +118,32 @@ export default function Menu({ children, className, heading }) {
           }
         }}
         onKeyDown={focusOnSomeKeyPresses}
-        aria-controls={menuId.current}
+        id={menuButtonIdRef.current}
+        aria-controls={menuIdRef.current}
         aria-expanded={isOpen}
         aria-haspopup
-        ref={menuButtonElement}
       >
         {heading}
         <Icon aria-hidden />
       </Button>
       <Items
-        id={menuId.current}
         hidden={!isOpen}
-        aria-labelledby={menuButtonId.current}
+        id={menuIdRef.current}
+        aria-labelledby={menuButtonIdRef.current}
         role="menu"
       >
         {React.Children.map(children, (menuItem, index) =>
           React.cloneElement(menuItem, {
+            ref: menuItemRefs.current[index],
+            tabIndex: -1,
+            "data-index": index,
             onClick() {
               closeMenu();
-              menuButtonElement.current.focus();
+              menuButtonRef.current.focus();
               menuItem.props.onClick();
             },
             onKeyDown: focusOnSomeKeyPresses,
-            "data-index": index,
-            tabIndex: -1,
             role: "menuitem",
-            ref: menuItemElements.current[index],
           }),
         )}
       </Items>

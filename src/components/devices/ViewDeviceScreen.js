@@ -29,10 +29,10 @@ export default function ViewDeviceScreen({ deviceId, navigate }) {
     <ViewScreen
       isLoading={isLoading}
       resource={device}
-      onOpenForm={() => {
+      onOpenUpdate={() => {
         openDrawer(<UpdateDeviceForm device={device} onUpdate={loadDevice} />);
       }}
-      onOpenDialog={() => {
+      onOpenDelete={() => {
         openDialog(
           <DeleteDeviceDialog
             device={device}
@@ -45,7 +45,7 @@ export default function ViewDeviceScreen({ deviceId, navigate }) {
     >
       <Section
         heading="Device Settings"
-        description="Details about your device that are relevant to its type."
+        description="Details about this device that are relevant to its type."
       >
         <List>
           <ListItem heading="Type">{capitalize(type)}</ListItem>

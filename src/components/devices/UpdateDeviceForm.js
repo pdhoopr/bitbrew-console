@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import { listDevices, updateDevice } from "../../api";
 import { poll } from "../../utils";
-import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
 import { deviceType } from "../shared/resourceTypes";
+import UpdateForm from "../shared/UpdateForm";
 import useForm from "../shared/useForm";
 import DeviceFormFields from "./DeviceFormFields";
 
@@ -18,8 +18,7 @@ export default function UpdateDeviceForm({ device, onUpdate }) {
   });
 
   return (
-    <CreateOrUpdateForm
-      isUpdate
+    <UpdateForm
       resourceType={deviceType}
       onSubmit={async () => {
         const data = await updateDevice(device.id, values);
@@ -31,8 +30,8 @@ export default function UpdateDeviceForm({ device, onUpdate }) {
         await onUpdate();
       }}
     >
-      <DeviceFormFields values={values} setValue={setValue} />
-    </CreateOrUpdateForm>
+      <DeviceFormFields values={values} onChange={setValue} />
+    </UpdateForm>
   );
 }
 

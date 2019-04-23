@@ -31,12 +31,14 @@ const NumItemsMenu = styled(Menu)`
 
   [aria-haspopup] {
     font-weight: var(--weight-regular);
+    letter-spacing: normal;
   }
 
   [role="menuitem"][disabled] {
     color: var(--color-green);
     cursor: default;
     font-weight: var(--weight-bold);
+    letter-spacing: var(--letter-spacing);
 
     &::before {
       content: none;

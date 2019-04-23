@@ -29,7 +29,7 @@ export default function ListDevicesScreen({ projectId }) {
     <ListScreen
       isLoading={pagination.isLoading}
       resourceType={deviceType}
-      onOpenForm={() => {
+      onOpenCreate={() => {
         openDrawer(
           <CreateDeviceForm
             projectId={projectId}

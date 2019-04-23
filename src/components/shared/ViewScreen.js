@@ -10,10 +10,11 @@ import {
   List,
   ListItem,
   RaisedButton,
-  StatusIndicator,
   Subheading,
+  SyncDisabledIcon,
+  SyncIcon,
 } from "../../design-system";
-import { localize, pluralize } from "../../utils";
+import { capitalize, localize, pluralize } from "../../utils";
 import Main from "./Main";
 import Name from "./Name";
 import resourceTypes from "./resourceTypes";
@@ -75,11 +76,12 @@ export default function ViewScreen({
   children,
   isLoading,
   metrics,
-  onOpenDialog,
-  onOpenForm,
+  onOpenDelete,
+  onOpenUpdate,
   resource,
 }) {
   const status = resource.enabled ? "enabled" : "disabled";
+  const statusTooltip = `${capitalize(resource.impl)} is ${status}`;
   return (
     !isLoading && (
       <Main>
@@ -96,7 +98,7 @@ export default function ViewScreen({
               <Name resource={resource} />
             </Heading1>
           )}
-          {onOpenForm && <EditButton onClick={onOpenForm}>Edit</EditButton>}
+          {onOpenUpdate && <EditButton onClick={onOpenUpdate}>Edit</EditButton>}
         </Intro>
         {metrics && (
           <Metrics>
@@ -117,10 +119,9 @@ export default function ViewScreen({
             <ListItem heading="ID">{resource.id}</ListItem>
             {resource.enabled != null && (
               <ListItem heading="Enabled">
-                <StatusIndicator
-                  status={status}
-                  title={`This ${resource.impl} is ${status}`}
-                />
+                <span title={statusTooltip} aria-label={statusTooltip}>
+                  {resource.enabled ? <SyncIcon /> : <SyncDisabledIcon />}
+                </span>
               </ListItem>
             )}
             <ListItem heading="Created On">
@@ -138,8 +139,8 @@ export default function ViewScreen({
           </List>
         </Section>
         {children}
-        <DeleteButton onClick={onOpenDialog}>
-          Delete this {resource.impl}
+        <DeleteButton onClick={onOpenDelete}>
+          Delete {resource.impl}
         </DeleteButton>
       </Main>
     )
@@ -155,8 +156,8 @@ ViewScreen.propTypes = {
       value: PropTypes.number.isRequired,
     }),
   ),
-  onOpenDialog: PropTypes.func.isRequired,
-  onOpenForm: PropTypes.func,
+  onOpenDelete: PropTypes.func.isRequired,
+  onOpenUpdate: PropTypes.func,
   resource: PropTypes.shape({
     createdAt: PropTypes.string,
     description: PropTypes.string,
@@ -170,5 +171,5 @@ ViewScreen.propTypes = {
 ViewScreen.defaultProps = {
   children: null,
   metrics: null,
-  onOpenForm: null,
+  onOpenUpdate: null,
 };

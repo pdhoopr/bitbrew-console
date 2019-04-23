@@ -1,6 +1,5 @@
 import http from "../settings/http";
 
-export default async function listDevices(projectId, params) {
-  const response = await http.paginate("/devices", { ...params, projectId });
-  return response.data;
+export default function listDevices(projectId, params) {
+  return http.paginate("/devices", { ...params, projectId });
 }

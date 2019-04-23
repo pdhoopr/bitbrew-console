@@ -9,47 +9,47 @@ import {
 } from "../../design-system";
 import { capitalize } from "../../utils";
 
-export default function DeviceFormFields({ setValue, showType, values }) {
+export default function DeviceFormFields({ onChange, showType, values }) {
   const isDatalogger = values.type.toUpperCase() === "DATALOGGER";
   return (
     <>
       <TextField
-        id="codename"
         label="Codename"
+        id="codename"
         value={values.codename}
-        onChange={setValue}
         placeholder="Unnamed device"
+        onChange={onChange}
       />
       <CheckboxField
-        id="enabled"
         label="Enable"
+        id="enabled"
         checked={values.enabled}
-        onChange={setValue}
+        onChange={onChange}
       />
       {showType && (
         <RadioGroup heading="Type">
           <RadioField
+            label="Datalogger"
             name="type"
             id="datalogger"
-            label="Datalogger"
             checked={isDatalogger}
-            onChange={setValue}
+            onChange={onChange}
           />
         </RadioGroup>
       )}
       {isDatalogger && (
         <FieldGroup heading={`${capitalize(values.type)} Settings`}>
           <TextField
-            id="serialNumber"
             label="Serial Number"
+            id="serialNumber"
             value={values.serialNumber}
-            onChange={setValue}
+            onChange={onChange}
           />
           <TextField
-            id="imei"
             label="IMEI"
+            id="imei"
             value={values.imei}
-            onChange={setValue}
+            onChange={onChange}
           />
         </FieldGroup>
       )}
@@ -58,7 +58,7 @@ export default function DeviceFormFields({ setValue, showType, values }) {
 }
 
 DeviceFormFields.propTypes = {
-  setValue: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   showType: PropTypes.bool,
   values: PropTypes.shape({
     codename: PropTypes.string.isRequired,

@@ -44,10 +44,10 @@ export default function ViewOrgScreen({ navigate, orgId }) {
           value: numProjects,
         },
       ]}
-      onOpenForm={() => {
+      onOpenUpdate={() => {
         openDrawer(<UpdateOrgForm org={org} onUpdate={loadOrg} />);
       }}
-      onOpenDialog={() => {
+      onOpenDelete={() => {
         openDialog(
           <DeleteOrgDialog
             org={org}

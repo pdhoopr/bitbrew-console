@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import { listProjects, updateProject } from "../../api";
 import { poll } from "../../utils";
-import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
 import { projectType } from "../shared/resourceTypes";
+import UpdateForm from "../shared/UpdateForm";
 import useForm from "../shared/useForm";
 import ProjectFormFields from "./ProjectFormFields";
 
@@ -16,8 +16,7 @@ export default function UpdateProjectForm({ onUpdate, project }) {
   });
 
   return (
-    <CreateOrUpdateForm
-      isUpdate
+    <UpdateForm
       resourceType={projectType}
       onSubmit={async () => {
         const data = await updateProject(project.id, values);
@@ -29,8 +28,8 @@ export default function UpdateProjectForm({ onUpdate, project }) {
         await onUpdate();
       }}
     >
-      <ProjectFormFields values={values} setValue={setValue} />
-    </CreateOrUpdateForm>
+      <ProjectFormFields values={values} onChange={setValue} />
+    </UpdateForm>
   );
 }
 

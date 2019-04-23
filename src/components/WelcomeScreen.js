@@ -66,7 +66,7 @@ const ProjectCard = styled(Card)`
 `;
 
 const ProjectLink = styled(BlockLink)`
-  min-height: var(--size-160);
+  min-height: var(--size-176);
 
   &::before {
     content: none;
@@ -88,13 +88,8 @@ const Spacer = styled.div`
 `;
 
 const NewProjectButton = styled(Button)`
-  align-items: center;
   color: var(--color-dark-gray);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: var(--size-160);
-  padding: var(--size-16) var(--size-24);
+  padding: var(--size-58) var(--size-24);
   transition: color var(--effect-duration);
 
   &:hover,
@@ -114,10 +109,11 @@ const NewOrgButton = styled(NewProjectButton)`
 const NewIcon = styled(AddIcon).attrs({
   "aria-hidden": true,
 })`
+  display: block;
   fill: currentColor;
-  height: var(--size-28);
-  margin-bottom: var(--size-8);
-  width: var(--size-28);
+  height: var(--size-32);
+  margin: 0 auto var(--size-8);
+  width: var(--size-32);
 `;
 
 export default function WelcomeScreen() {

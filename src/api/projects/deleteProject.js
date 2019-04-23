@@ -1,6 +1,5 @@
 import http from "../settings/http";
 
-export default async function deleteProject(id) {
-  const response = await http.delete(`/projects/${id}`);
-  return response.data;
+export default function deleteProject(id) {
+  return http.delete(`/projects/${id}`);
 }

@@ -1,6 +1,5 @@
 import http from "../settings/http";
 
-export default async function viewRule(id) {
-  const response = await http.get(`/rules/${id}`);
-  return response.data;
+export default function viewRule(id) {
+  return http.get(`/rules/${id}`);
 }

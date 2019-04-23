@@ -1,9 +1,5 @@
 import http from "../settings/http";
 
-export default async function listDestinations(projectId, params) {
-  const response = await http.paginate("/destinations", {
-    ...params,
-    projectId,
-  });
-  return response.data;
+export default function listDestinations(projectId, params) {
+  return http.paginate("/destinations", { ...params, projectId });
 }

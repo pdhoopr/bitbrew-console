@@ -1,6 +1,5 @@
 import http from "../settings/http";
 
-export default async function createDestination(data) {
-  const response = await http.post("/destinations", data);
-  return response.data;
+export default function createDestination(data) {
+  return http.post("/destinations", data);
 }

@@ -4,20 +4,20 @@ import React, { useContext } from "react";
 import { createOrg } from "../../api";
 import { poll, silentRefresh } from "../../utils";
 import AppContext from "../AppContext";
-import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
+import CreateForm from "../shared/CreateForm";
 import { orgType } from "../shared/resourceTypes";
 import useForm from "../shared/useForm";
 import OrgFormFields from "./OrgFormFields";
 
 export default function CreateOrgForm({ onCreate }) {
-  const { logInWithToken, logOut } = useContext(AppContext);
+  const { logIn, logOut } = useContext(AppContext);
 
   const [values, setValue] = useForm({
     name: "",
   });
 
   return (
-    <CreateOrUpdateForm
+    <CreateForm
       resourceType={orgType}
       onSubmit={async () => {
         const data = await createOrg(values);
@@ -25,7 +25,7 @@ export default function CreateOrgForm({ onCreate }) {
           try {
             const token = await silentRefresh();
             if (jwtDecode(token).orgs.some(org => org.startsWith(data.id))) {
-              logInWithToken(token);
+              logIn(token);
               return true;
             }
           } catch {
@@ -36,8 +36,8 @@ export default function CreateOrgForm({ onCreate }) {
         await onCreate();
       }}
     >
-      <OrgFormFields values={values} setValue={setValue} />
-    </CreateOrUpdateForm>
+      <OrgFormFields values={values} onChange={setValue} />
+    </CreateForm>
   );
 }
 

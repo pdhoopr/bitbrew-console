@@ -29,7 +29,7 @@ export default function ListDestinationsScreen({ projectId }) {
     <ListScreen
       isLoading={pagination.isLoading}
       resourceType={destinationType}
-      onOpenForm={() => {
+      onOpenCreate={() => {
         openDrawer(
           <CreateDestinationForm
             projectId={projectId}

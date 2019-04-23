@@ -9,9 +9,9 @@ setBaseUrl("/api");
 setPageSize(defaultPageSize);
 
 function renderToDom() {
-  const appElement = document.getElementById("app");
-  ReactModal.setAppElement(appElement);
-  ReactDOM.render(<App />, appElement);
+  const app = document.getElementById("app");
+  ReactModal.setAppElement(app);
+  ReactDOM.render(<App />, app);
 }
 
 renderToDom();

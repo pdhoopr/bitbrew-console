@@ -31,15 +31,14 @@ const Router = styled(ReachRouter)`
 `;
 
 export default function App() {
-  const history = useRef(createHistory(window));
-  const snackbarElement = useRef(document.getElementById("alert-region"));
+  const historyRef = useRef(createHistory(window));
 
   const [auth, setAuth] = useState(null);
   const [drawer, setDrawer] = useState(null);
   const [dialog, setDialog] = useState(null);
   const [snackbar, setSnackbar] = useState(null);
 
-  function logInWithToken(token) {
+  function logIn(token) {
     setToken(token);
     setAuth(token);
   }
@@ -54,7 +53,7 @@ export default function App() {
   async function logInWithSilentRefresh() {
     try {
       const token = await silentRefresh();
-      logInWithToken(token);
+      logIn(token);
     } catch {
       logInWithRedirect();
     }
@@ -70,7 +69,7 @@ export default function App() {
       replace: true,
     });
     if (document.referrer.startsWith("https://service.bitbrew.com")) {
-      logInWithToken(token);
+      logIn(token);
     } else {
       logInWithSilentRefresh();
     }
@@ -116,9 +115,9 @@ export default function App() {
     } catch (error) {
       openSnackbar(
         <Snackbar
-          containerElement={snackbarElement.current}
+          container={document.getElementById("alert-region")}
           infoLevel="error"
-          onDismiss={closeSnackbar}
+          onClose={closeSnackbar}
         >
           {summarize(error)}
         </Snackbar>,
@@ -150,7 +149,7 @@ export default function App() {
 
   useEffect(
     () =>
-      history.current.listen(() => {
+      historyRef.current.listen(() => {
         closeDrawer();
         closeDialog();
         closeSnackbar();
@@ -162,18 +161,20 @@ export default function App() {
     <AppContext.Provider
       value={{
         auth,
-        logInWithToken,
+        logIn,
         logOut,
         openDrawer,
         closeDrawer,
         openDialog,
         closeDialog,
+        openSnackbar,
+        closeSnackbar,
         errorBoundary,
       }}
     >
       <GlobalStyle />
       {auth && (
-        <LocationProvider history={history.current}>
+        <LocationProvider history={historyRef.current}>
           <Router>
             <WelcomeScreen path="/" />
             <Redirect from="/orgs" to="/" noThrow />

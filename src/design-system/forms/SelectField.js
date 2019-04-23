@@ -5,7 +5,7 @@ import ExpandIcon from "../icons/ExpandIcon";
 import Input from "./Input";
 import Label from "./Label";
 
-const Options = styled(Input)`
+const Select = styled(Input)`
   appearance: none;
   background: none;
   cursor: pointer;
@@ -29,10 +29,10 @@ export default function SelectField({ children, id, label, onChange, value }) {
   return (
     <Label htmlFor={id}>
       {label}
-      <Options as="select" id={id} value={value} onChange={onChange}>
+      <Select as="select" id={id} value={value} onChange={onChange}>
         {!value && <option disabled value="" />}
         {children}
-      </Options>
+      </Select>
       <Icon aria-hidden />
     </Label>
   );

@@ -11,10 +11,8 @@ import {
   IconButton,
   RaisedButton,
 } from "../../design-system";
-import { capitalize } from "../../utils";
 import AppContext from "../AppContext";
 import Main from "./Main";
-import resourceTypes from "./resourceTypes";
 
 const Wrapper = styled(Main)`
   max-width: var(--size-320);
@@ -41,22 +39,22 @@ const SubmitButton = styled(RaisedButton)`
   margin-top: var(--size-8);
 `;
 
-export default function CreateOrUpdateForm({
+export default function FormDrawer({
+  action,
   children,
-  isUpdate,
+  closeTooltip,
+  heading,
   onSubmit,
-  resourceType,
 }) {
   const { closeDrawer, errorBoundary } = useContext(AppContext);
 
   const [isSubmitting, setSubmitting] = useState(false);
 
-  const heading = `${isUpdate ? "Edit" : "New"} ${capitalize(resourceType)}`;
-  const action = `${resourceType} ${isUpdate ? "changes" : "creation"}`;
+  const [, description] = closeTooltip.match(/^\w+\s+(.+)$/);
   return (
     <Drawer onRequestClose={closeDrawer} contentLabel={heading}>
       <Wrapper as="section">
-        <CloseButton onClick={closeDrawer} title={`Cancel ${action}`}>
+        <CloseButton onClick={closeDrawer} title={closeTooltip}>
           <CloseIcon />
         </CloseButton>
         <Heading1 as="h2">{heading}</Heading1>
@@ -75,24 +73,19 @@ export default function CreateOrUpdateForm({
             }}
           >
             {children}
-            <SubmitButton type="submit">
-              {isUpdate ? "Save" : "Create"}
-            </SubmitButton>
+            <SubmitButton type="submit">{action}</SubmitButton>
           </Form>
         </Content>
       </Wrapper>
-      {isSubmitting && <FocusTrap label={`Processing ${action}`} />}
+      {isSubmitting && <FocusTrap label={`Processing ${description}`} />}
     </Drawer>
   );
 }
 
-CreateOrUpdateForm.propTypes = {
+FormDrawer.propTypes = {
+  action: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
-  isUpdate: PropTypes.bool,
+  closeTooltip: PropTypes.string.isRequired,
+  heading: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  resourceType: PropTypes.oneOf(resourceTypes).isRequired,
-};
-
-CreateOrUpdateForm.defaultProps = {
-  isUpdate: false,
 };

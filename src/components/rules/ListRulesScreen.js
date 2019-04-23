@@ -37,7 +37,7 @@ export default function ListRulesScreen({ projectId }) {
     <ListScreen
       isLoading={pagination.isLoading}
       resourceType={ruleType}
-      onOpenForm={() => {
+      onOpenCreate={() => {
         openDrawer(
           <CreateRuleForm
             projectId={projectId}

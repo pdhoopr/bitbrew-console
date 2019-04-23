@@ -2,14 +2,14 @@ import PropTypes from "prop-types";
 import React from "react";
 import { TextField } from "../../design-system";
 
-export default function OrgFormFields({ setValue, values }) {
+export default function OrgFormFields({ onChange, values }) {
   return (
-    <TextField id="name" label="Name" value={values.name} onChange={setValue} />
+    <TextField label="Name" id="name" value={values.name} onChange={onChange} />
   );
 }
 
 OrgFormFields.propTypes = {
-  setValue: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   values: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }).isRequired,

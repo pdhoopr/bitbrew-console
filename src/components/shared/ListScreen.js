@@ -1,7 +1,12 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { EmptyIndicator, Heading1, RaisedButton } from "../../design-system";
+import {
+  EmptyIcon,
+  Heading1,
+  RaisedButton,
+  Subheading,
+} from "../../design-system";
 import { capitalize, pluralize } from "../../utils";
 import Main from "./Main";
 import resourceTypes from "./resourceTypes";
@@ -19,10 +24,33 @@ const NewButton = styled(RaisedButton)`
   margin-top: var(--size-2);
 `;
 
+const EmptyState = styled.div`
+  color: var(--color-dark-gray);
+  padding: var(--size-40) var(--size-24);
+  position: relative;
+  text-align: center;
+
+  &::before {
+    background-color: currentColor;
+    border-radius: var(--corner-radius);
+    bottom: 0;
+    content: "";
+    left: 0;
+    opacity: 0.1;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+`;
+
+const EmptyMessage = styled(Subheading)`
+  padding-top: var(--size-8);
+`;
+
 export default function ListScreen({
   children,
   isLoading,
-  onOpenForm,
+  onOpenCreate,
   resourceType,
 }) {
   const plural = pluralize(resourceType);
@@ -30,15 +58,16 @@ export default function ListScreen({
     <Main>
       <Intro>
         <Heading1>{capitalize(plural)}</Heading1>
-        {!isLoading && onOpenForm && (
-          <NewButton onClick={onOpenForm}>New</NewButton>
+        {!isLoading && onOpenCreate && (
+          <NewButton onClick={onOpenCreate}>New</NewButton>
         )}
       </Intro>
       {!isLoading &&
         (children || (
-          <EmptyIndicator>
-            There aren&apos;t any {plural} here yet.
-          </EmptyIndicator>
+          <EmptyState>
+            <EmptyIcon aria-hidden />
+            <EmptyMessage>There are no {plural} here yet.</EmptyMessage>
+          </EmptyState>
         ))}
     </Main>
   );
@@ -47,10 +76,10 @@ export default function ListScreen({
 ListScreen.propTypes = {
   children: PropTypes.node.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  onOpenForm: PropTypes.func,
+  onOpenCreate: PropTypes.func,
   resourceType: PropTypes.oneOf(resourceTypes).isRequired,
 };
 
 ListScreen.defaultProps = {
-  onOpenForm: null,
+  onOpenCreate: null,
 };

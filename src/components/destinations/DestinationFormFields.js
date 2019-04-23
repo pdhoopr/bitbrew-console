@@ -2,46 +2,48 @@ import PropTypes from "prop-types";
 import React from "react";
 import {
   CheckboxField,
+  ExpansionPanel,
   FieldGroup,
+  MultilineTextField,
   RadioField,
   RadioGroup,
   TextField,
 } from "../../design-system";
 import { capitalize } from "../../utils";
 
-export default function DestinationFormFields({ setValue, showType, values }) {
+export default function DestinationFormFields({ onChange, showType, values }) {
   const compareType = values.type.toUpperCase();
   const isAmqp = compareType === "AMQP";
   const isKeen = compareType === "KEEN";
   return (
     <>
       <TextField
-        id="name"
         label="Name"
+        id="name"
         value={values.name}
-        onChange={setValue}
+        onChange={onChange}
       />
       <CheckboxField
-        id="enabled"
         label="Enable"
+        id="enabled"
         checked={values.enabled}
-        onChange={setValue}
+        onChange={onChange}
       />
       {showType && (
         <RadioGroup heading="Type">
           <RadioField
+            label="AMQP"
             name="type"
             id="amqp"
-            label="AMQP"
             checked={isAmqp}
-            onChange={setValue}
+            onChange={onChange}
           />
           <RadioField
+            label="Keen"
             name="type"
             id="keen"
-            label="Keen"
             checked={isKeen}
-            onChange={setValue}
+            onChange={onChange}
           />
         </RadioGroup>
       )}
@@ -50,78 +52,77 @@ export default function DestinationFormFields({ setValue, showType, values }) {
           {isAmqp && (
             <>
               <TextField
-                id="amqpUser"
                 label="Username"
+                id="amqpUser"
                 value={values.amqpUser}
-                onChange={setValue}
+                onChange={onChange}
               />
               <TextField
-                id="amqpPassword"
                 label="Password"
+                id="amqpPassword"
                 value={values.amqpPassword}
-                onChange={setValue}
+                onChange={onChange}
               />
               <TextField
-                id="amqpHost"
                 label="Host"
+                id="amqpHost"
                 value={values.amqpHost}
-                onChange={setValue}
+                onChange={onChange}
               />
               <TextField
-                id="amqpVhost"
                 label="Virtual Host"
+                id="amqpVhost"
                 value={values.amqpVhost}
-                onChange={setValue}
+                onChange={onChange}
               />
               <CheckboxField
-                id="amqpSecure"
                 label="Use TLS"
+                id="amqpSecure"
                 checked={values.amqpSecure}
-                onChange={setValue}
+                onChange={onChange}
               />
-              <FieldGroup isAccordion heading="Advanced">
+              <ExpansionPanel heading="Advanced">
                 <TextField
-                  id="amqpPort"
                   label="Port"
+                  id="amqpPort"
                   value={values.amqpPort}
-                  onChange={setValue}
                   placeholder={values.amqpSecure ? "5671" : "5672"}
+                  onChange={onChange}
                 />
                 <TextField
-                  id="amqpDefaultRoutingKey"
                   label="Routing Key"
+                  id="amqpDefaultRoutingKey"
                   value={values.amqpDefaultRoutingKey}
-                  onChange={setValue}
+                  onChange={onChange}
                 />
                 <TextField
-                  id="amqpQuery"
                   label="Query String"
+                  id="amqpQuery"
                   value={values.amqpQuery}
-                  onChange={setValue}
+                  onChange={onChange}
                 />
-              </FieldGroup>
+              </ExpansionPanel>
             </>
           )}
           {isKeen && (
             <>
               <TextField
-                id="keenProjectId"
                 label="Project ID"
+                id="keenProjectId"
                 value={values.keenProjectId}
-                onChange={setValue}
+                onChange={onChange}
               />
-              <TextField
-                isMultiline
-                id="keenWriteKey"
+              <MultilineTextField
                 label="Write Key"
+                id="keenWriteKey"
                 value={values.keenWriteKey}
-                onChange={setValue}
+                onChange={onChange}
               />
               <TextField
-                id="keenStreamName"
                 label="Event Collection"
+                id="keenStreamName"
                 value={values.keenStreamName}
-                onChange={setValue}
+                onChange={onChange}
               />
             </>
           )}
@@ -132,7 +133,7 @@ export default function DestinationFormFields({ setValue, showType, values }) {
 }
 
 DestinationFormFields.propTypes = {
-  setValue: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   showType: PropTypes.bool,
   values: PropTypes.shape({
     amqpDefaultRoutingKey: PropTypes.string.isRequired,

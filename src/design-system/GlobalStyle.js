@@ -5,8 +5,7 @@ export default createGlobalStyle`
     --border-divider: 1px solid #e0e0e0;
     --border-transparent: 1px solid transparent;
     --color-red: #ff5252;
-    --color-yellow: #ffd740;
-    --color-green: #02ca91;
+    --color-green: #02d298;
     --color-blue-gray: #eceff1;
     --color-white: #fff;
     --color-white-gray: #fafafa;
@@ -52,11 +51,12 @@ export default createGlobalStyle`
     --size-48: 3rem;
     --size-52: 3.25rem;
     --size-56: 3.5rem;
+    --size-58: 3.625rem;
     --size-64: 4rem;
     --size-68: 4.25rem;
     --size-72: 4.5rem;
     --size-128: 8rem;
-    --size-160: 10rem;
+    --size-176: 11rem;
     --size-320: 20rem;
     --size-480: 30rem;
     --size-640: 40rem;

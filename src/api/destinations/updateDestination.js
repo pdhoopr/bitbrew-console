@@ -1,6 +1,5 @@
 import http from "../settings/http";
 
-export default async function updateDestination(id, data) {
-  const response = await http.put(`/destinations/${id}`, data);
-  return response.data;
+export default function updateDestination(id, data) {
+  return http.put(`/destinations/${id}`, data);
 }

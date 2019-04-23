@@ -55,17 +55,17 @@ export default function ViewProjectScreen({ navigate, projectId }) {
           value: numRules,
         },
       ]}
-      onOpenForm={() => {
+      onOpenUpdate={() => {
         openDrawer(
           <UpdateProjectForm project={project} onUpdate={loadProject} />,
         );
       }}
-      onOpenDialog={() => {
+      onOpenDelete={() => {
         openDialog(
           <DeleteProjectDialog
             project={project}
             onDelete={() => {
-              navigate("../");
+              navigate("/");
             }}
           />,
         );

@@ -1,48 +1,51 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { CheckboxField, SelectField, TextField } from "../../design-system";
+import {
+  CheckboxField,
+  MultilineTextField,
+  SelectField,
+  TextField,
+} from "../../design-system";
 
 export default function RuleFormFields({
+  onChange,
   selectDestinationFrom,
-  setValue,
   values,
 }) {
   return (
     <>
       <TextField
-        id="name"
         label="Name"
+        id="name"
         value={values.name}
-        onChange={setValue}
         placeholder="Unnamed rule"
+        onChange={onChange}
       />
       <CheckboxField
-        id="enabled"
         label="Enable"
+        id="enabled"
         checked={values.enabled}
-        onChange={setValue}
+        onChange={onChange}
       />
-      <TextField
-        isMultiline
-        id="triggerRuleWhen"
+      <MultilineTextField
         label="Trigger When"
+        id="triggerRuleWhen"
         value={values.triggerRuleWhen}
-        onChange={setValue}
+        onChange={onChange}
         monospace
       />
-      <TextField
-        isMultiline
-        id="dataTransformation"
+      <MultilineTextField
         label="Data Transformation"
+        id="dataTransformation"
         value={values.dataTransformation}
-        onChange={setValue}
+        onChange={onChange}
         monospace
       />
       <SelectField
-        id="destinationId"
         label="Destination"
+        id="destinationId"
         value={values.destinationId}
-        onChange={setValue}
+        onChange={onChange}
       >
         {[...selectDestinationFrom]
           .sort((a, b) => a.name.localeCompare(b.name))
@@ -57,13 +60,13 @@ export default function RuleFormFields({
 }
 
 RuleFormFields.propTypes = {
+  onChange: PropTypes.func.isRequired,
   selectDestinationFrom: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  setValue: PropTypes.func.isRequired,
   values: PropTypes.shape({
     dataTransformation: PropTypes.string.isRequired,
     destinationId: PropTypes.string.isRequired,

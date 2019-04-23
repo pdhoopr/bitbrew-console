@@ -29,7 +29,7 @@ export default function ListProjectsScreen({ orgId }) {
     <ListScreen
       isLoading={pagination.isLoading}
       resourceType={projectType}
-      onOpenForm={() => {
+      onOpenCreate={() => {
         openDrawer(
           <CreateProjectForm
             orgId={orgId}

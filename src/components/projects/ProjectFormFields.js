@@ -2,32 +2,32 @@ import PropTypes from "prop-types";
 import React from "react";
 import { TextField } from "../../design-system";
 
-export default function ProjectFormFields({ orgName, setValue, values }) {
+export default function ProjectFormFields({ onChange, orgName, values }) {
   return (
     <>
       {orgName && (
-        <TextField id="orgName" label="Organization" value={orgName} />
+        <TextField label="Organization" id="orgName" value={orgName} />
       )}
       <TextField
-        id="name"
         label="Name"
+        id="name"
         value={values.name}
-        onChange={setValue}
         placeholder="Unnamed project"
+        onChange={onChange}
       />
       <TextField
-        id="description"
         label="Description"
+        id="description"
         value={values.description}
-        onChange={setValue}
+        onChange={onChange}
       />
     </>
   );
 }
 
 ProjectFormFields.propTypes = {
+  onChange: PropTypes.func.isRequired,
   orgName: PropTypes.string,
-  setValue: PropTypes.func.isRequired,
   values: PropTypes.shape({
     description: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,

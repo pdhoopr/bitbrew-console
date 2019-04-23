@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import { listOrgs, updateOrg } from "../../api";
 import { poll } from "../../utils";
-import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
 import { orgType } from "../shared/resourceTypes";
+import UpdateForm from "../shared/UpdateForm";
 import useForm from "../shared/useForm";
 import OrgFormFields from "./OrgFormFields";
 
@@ -13,8 +13,7 @@ export default function UpdateOrgForm({ onUpdate, org }) {
   });
 
   return (
-    <CreateOrUpdateForm
-      isUpdate
+    <UpdateForm
       resourceType={orgType}
       onSubmit={async () => {
         const data = await updateOrg(org.id, values);
@@ -26,8 +25,8 @@ export default function UpdateOrgForm({ onUpdate, org }) {
         await onUpdate();
       }}
     >
-      <OrgFormFields values={values} setValue={setValue} />
-    </CreateOrUpdateForm>
+      <OrgFormFields values={values} onChange={setValue} />
+    </UpdateForm>
   );
 }
 

@@ -1,6 +1,5 @@
 import http from "../settings/http";
 
-export default async function viewDestination(id) {
-  const response = await http.get(`/destinations/${id}`);
-  return response.data;
+export default function viewDestination(id) {
+  return http.get(`/destinations/${id}`);
 }

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { createRule, listRules } from "../../api";
 import { poll } from "../../utils";
-import CreateOrUpdateForm from "../shared/CreateOrUpdateForm";
+import CreateForm from "../shared/CreateForm";
 import { ruleType } from "../shared/resourceTypes";
 import useForm from "../shared/useForm";
 import RuleFormFields from "./RuleFormFields";
@@ -22,7 +22,7 @@ export default function CreateRuleForm({
   });
 
   return (
-    <CreateOrUpdateForm
+    <CreateForm
       resourceType={ruleType}
       onSubmit={async () => {
         const data = await createRule(values);
@@ -36,9 +36,9 @@ export default function CreateRuleForm({
       <RuleFormFields
         selectDestinationFrom={selectDestinationFrom}
         values={values}
-        setValue={setValue}
+        onChange={setValue}
       />
-    </CreateOrUpdateForm>
+    </CreateForm>
   );
 }
 

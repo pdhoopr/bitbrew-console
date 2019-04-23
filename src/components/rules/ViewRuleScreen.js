@@ -15,7 +15,6 @@ import DeleteRuleDialog from "./DeleteRuleDialog";
 const Code = styled.pre`
   font-family: var(--font-system-monospace);
   font-size: var(--size-12);
-  line-height: var(--size-16);
   margin-bottom: 0;
   margin-top: 0;
   white-space: pre-wrap;
@@ -47,7 +46,7 @@ export default function ViewRuleScreen({ navigate, ruleId }) {
     <ViewScreen
       isLoading={isLoading}
       resource={rule}
-      onOpenDialog={() => {
+      onOpenDelete={() => {
         openDialog(
           <DeleteRuleDialog
             rule={rule}
@@ -60,7 +59,7 @@ export default function ViewRuleScreen({ navigate, ruleId }) {
     >
       <Section
         heading="Rule Settings"
-        description="Details about your rule, such as the records it's capturing and any transformations."
+        description="Details about this rule, such as the records it's capturing and any transformations."
       >
         <List>
           <ListItem heading="Trigger When">

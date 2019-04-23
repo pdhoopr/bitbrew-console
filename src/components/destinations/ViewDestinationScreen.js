@@ -30,7 +30,7 @@ export default function ViewDestinationScreen({ destinationId, navigate }) {
     <ViewScreen
       isLoading={isLoading}
       resource={destination}
-      onOpenForm={() => {
+      onOpenUpdate={() => {
         openDrawer(
           <UpdateDestinationForm
             destination={destination}
@@ -38,7 +38,7 @@ export default function ViewDestinationScreen({ destinationId, navigate }) {
           />,
         );
       }}
-      onOpenDialog={() => {
+      onOpenDelete={() => {
         openDialog(
           <DeleteDestinationDialog
             destination={destination}
@@ -51,7 +51,7 @@ export default function ViewDestinationScreen({ destinationId, navigate }) {
     >
       <Section
         heading="Destination Settings"
-        description="Details about your destination that are relevant to its type."
+        description="Details about this destination that are relevant to its type."
       >
         <List>
           <ListItem heading="Type">{capitalize(type)}</ListItem>

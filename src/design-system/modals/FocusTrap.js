@@ -13,8 +13,8 @@ const Wrapper = styled.div`
 `;
 
 export default function FocusTrap({ label }) {
-  const lastActiveElement = useRef(document.activeElement);
-  const activeElement = useRef(null);
+  const lastActiveRef = useRef(document.activeElement);
+  const wrapperRef = useRef(null);
 
   const keepFocus = useCallback(event => {
     const isTab = event.keyCode === 9;
@@ -23,21 +23,21 @@ export default function FocusTrap({ label }) {
       event.preventDefault();
       event.stopPropagation();
     }
-    activeElement.current.focus();
+    wrapperRef.current.focus();
   }, []);
 
   useEffect(() => {
     document.addEventListener("click", keepFocus);
-    activeElement.current.addEventListener("keydown", keepFocus);
-    activeElement.current.focus();
+    wrapperRef.current.addEventListener("keydown", keepFocus);
+    wrapperRef.current.focus();
     return () => {
       document.removeEventListener("click", keepFocus);
-      activeElement.current.removeEventListener("keydown", keepFocus);
-      lastActiveElement.current.focus();
+      wrapperRef.current.removeEventListener("keydown", keepFocus);
+      lastActiveRef.current.focus();
     };
   });
 
-  return <Wrapper ref={activeElement} tabIndex={-1} aria-label={label} />;
+  return <Wrapper ref={wrapperRef} tabIndex={-1} aria-label={label} />;
 }
 
 FocusTrap.propTypes = {

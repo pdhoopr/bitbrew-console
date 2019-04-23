@@ -1,6 +1,5 @@
 import http from "../settings/http";
 
-export default async function updateProject(id, data) {
-  const response = await http.put(`/projects/${id}`, data);
-  return response.data;
+export default function updateProject(id, data) {
+  return http.put(`/projects/${id}`, data);
 }

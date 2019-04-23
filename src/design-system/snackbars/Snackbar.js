@@ -6,7 +6,6 @@ import IconButton from "../buttons/IconButton";
 import CheckIcon from "../icons/CheckIcon";
 import CloseIcon from "../icons/CloseIcon";
 import ErrorIcon from "../icons/ErrorIcon";
-import InfoIcon from "../icons/InfoIcon";
 import Text from "../typography/Text";
 
 const Wrapper = styled.div`
@@ -38,39 +37,33 @@ const DismissIcon = styled(CloseIcon)`
   fill: var(--color-medium-dark-gray);
 `;
 
-export default function Snackbar({
-  children,
-  containerElement,
-  infoLevel,
-  onDismiss,
-}) {
-  const timeoutId = useRef(null);
+export default function Snackbar({ children, container, infoLevel, onClose }) {
+  const timeoutIdRef = useRef(null);
 
   useEffect(() => {
-    timeoutId.current = window.setTimeout(onDismiss, 5000);
+    timeoutIdRef.current = window.setTimeout(onClose, 5000);
     return () => {
-      window.clearTimeout(timeoutId.current);
-      timeoutId.current = null;
+      window.clearTimeout(timeoutIdRef.current);
+      timeoutIdRef.current = null;
     };
   });
 
   return ReactDOM.createPortal(
     <Wrapper>
       {infoLevel === "error" && <ErrorIcon aria-hidden />}
-      {infoLevel === "info" && <InfoIcon aria-hidden />}
       {infoLevel === "success" && <CheckIcon aria-hidden />}
       <Message>{children}</Message>
-      <IconButton onClick={onDismiss} title={`Dismiss ${infoLevel} message`}>
+      <IconButton onClick={onClose} title={`Dismiss ${infoLevel} message`}>
         <DismissIcon />
       </IconButton>
     </Wrapper>,
-    containerElement,
+    container,
   );
 }
 
 Snackbar.propTypes = {
   children: PropTypes.node.isRequired,
-  containerElement: PropTypes.instanceOf(Element).isRequired,
-  infoLevel: PropTypes.oneOf(["error", "info", "success"]).isRequired,
-  onDismiss: PropTypes.func.isRequired,
+  container: PropTypes.instanceOf(Element).isRequired,
+  infoLevel: PropTypes.oneOf(["error", "success"]).isRequired,
+  onClose: PropTypes.func.isRequired,
 };
