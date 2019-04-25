@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef } from "react";
 import styled from "styled-components";
-import { Button, Dialog, FocusTrap, Heading3, Text } from "../../design-system";
-import { capitalize } from "../../utils";
+import { Button, Dialog, Heading3, Text } from "../../design-system";
+import { capitalize, generateId } from "../../utils";
 import AppContext from "../AppContext";
 import Name from "./Name";
 import resourceTypes from "./resourceTypes";
@@ -29,16 +29,23 @@ const DeleteButton = styled(Button)`
 `;
 
 export default function DeleteDialog({ children, onConfirm, resource }) {
-  const { closeDialog, errorBoundary } = useContext(AppContext);
+  const { catchErrorsSendingResource, closeDialog } = useContext(AppContext);
 
-  const [isDeleting, setDeleting] = useState(false);
+  const headingIdRef = useRef(generateId(`${DeleteDialog.name}__heading`));
+  const messageIdRef = useRef(generateId(`${DeleteDialog.name}__message`));
 
   const heading = `Delete ${capitalize(resource.impl)}`;
   return (
-    <Dialog onRequestClose={closeDialog} contentLabel={heading}>
+    <Dialog
+      onClose={closeDialog}
+      aria-labelledby={headingIdRef.current}
+      aria-describedby={messageIdRef.current}
+    >
       <section>
-        <Heading as="h2">{heading}</Heading>
-        <Message>
+        <Heading as="h2" id={headingIdRef.current}>
+          {heading}
+        </Heading>
+        <Message id={messageIdRef.current}>
           Are you sure you want to delete the {resource.impl}{" "}
           <strong>
             <Name resource={resource} />
@@ -48,24 +55,18 @@ export default function DeleteDialog({ children, onConfirm, resource }) {
         <Actions>
           <Button onClick={closeDialog}>Cancel</Button>
           <DeleteButton
-            onClick={async () => {
-              setDeleting(true);
-              const error = await errorBoundary(async () => {
+            onClick={() => {
+              catchErrorsSendingResource(resource.impl, async () => {
                 await onConfirm();
                 closeDialog();
+                return { status: 204 };
               });
-              if (error && error.response.status !== 408) {
-                setDeleting(false);
-              }
             }}
           >
             Delete
           </DeleteButton>
         </Actions>
       </section>
-      {isDeleting && (
-        <FocusTrap label={`Processing ${resource.impl} deletion`} />
-      )}
     </Dialog>
   );
 }

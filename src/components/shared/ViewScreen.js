@@ -14,7 +14,7 @@ import {
   SyncDisabledIcon,
   SyncIcon,
 } from "../../design-system";
-import { capitalize, localize, pluralize } from "../../utils";
+import { localize, pluralize } from "../../utils";
 import Main from "./Main";
 import Name from "./Name";
 import resourceTypes from "./resourceTypes";
@@ -80,8 +80,7 @@ export default function ViewScreen({
   onOpenUpdate,
   resource,
 }) {
-  const status = resource.enabled ? "enabled" : "disabled";
-  const statusTooltip = `${capitalize(resource.impl)} is ${status}`;
+  const statusLabel = resource.enabled ? "Enabled" : "Disabled";
   return (
     !isLoading && (
       <Main>
@@ -119,7 +118,7 @@ export default function ViewScreen({
             <ListItem heading="ID">{resource.id}</ListItem>
             {resource.enabled != null && (
               <ListItem heading="Enabled">
-                <span title={statusTooltip} aria-label={statusTooltip}>
+                <span title={statusLabel} aria-label={statusLabel}>
                   {resource.enabled ? <SyncIcon /> : <SyncDisabledIcon />}
                 </span>
               </ListItem>

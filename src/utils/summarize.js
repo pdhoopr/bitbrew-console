@@ -1,18 +1,21 @@
-export default function summarize(error) {
-  // eslint-disable-next-line no-console
-  console.error(error);
-  const status = error.response && error.response.status;
-  switch (status) {
+export default function summarize(response = {}, resourceType = "resource") {
+  switch (response.status) {
+    case 200:
+      return `This ${resourceType} was updated successfully.`;
+    case 201:
+      return `The ${resourceType} was created successfully.`;
+    case 204:
+      return `The ${resourceType} was deleted successfully.`;
     case 400:
       return "Bad request. Please fix and try again.";
     case 403:
       return "You don't have permission to do this.";
     case 404:
-      return "Resource could not be found.";
+      return `This ${resourceType} could not be found.`;
     case 408:
-      return "Things are taking longer than expected. Please try reloading the app.";
+      return "Things are taking longer than expected. Please try reloading the page.";
     case 409:
-      return "Resource already exists.";
+      return `This ${resourceType} already exists.`;
     case 422:
       return "Invalid input. Please modify and try again.";
     default:

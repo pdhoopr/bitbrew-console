@@ -1,16 +1,25 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useContext } from "react";
 import { capitalize } from "../../utils";
+import AppContext from "../AppContext";
 import FormDrawer from "./FormDrawer";
 import resourceTypes from "./resourceTypes";
 
 export default function CreateForm({ children, onSubmit, resourceType }) {
+  const { catchErrorsSendingResource, closeDrawer } = useContext(AppContext);
+
   return (
     <FormDrawer
-      closeTooltip={`Cancel ${resourceType} creation`}
       heading={`New ${capitalize(resourceType)}`}
       action="Create"
-      onSubmit={onSubmit}
+      onClose={closeDrawer}
+      onSubmit={() => {
+        catchErrorsSendingResource(resourceType, async () => {
+          await onSubmit();
+          closeDrawer();
+          return { status: 201 };
+        });
+      }}
     >
       {children}
     </FormDrawer>

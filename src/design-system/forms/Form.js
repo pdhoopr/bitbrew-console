@@ -3,7 +3,14 @@ import React from "react";
 
 export default function Form({ children, onSubmit }) {
   return (
-    <form onSubmit={onSubmit} autoComplete="off" noValidate>
+    <form
+      onSubmit={event => {
+        event.preventDefault();
+        onSubmit();
+      }}
+      autoComplete="off"
+      noValidate
+    >
       {children}
     </form>
   );

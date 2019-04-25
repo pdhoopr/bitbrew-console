@@ -53,7 +53,7 @@ export default function Snackbar({ children, container, infoLevel, onClose }) {
       {infoLevel === "error" && <ErrorIcon aria-hidden />}
       {infoLevel === "success" && <CheckIcon aria-hidden />}
       <Message>{children}</Message>
-      <IconButton onClick={onClose} title={`Dismiss ${infoLevel} message`}>
+      <IconButton onClick={onClose} title="Dismiss">
         <DismissIcon />
       </IconButton>
     </Wrapper>,

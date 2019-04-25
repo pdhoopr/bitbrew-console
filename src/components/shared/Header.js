@@ -30,7 +30,7 @@ const Actions = styled.div`
   padding-top: var(--size-8);
 `;
 
-const WelcomeLink = styled(IconLink)`
+const HomeLink = styled(IconLink)`
   padding-left: var(--size-14);
   padding-right: var(--size-12);
 
@@ -106,13 +106,9 @@ export default function Header({ breadcrumbs, children }) {
   return (
     <Wrapper>
       <Actions>
-        <WelcomeLink
-          to="/"
-          title="Go to home page"
-          getProps={getCurrentAttributes}
-        >
+        <HomeLink to="/" title="Home" getProps={getCurrentAttributes}>
           <LogoIcon />
-        </WelcomeLink>
+        </HomeLink>
         {breadcrumbs && (
           <Breadcrumbs>
             {breadcrumbs.map(breadcrumb => (

@@ -2,15 +2,26 @@ import PropTypes from "prop-types";
 import React from "react";
 import ReactModal from "react-modal";
 
-export default function ModalImpl({ className, role, ...props }) {
+function getAriaAttributes(props) {
+  return Object.entries(props)
+    .filter(([key]) => key.startsWith("aria-"))
+    .reduce(
+      (attributes, [key, value]) => ({
+        ...attributes,
+        [key.replace(/^aria-/, "")]: value,
+      }),
+      { modal: true },
+    );
+}
+
+export default function ModalImpl({ className, onClose, role, ...props }) {
   return (
     <ReactModal
-      aria={{
-        modal: true,
-      }}
+      aria={getAriaAttributes(props)}
       bodyOpenClassName={`${className}__Body--open`}
       className={`${className}__Content`}
       isOpen
+      onRequestClose={onClose}
       overlayClassName={`${className}__Backdrop`}
       portalClassName={className}
       role={role}
@@ -22,6 +33,7 @@ export default function ModalImpl({ className, role, ...props }) {
 
 ModalImpl.propTypes = {
   className: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
   role: PropTypes.string,
 };
 

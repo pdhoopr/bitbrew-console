@@ -15,6 +15,7 @@ import ListDestinationsScreen from "./destinations/ListDestinationsScreen";
 import ViewDestinationScreen from "./destinations/ViewDestinationScreen";
 import ListDevicesScreen from "./devices/ListDevicesScreen";
 import ViewDeviceScreen from "./devices/ViewDeviceScreen";
+import HomeScreen from "./HomeScreen";
 import ListOrgMembersScreen from "./orgs/ListOrgMembersScreen";
 import Org from "./orgs/Org";
 import ViewOrgScreen from "./orgs/ViewOrgScreen";
@@ -24,7 +25,8 @@ import ViewProjectScreen from "./projects/ViewProjectScreen";
 import ListRulesScreen from "./rules/ListRulesScreen";
 import ViewRuleScreen from "./rules/ViewRuleScreen";
 import Footer from "./shared/Footer";
-import WelcomeScreen from "./WelcomeScreen";
+import HttpErrorSnackbar from "./shared/HttpErrorSnackbar";
+import HttpSuccessSnackbar from "./shared/HttpSuccessSnackbar";
 
 const Router = styled(ReachRouter)`
   flex: 1;
@@ -126,6 +128,27 @@ export default function App() {
     }
   }
 
+  async function catchErrorsSendingResource(resourceType, request) {
+    try {
+      const response = await request();
+      openSnackbar(
+        <HttpSuccessSnackbar
+          statusCode={response.status}
+          resourceType={resourceType}
+        />,
+      );
+      return null;
+    } catch (error) {
+      openSnackbar(
+        <HttpErrorSnackbar
+          statusCode={error.response ? error.response.status : 500}
+          resourceType={resourceType}
+        />,
+      );
+      return error;
+    }
+  }
+
   async function refreshAndRetryOn401(error) {
     if (error.response.status === 401) {
       await logInWithSilentRefresh();
@@ -170,13 +193,14 @@ export default function App() {
         openSnackbar,
         closeSnackbar,
         errorBoundary,
+        catchErrorsSendingResource,
       }}
     >
       <GlobalStyle />
       {auth && (
         <LocationProvider history={historyRef.current}>
           <Router>
-            <WelcomeScreen path="/" />
+            <HomeScreen path="/" />
             <Redirect from="/orgs" to="/" noThrow />
             <Org path="/orgs/:orgId">
               <ViewOrgScreen path="/" />

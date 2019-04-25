@@ -116,7 +116,7 @@ const NewIcon = styled(AddIcon).attrs({
   width: var(--size-32);
 `;
 
-export default function WelcomeScreen() {
+export default function HomeScreen() {
   const { openDrawer } = useContext(AppContext);
 
   const [orgs, setOrgs] = useResource(orgType, []);

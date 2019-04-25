@@ -1,17 +1,16 @@
 import PropTypes from "prop-types";
-import React, { useContext, useState } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import {
   Card,
   CloseIcon,
   Drawer,
-  FocusTrap,
   Form,
   Heading1,
   IconButton,
   RaisedButton,
 } from "../../design-system";
-import AppContext from "../AppContext";
+import { generateId } from "../../utils";
 import Main from "./Main";
 
 const Wrapper = styled(Main)`
@@ -42,42 +41,28 @@ const SubmitButton = styled(RaisedButton)`
 export default function FormDrawer({
   action,
   children,
-  closeTooltip,
   heading,
+  onClose,
   onSubmit,
 }) {
-  const { closeDrawer, errorBoundary } = useContext(AppContext);
+  const headingIdRef = useRef(generateId(`${FormDrawer.name}__heading`));
 
-  const [isSubmitting, setSubmitting] = useState(false);
-
-  const [, description] = closeTooltip.match(/^\w+\s+(.+)$/);
   return (
-    <Drawer onRequestClose={closeDrawer} contentLabel={heading}>
+    <Drawer onClose={onClose} aria-labelledby={headingIdRef.current}>
       <Wrapper as="section">
-        <CloseButton onClick={closeDrawer} title={closeTooltip}>
+        <CloseButton onClick={onClose} title="Cancel">
           <CloseIcon />
         </CloseButton>
-        <Heading1 as="h2">{heading}</Heading1>
+        <Heading1 as="h2" id={headingIdRef.current}>
+          {heading}
+        </Heading1>
         <Content>
-          <Form
-            onSubmit={async event => {
-              event.preventDefault();
-              setSubmitting(true);
-              const error = await errorBoundary(async () => {
-                await onSubmit();
-                closeDrawer();
-              });
-              if (error && error.response.status !== 408) {
-                setSubmitting(false);
-              }
-            }}
-          >
+          <Form onSubmit={onSubmit}>
             {children}
             <SubmitButton type="submit">{action}</SubmitButton>
           </Form>
         </Content>
       </Wrapper>
-      {isSubmitting && <FocusTrap label={`Processing ${description}`} />}
     </Drawer>
   );
 }
@@ -85,7 +70,7 @@ export default function FormDrawer({
 FormDrawer.propTypes = {
   action: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
-  closeTooltip: PropTypes.string.isRequired,
   heading: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };

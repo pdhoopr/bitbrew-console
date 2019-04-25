@@ -70,8 +70,7 @@ export default function PaginatedTable({
   pagination,
   resourceType,
 }) {
-  const plural = pluralize(resourceType);
-  const numItemsLabel = `${capitalize(plural)} per page:`;
+  const numItemsLabel = `${capitalize(pluralize(resourceType))} per page:`;
   return (
     <Card>
       <Table headings={headings}>{children}</Table>
@@ -92,14 +91,14 @@ export default function PaginatedTable({
         <NavigateButton
           disabled={pagination.isAtStart}
           onClick={pagination.loadFirstPage}
-          title={`Show newest ${plural}`}
+          title="Newest"
         >
           <NavigateFirstIcon />
         </NavigateButton>
         <NavigateButton
           disabled={pagination.isAtStart}
           onClick={pagination.loadPreviousPage}
-          title={`Show newer ${plural}`}
+          title="Newer"
         >
           <NavigatePreviousIcon />
         </NavigateButton>
@@ -107,14 +106,14 @@ export default function PaginatedTable({
         <NavigateButton
           disabled={pagination.isAtEnd}
           onClick={pagination.loadNextPage}
-          title={`Show older ${plural}`}
+          title="Older"
         >
           <NavigateNextIcon />
         </NavigateButton>
         <NavigateButton
           disabled={pagination.isAtEnd}
           onClick={pagination.loadLastPage}
-          title={`Show oldest ${plural}`}
+          title="Oldest"
         >
           <NavigateLastIcon />
         </NavigateButton>
