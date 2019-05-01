@@ -17,7 +17,7 @@ export default function DeleteDeviceDialog({ device, onDelete }) {
         await onDelete();
       }}
     >
-      The platform will no longer accept any data it sends.
+      The platform will no longer accept any data sent from this device.
     </DeleteDialog>
   );
 }

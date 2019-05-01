@@ -21,7 +21,7 @@ export default function ListOrgMembersScreen({ orgId }) {
   const pagination = usePagination(loadMembers, [orgId]);
 
   return (
-    <ListScreen isLoading={pagination.isLoading} resourceType={orgMemberType}>
+    <ListScreen showContent={pagination.isReady} resourceType={orgMemberType}>
       <PaginatedTable
         resourceType={orgMemberType}
         headings={["Name", "Email", "Role"]}

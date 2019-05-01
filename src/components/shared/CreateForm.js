@@ -6,15 +6,15 @@ import FormDrawer from "./FormDrawer";
 import resourceTypes from "./resourceTypes";
 
 export default function CreateForm({ children, onSubmit, resourceType }) {
-  const { catchErrorsSendingResource, closeDrawer } = useContext(AppContext);
+  const { catchResourceErrors, closeDrawer } = useContext(AppContext);
 
   return (
     <FormDrawer
       heading={`New ${capitalize(resourceType)}`}
-      action="Create"
       onClose={closeDrawer}
+      submitAction="Create"
       onSubmit={() => {
-        catchErrorsSendingResource(resourceType, async () => {
+        catchResourceErrors(resourceType, async () => {
           await onSubmit();
           closeDrawer();
           return { status: 201 };

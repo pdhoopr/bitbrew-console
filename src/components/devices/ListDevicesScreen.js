@@ -27,7 +27,7 @@ export default function ListDevicesScreen({ projectId }) {
 
   return (
     <ListScreen
-      isLoading={pagination.isLoading}
+      showContent={pagination.isReady}
       resourceType={deviceType}
       onOpenCreate={() => {
         openDrawer(

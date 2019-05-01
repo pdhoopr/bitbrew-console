@@ -8,8 +8,8 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { off, on, retry, setToken } from "../api";
-import { GlobalStyle, Snackbar } from "../design-system";
-import { silentRefresh, summarize } from "../utils";
+import { GlobalStyle } from "../design-system";
+import { silentRefresh } from "../utils";
 import AppContext from "./AppContext";
 import ListDestinationsScreen from "./destinations/ListDestinationsScreen";
 import ViewDestinationScreen from "./destinations/ViewDestinationScreen";
@@ -25,8 +25,12 @@ import ViewProjectScreen from "./projects/ViewProjectScreen";
 import ListRulesScreen from "./rules/ListRulesScreen";
 import ViewRuleScreen from "./rules/ViewRuleScreen";
 import Footer from "./shared/Footer";
+import Http403Dialog from "./shared/Http403Dialog";
+import Http404Dialog from "./shared/Http404Dialog";
+import HttpErrorDialog from "./shared/HttpErrorDialog";
 import HttpErrorSnackbar from "./shared/HttpErrorSnackbar";
 import HttpSuccessSnackbar from "./shared/HttpSuccessSnackbar";
+import ScreenNotFound from "./shared/ScreenNotFound";
 
 const Router = styled(ReachRouter)`
   flex: 1;
@@ -110,33 +114,34 @@ export default function App() {
     setSnackbar(null);
   }
 
-  async function errorBoundary(code) {
+  async function catchAppErrors(request) {
     try {
-      await code();
+      await request();
       return null;
     } catch (error) {
-      openSnackbar(
-        <Snackbar
-          container={document.getElementById("alert-region")}
-          infoLevel="error"
-          onClose={closeSnackbar}
-        >
-          {summarize(error)}
-        </Snackbar>,
-      );
+      const statusCode = error.response ? error.response.status : 500;
+      if (statusCode === 403) {
+        openDialog(<Http403Dialog />);
+      } else if (statusCode === 404) {
+        openDialog(<Http404Dialog />);
+      } else {
+        openDialog(<HttpErrorDialog />);
+      }
       return error;
     }
   }
 
-  async function catchErrorsSendingResource(resourceType, request) {
+  async function catchResourceErrors(resourceType, request) {
     try {
       const response = await request();
-      openSnackbar(
-        <HttpSuccessSnackbar
-          statusCode={response.status}
-          resourceType={resourceType}
-        />,
-      );
+      if (response.status !== 100) {
+        openSnackbar(
+          <HttpSuccessSnackbar
+            statusCode={response.status}
+            resourceType={resourceType}
+          />,
+        );
+      }
       return null;
     } catch (error) {
       openSnackbar(
@@ -150,7 +155,7 @@ export default function App() {
   }
 
   async function refreshAndRetryOn401(error) {
-    if (error.response.status === 401) {
+    if (error.response && error.response.status === 401) {
       await logInWithSilentRefresh();
       const response = await retry(error);
       return response;
@@ -192,8 +197,8 @@ export default function App() {
         closeDialog,
         openSnackbar,
         closeSnackbar,
-        errorBoundary,
-        catchErrorsSendingResource,
+        catchAppErrors,
+        catchResourceErrors,
       }}
     >
       <GlobalStyle />
@@ -214,8 +219,11 @@ export default function App() {
                 <ViewDestinationScreen path="/destinations/:destinationId" />
                 <ListRulesScreen path="/rules" />
                 <ViewRuleScreen path="/rules/:ruleId" />
+                <ScreenNotFound default />
               </Project>
+              <ScreenNotFound default />
             </Org>
+            <ScreenNotFound default />
           </Router>
           <Footer />
           {drawer}

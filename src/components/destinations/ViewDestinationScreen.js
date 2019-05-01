@@ -22,13 +22,13 @@ export default function ViewDestinationScreen({ destinationId, navigate }) {
     setDestination(data);
   }
 
-  const isLoading = useLoading(loadDestination, [destinationId]);
+  const loading = useLoading(loadDestination, [destinationId]);
 
   const type = destination.type || "";
   const compareType = type.toUpperCase();
   return (
     <ViewScreen
-      isLoading={isLoading}
+      showContent={loading.isComplete}
       resource={destination}
       onOpenUpdate={() => {
         openDrawer(

@@ -2,9 +2,7 @@ import styled from "styled-components";
 import ModalImpl from "./ModalImpl";
 import modalStyles from "./modalStyles";
 
-export default styled(ModalImpl).attrs({
-  role: "alertdialog",
-})`
+export default styled(ModalImpl)`
   ${modalStyles};
 
   &__Backdrop {

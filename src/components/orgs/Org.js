@@ -1,6 +1,7 @@
 import { Match } from "@reach/router";
 import PropTypes from "prop-types";
 import React from "react";
+import styled from "styled-components";
 import { viewOrg } from "../../api";
 import { Nav, NavLink } from "../../design-system";
 import Header from "../shared/Header";
@@ -8,6 +9,10 @@ import { orgType } from "../shared/resourceTypes";
 import useLoading from "../shared/useLoading";
 import useResource from "../shared/useResource";
 import OrgContext from "./OrgContext";
+
+const PlaceholderNav = styled.nav`
+  min-height: var(--size-36);
+`;
 
 export default function Org({ children, orgId }) {
   const [org, setOrg] = useResource(orgType, {});
@@ -17,26 +22,21 @@ export default function Org({ children, orgId }) {
     setOrg(data);
   }
 
-  const isLoading = useLoading(loadOrg, [orgId]);
+  const loading = useLoading(loadOrg, [orgId]);
 
-  return (
-    <OrgContext.Provider
-      value={{
-        org,
-        loadOrg,
-        orgIsLoading: isLoading,
-      }}
-    >
+  return loading.isComplete ? (
+    <OrgContext.Provider value={{ org, loadOrg }}>
       <Match path="/orgs/:orgId/projects/:projectId/*">
         {({ match }) =>
           !match && (
             <Header
               breadcrumbs={[
-                !isLoading && {
+                {
                   to: "./",
+                  isPartiallyActive: true,
                   resource: org,
                 },
-              ].filter(Boolean)}
+              ]}
             >
               <Nav>
                 <NavLink to="./">Organization Info</NavLink>
@@ -49,6 +49,10 @@ export default function Org({ children, orgId }) {
       </Match>
       {children}
     </OrgContext.Provider>
+  ) : (
+    <Header>
+      <PlaceholderNav />
+    </Header>
   );
 }
 

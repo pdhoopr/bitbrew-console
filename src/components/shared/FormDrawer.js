@@ -39,11 +39,11 @@ const SubmitButton = styled(RaisedButton)`
 `;
 
 export default function FormDrawer({
-  action,
   children,
   heading,
   onClose,
   onSubmit,
+  submitAction,
 }) {
   const headingIdRef = useRef(generateId(`${FormDrawer.name}__heading`));
 
@@ -59,7 +59,7 @@ export default function FormDrawer({
         <Content>
           <Form onSubmit={onSubmit}>
             {children}
-            <SubmitButton type="submit">{action}</SubmitButton>
+            <SubmitButton type="submit">{submitAction}</SubmitButton>
           </Form>
         </Content>
       </Wrapper>
@@ -68,9 +68,9 @@ export default function FormDrawer({
 }
 
 FormDrawer.propTypes = {
-  action: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   heading: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  submitAction: PropTypes.string.isRequired,
 };

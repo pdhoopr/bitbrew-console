@@ -133,7 +133,7 @@ export default function HomeScreen() {
     );
   }
 
-  const isLoading = useLoading(loadOrgs);
+  const loading = useLoading(loadOrgs);
 
   return (
     <>
@@ -145,7 +145,7 @@ export default function HomeScreen() {
           </Tagline>
         </Intro>
       </Header>
-      {!isLoading && (
+      {loading.isComplete && (
         <OrgsAndProjects>
           {orgs.map(org => {
             const orgUrl = `orgs/${org.id}`;

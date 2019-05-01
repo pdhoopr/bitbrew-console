@@ -22,12 +22,12 @@ export default function ViewDeviceScreen({ deviceId, navigate }) {
     setDevice(data);
   }
 
-  const isLoading = useLoading(loadDevice, [deviceId]);
+  const loading = useLoading(loadDevice, [deviceId]);
 
   const type = device.type || "";
   return (
     <ViewScreen
-      isLoading={isLoading}
+      showContent={loading.isComplete}
       resource={device}
       onOpenUpdate={() => {
         openDrawer(<UpdateDeviceForm device={device} onUpdate={loadDevice} />);

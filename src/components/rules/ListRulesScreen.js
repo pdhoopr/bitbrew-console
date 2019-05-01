@@ -35,7 +35,7 @@ export default function ListRulesScreen({ projectId }) {
 
   return (
     <ListScreen
-      isLoading={pagination.isLoading}
+      showContent={pagination.isReady}
       resourceType={ruleType}
       onOpenCreate={() => {
         openDrawer(

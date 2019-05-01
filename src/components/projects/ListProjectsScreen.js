@@ -27,7 +27,7 @@ export default function ListProjectsScreen({ orgId }) {
 
   return (
     <ListScreen
-      isLoading={pagination.isLoading}
+      showContent={pagination.isReady}
       resourceType={projectType}
       onOpenCreate={() => {
         openDrawer(

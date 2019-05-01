@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import BlockLink from "../links/BlockLink";
+import getNavLinkProps from "./getNavLinkProps";
 
 const Wrapper = styled(BlockLink)`
   border-bottom: var(--border-transparent);
@@ -41,23 +42,10 @@ const Wrapper = styled(BlockLink)`
   }
 `;
 
-export default function NavLink({ children, isActiveOnNestedRoutes, to }) {
+export default function NavLink({ children, isPartiallyActive, to }) {
   return (
     <Wrapper
-      getProps={({ isCurrent, isPartiallyCurrent }) => {
-        if (isCurrent) {
-          return {
-            "data-active": "",
-            "data-current": "",
-          };
-        }
-        if (isPartiallyCurrent && isActiveOnNestedRoutes) {
-          return {
-            "data-active": "",
-          };
-        }
-        return null;
-      }}
+      getProps={props => getNavLinkProps({ ...props, isPartiallyActive })}
       to={to}
     >
       {children}
@@ -67,10 +55,10 @@ export default function NavLink({ children, isActiveOnNestedRoutes, to }) {
 
 NavLink.propTypes = {
   children: PropTypes.node.isRequired,
-  isActiveOnNestedRoutes: PropTypes.bool,
+  isPartiallyActive: PropTypes.bool,
   to: PropTypes.string.isRequired,
 };
 
 NavLink.defaultProps = {
-  isActiveOnNestedRoutes: false,
+  isPartiallyActive: false,
 };

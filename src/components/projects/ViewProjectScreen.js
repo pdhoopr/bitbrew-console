@@ -11,7 +11,7 @@ import UpdateProjectForm from "./UpdateProjectForm";
 
 export default function ViewProjectScreen({ navigate, projectId }) {
   const { openDialog, openDrawer } = useContext(AppContext);
-  const { loadProject, project, projectIsLoading } = useContext(ProjectContext);
+  const { loadProject, project } = useContext(ProjectContext);
 
   const [numDevices, setNumDevices] = useState(0);
   const [numDestinations, setNumDestinations] = useState(0);
@@ -32,11 +32,11 @@ export default function ViewProjectScreen({ navigate, projectId }) {
     setNumRules(totalRules);
   }
 
-  const metricsAreLoading = useLoading(loadMetrics, [projectId]);
+  const loading = useLoading(loadMetrics, [projectId]);
 
   return (
     <ViewScreen
-      isLoading={projectIsLoading || metricsAreLoading}
+      showContent={loading.isComplete}
       resource={{
         ...project,
         updatedAt: null,

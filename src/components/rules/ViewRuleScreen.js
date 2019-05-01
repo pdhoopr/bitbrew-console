@@ -40,11 +40,11 @@ export default function ViewRuleScreen({ navigate, ruleId }) {
     setDestination(destinationData);
   }
 
-  const isLoading = useLoading(loadRule, [ruleId]);
+  const loading = useLoading(loadRule, [ruleId]);
 
   return (
     <ViewScreen
-      isLoading={isLoading}
+      showContent={loading.isComplete}
       resource={rule}
       onOpenDelete={() => {
         openDialog(

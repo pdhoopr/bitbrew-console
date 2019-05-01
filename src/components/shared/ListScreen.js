@@ -49,35 +49,34 @@ const EmptyMessage = styled(Subheading)`
 
 export default function ListScreen({
   children,
-  isLoading,
   onOpenCreate,
   resourceType,
+  showContent,
 }) {
   const plural = pluralize(resourceType);
   return (
-    <Main>
-      <Intro>
-        <Heading1>{capitalize(plural)}</Heading1>
-        {!isLoading && onOpenCreate && (
-          <NewButton onClick={onOpenCreate}>New</NewButton>
-        )}
-      </Intro>
-      {!isLoading &&
-        (children || (
+    showContent && (
+      <Main>
+        <Intro>
+          <Heading1>{capitalize(plural)}</Heading1>
+          {onOpenCreate && <NewButton onClick={onOpenCreate}>New</NewButton>}
+        </Intro>
+        {children || (
           <EmptyState>
             <EmptyIcon aria-hidden />
             <EmptyMessage>There are no {plural} here yet.</EmptyMessage>
           </EmptyState>
-        ))}
-    </Main>
+        )}
+      </Main>
+    )
   );
 }
 
 ListScreen.propTypes = {
   children: PropTypes.node.isRequired,
-  isLoading: PropTypes.bool.isRequired,
   onOpenCreate: PropTypes.func,
   resourceType: PropTypes.oneOf(resourceTypes).isRequired,
+  showContent: PropTypes.bool.isRequired,
 };
 
 ListScreen.defaultProps = {

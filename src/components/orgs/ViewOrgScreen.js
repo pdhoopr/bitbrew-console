@@ -11,7 +11,7 @@ import UpdateOrgForm from "./UpdateOrgForm";
 
 export default function ViewOrgScreen({ navigate, orgId }) {
   const { openDialog, openDrawer } = useContext(AppContext);
-  const { loadOrg, org, orgIsLoading } = useContext(OrgContext);
+  const { loadOrg, org } = useContext(OrgContext);
 
   const [numMembers, setNumMembers] = useState(0);
   const [numProjects, setNumProjects] = useState(0);
@@ -25,11 +25,11 @@ export default function ViewOrgScreen({ navigate, orgId }) {
     setNumProjects(totalProjects);
   }
 
-  const metricsAreLoading = useLoading(loadMetrics, [orgId]);
+  const loading = useLoading(loadMetrics, [orgId]);
 
   return (
     <ViewScreen
-      isLoading={orgIsLoading || metricsAreLoading}
+      showContent={loading.isComplete}
       resource={{
         ...org,
         updatedAt: null,

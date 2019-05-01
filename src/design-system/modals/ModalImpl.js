@@ -2,12 +2,12 @@ import PropTypes from "prop-types";
 import React from "react";
 import ReactModal from "react-modal";
 
-function getAriaAttributes(props) {
+function getAriaProps(props) {
   return Object.entries(props)
     .filter(([key]) => key.startsWith("aria-"))
     .reduce(
-      (attributes, [key, value]) => ({
-        ...attributes,
+      (ariaProps, [key, value]) => ({
+        ...ariaProps,
         [key.replace(/^aria-/, "")]: value,
       }),
       { modal: true },
@@ -17,7 +17,7 @@ function getAriaAttributes(props) {
 export default function ModalImpl({ className, onClose, role, ...props }) {
   return (
     <ReactModal
-      aria={getAriaAttributes(props)}
+      aria={getAriaProps(props)}
       bodyOpenClassName={`${className}__Body--open`}
       className={`${className}__Content`}
       isOpen

@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import {
   BlockLink,
+  getNavLinkProps,
   Heading3,
   IconLink,
   LogoIcon,
@@ -63,16 +64,16 @@ const BreadcrumbHeading = styled(Heading3)`
     padding-left: var(--size-8);
     padding-right: var(--size-8);
   }
-
-  &:last-of-type {
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--letter-spacing);
-  }
 `;
 
 const BreadcrumbLink = styled(BlockLink)`
   display: inline-block;
   padding: var(--size-4) var(--size-8);
+
+  &[data-active] {
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--letter-spacing);
+  }
 
   &[data-current] {
     cursor: default;
@@ -87,26 +88,13 @@ const UnnamedBreadcrumb = styled(Name)`
   color: var(--color-medium-dark-gray);
 `;
 
-function getCurrentAttributes({ isCurrent }) {
-  return isCurrent
-    ? {
-        "data-active": "",
-        "data-current": "",
-      }
-    : null;
-}
-
-function loseFocus(event) {
-  event.currentTarget.blur();
-}
-
 export default function Header({ breadcrumbs, children }) {
   const { auth, logOut } = useContext(AppContext);
 
   return (
     <Wrapper>
       <Actions>
-        <HomeLink to="/" title="Home" getProps={getCurrentAttributes}>
+        <HomeLink to="/" title="Home" getProps={getNavLinkProps}>
           <LogoIcon />
         </HomeLink>
         {breadcrumbs && (
@@ -114,9 +102,16 @@ export default function Header({ breadcrumbs, children }) {
             {breadcrumbs.map(breadcrumb => (
               <BreadcrumbHeading as="li" key={breadcrumb.resource.id}>
                 <BreadcrumbLink
-                  getProps={getCurrentAttributes}
+                  getProps={props =>
+                    getNavLinkProps({
+                      ...props,
+                      isPartiallyActive: breadcrumb.isPartiallyActive,
+                    })
+                  }
                   to={breadcrumb.to}
-                  onClick={loseFocus}
+                  onClick={event => {
+                    event.currentTarget.blur();
+                  }}
                 >
                   <UnnamedBreadcrumb resource={breadcrumb.resource} />
                 </BreadcrumbLink>
@@ -136,6 +131,7 @@ export default function Header({ breadcrumbs, children }) {
 Header.propTypes = {
   breadcrumbs: PropTypes.arrayOf(
     PropTypes.shape({
+      isPartiallyActive: PropTypes.bool,
       resource: PropTypes.shape({
         id: PropTypes.string.isRequired,
       }).isRequired,

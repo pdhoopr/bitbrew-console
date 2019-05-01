@@ -1,4 +1,4 @@
-export default function localize(dateString, { time = false } = {}) {
+export default function localize(dateString, { formatTime = false } = {}) {
   const locale =
     (window.navigator.languages && window.navigator.languages[0]) ||
     window.navigator.language ||
@@ -14,11 +14,6 @@ export default function localize(dateString, { time = false } = {}) {
   };
   return new Date(dateString).toLocaleString(
     locale,
-    time
-      ? {
-          ...dateOptions,
-          ...timeOptions,
-        }
-      : dateOptions,
+    formatTime ? { ...dateOptions, ...timeOptions } : dateOptions,
   );
 }

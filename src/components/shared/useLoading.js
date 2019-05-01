@@ -1,22 +1,21 @@
 import { useContext, useEffect, useState } from "react";
 import AppContext from "../AppContext";
 
-export default function useLoading(loadData, props = []) {
-  const { errorBoundary } = useContext(AppContext);
+export default function useLoading(request, props = []) {
+  const { catchAppErrors } = useContext(AppContext);
 
-  const [isLoading, setLoading] = useState(true);
+  const [isComplete, setComplete] = useState(false);
+  const [error, setError] = useState(null);
 
-  async function loadWithErrorHandling() {
-    setLoading(true);
-    const error = await errorBoundary(loadData);
-    if (!error) {
-      setLoading(false);
-    }
+  async function makeRequest() {
+    const appError = await catchAppErrors(request);
+    setError(appError);
+    setComplete(!appError);
   }
 
   useEffect(() => {
-    loadWithErrorHandling();
+    makeRequest();
   }, props);
 
-  return isLoading;
+  return { isComplete, error };
 }

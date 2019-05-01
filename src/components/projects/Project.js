@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useContext } from "react";
+import styled from "styled-components";
 import { viewProject } from "../../api";
 import { Nav, NavLink } from "../../design-system";
 import OrgContext from "../orgs/OrgContext";
@@ -9,8 +10,12 @@ import useLoading from "../shared/useLoading";
 import useResource from "../shared/useResource";
 import ProjectContext from "./ProjectContext";
 
+const PlaceholderNav = styled.nav`
+  min-height: var(--size-36);
+`;
+
 export default function Project({ children, projectId }) {
-  const { org, orgIsLoading } = useContext(OrgContext);
+  const { org } = useContext(OrgContext);
 
   const [project, setProject] = useResource(projectType, {});
 
@@ -19,43 +24,45 @@ export default function Project({ children, projectId }) {
     setProject(data);
   }
 
-  const isLoading = useLoading(loadProject, [projectId]);
+  const loading = useLoading(loadProject, [projectId]);
 
-  return (
-    <ProjectContext.Provider
-      value={{
-        project,
-        loadProject,
-        projectIsLoading: isLoading,
-      }}
-    >
+  const breadcrumbs = [
+    {
+      to: `../../`,
+      resource: org,
+    },
+  ];
+  return loading.isComplete ? (
+    <ProjectContext.Provider value={{ project, loadProject }}>
       <Header
         breadcrumbs={[
-          !orgIsLoading && {
-            to: `../../`,
-            resource: org,
-          },
-          !(orgIsLoading || isLoading) && {
+          ...breadcrumbs,
+          {
             to: "./",
+            isPartiallyActive: true,
             resource: project,
           },
-        ].filter(Boolean)}
+        ]}
       >
         <Nav>
           <NavLink to="./">Project Info</NavLink>
-          <NavLink to="devices" isActiveOnNestedRoutes>
+          <NavLink to="devices" isPartiallyActive>
             Devices
           </NavLink>
-          <NavLink to="destinations" isActiveOnNestedRoutes>
+          <NavLink to="destinations" isPartiallyActive>
             Destinations
           </NavLink>
-          <NavLink to="rules" isActiveOnNestedRoutes>
+          <NavLink to="rules" isPartiallyActive>
             Rules
           </NavLink>
         </Nav>
       </Header>
       {children}
     </ProjectContext.Provider>
+  ) : (
+    <Header breadcrumbs={loading.error && breadcrumbs}>
+      <PlaceholderNav />
+    </Header>
   );
 }
 

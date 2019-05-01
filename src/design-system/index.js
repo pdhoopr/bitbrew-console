@@ -43,6 +43,7 @@ export { default as Menu } from "./menus/Menu";
 export { default as MenuItem } from "./menus/MenuItem";
 export { default as Dialog } from "./modals/Dialog";
 export { default as Drawer } from "./modals/Drawer";
+export { default as getNavLinkProps } from "./navigation/getNavLinkProps";
 export { default as Nav } from "./navigation/Nav";
 export { default as NavLink } from "./navigation/NavLink";
 export { default as Snackbar } from "./snackbars/Snackbar";

@@ -74,15 +74,15 @@ const DeleteButton = styled(Button)`
 
 export default function ViewScreen({
   children,
-  isLoading,
   metrics,
   onOpenDelete,
   onOpenUpdate,
   resource,
+  showContent,
 }) {
   const statusLabel = resource.enabled ? "Enabled" : "Disabled";
   return (
-    !isLoading && (
+    showContent && (
       <Main>
         <Intro>
           {resource.description ? (
@@ -125,13 +125,13 @@ export default function ViewScreen({
             )}
             <ListItem heading="Created On">
               {localize(resource.createdAt, {
-                time: !!resource.updatedAt,
+                formatTime: !!resource.updatedAt,
               })}
             </ListItem>
             {resource.updatedAt && (
               <ListItem heading="Last Modified On">
                 {localize(resource.updatedAt, {
-                  time: true,
+                  formatTime: true,
                 })}
               </ListItem>
             )}
@@ -148,7 +148,6 @@ export default function ViewScreen({
 
 ViewScreen.propTypes = {
   children: PropTypes.node,
-  isLoading: PropTypes.bool.isRequired,
   metrics: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
@@ -165,6 +164,7 @@ ViewScreen.propTypes = {
     impl: PropTypes.oneOf(resourceTypes).isRequired,
     updatedAt: PropTypes.string,
   }).isRequired,
+  showContent: PropTypes.bool.isRequired,
 };
 
 ViewScreen.defaultProps = {

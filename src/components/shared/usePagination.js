@@ -1,27 +1,38 @@
 import { useContext, useEffect, useState } from "react";
 import AppContext from "../AppContext";
 import { defaultPageSize } from "./pageSizes";
+import { pageType } from "./resourceTypes";
 
-export default function usePagination(loadData, props = []) {
-  const { errorBoundary } = useContext(AppContext);
+export default function usePagination(request, props = []) {
+  const { catchAppErrors, catchResourceErrors } = useContext(AppContext);
 
-  const [isLoading, setLoading] = useState(true);
+  const [isReady, setReady] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [numItemsPerPage, setNumItemsPerPage] = useState(defaultPageSize);
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
+  async function makeInitialRequest() {
+    const error = await catchAppErrors(async () => {
+      const data = await request({
+        page: currentPage,
+        pageSize: numItemsPerPage,
+      });
+      setTotalItems(data.totalItems);
+      setTotalPages(data.totalPages);
+    });
+    setReady(!error);
+  }
+
   async function loadPage(page, pageSize = numItemsPerPage) {
-    const error = await errorBoundary(async () => {
-      const data = await loadData({ page, pageSize });
+    await catchResourceErrors(pageType, async () => {
+      const data = await request({ page, pageSize });
       setCurrentPage(page);
       setNumItemsPerPage(pageSize);
       setTotalItems(data.totalItems);
       setTotalPages(data.totalPages);
+      return { status: 100 };
     });
-    if (!error) {
-      setLoading(false);
-    }
   }
 
   function loadFirstPage() {
@@ -45,11 +56,11 @@ export default function usePagination(loadData, props = []) {
   }
 
   useEffect(() => {
-    loadFirstPage();
+    makeInitialRequest();
   }, props);
 
   return {
-    isLoading,
+    isReady,
     currentPage,
     numItemsPerPage,
     totalItems,
