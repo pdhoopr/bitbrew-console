@@ -29,3 +29,4 @@ export { default as retry } from "./settings/retry";
 export { default as setBaseUrl } from "./settings/setBaseUrl";
 export { default as setPageSize } from "./settings/setPageSize";
 export { default as setToken } from "./settings/setToken";
+export { default as viewSelf } from "./users/viewSelf";

@@ -30,7 +30,7 @@ const Items = styled.div`
   z-index: 2;
 `;
 
-export default function Menu({ children, className, heading }) {
+export default function Menu({ children, className, heading, title }) {
   const wrapperRef = useRef(null);
   const menuButtonRef = useRef(null);
   const menuButtonIdRef = useRef(generateId(`${Menu.name}__button`));
@@ -118,6 +118,7 @@ export default function Menu({ children, className, heading }) {
           }
         }}
         onKeyDown={focusOnSomeKeyPresses}
+        title={title}
         id={menuButtonIdRef.current}
         aria-controls={menuIdRef.current}
         aria-expanded={isOpen}
@@ -154,9 +155,11 @@ export default function Menu({ children, className, heading }) {
 Menu.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
-  heading: PropTypes.string.isRequired,
+  heading: PropTypes.node.isRequired,
+  title: PropTypes.string,
 };
 
 Menu.defaultProps = {
   className: null,
+  title: null,
 };

@@ -34,15 +34,10 @@ const NumItemsMenu = styled(Menu)`
     letter-spacing: normal;
   }
 
-  [role="menuitem"][disabled] {
+  [role="menuitem"][data-selected] {
     color: var(--color-green);
-    cursor: default;
     font-weight: var(--weight-bold);
     letter-spacing: var(--letter-spacing);
-
-    &::before {
-      content: none;
-    }
   }
 `;
 
@@ -81,8 +76,12 @@ export default function PaginatedTable({
           {pageSizes.map(size => (
             <MenuItem
               key={size}
-              disabled={size === pagination.numItemsPerPage}
-              onClick={() => pagination.reloadWithPageSize(size)}
+              onClick={() => {
+                if (size !== pagination.numItemsPerPage) {
+                  pagination.reloadWithPageSize(size);
+                }
+              }}
+              data-selected={size === pagination.numItemsPerPage ? "" : null}
             >
               {size}
             </MenuItem>

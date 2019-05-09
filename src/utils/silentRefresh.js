@@ -48,7 +48,7 @@ export default function silentRefresh() {
       timeoutId = window.setTimeout(() => {
         cleanup();
         reject();
-      }, 1000);
+      }, 2000);
     }
   });
 }

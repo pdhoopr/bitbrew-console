@@ -7,7 +7,7 @@ import {
 } from "@reach/router";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { off, on, retry, setToken } from "../api";
+import { off, on, retry, setToken, viewSelf } from "../api";
 import { GlobalStyle } from "../design-system";
 import { silentRefresh } from "../utils";
 import AppContext from "./AppContext";
@@ -44,16 +44,22 @@ export default function App() {
   const [dialog, setDialog] = useState(null);
   const [snackbar, setSnackbar] = useState(null);
 
-  function logIn(token) {
-    setToken(token);
-    setAuth(token);
+  function logOut(redirectUri = window.location.origin) {
+    setToken(null);
+    setAuth(null);
+    navigate(
+      `https://service.bitbrew.com/auth/logout?redirect_uri=https://service.bitbrew.com/auth/login?redirect_uri=${redirectUri}`,
+    );
   }
 
-  function logInWithRedirect() {
-    const currentUrl = window.location.href;
-    navigate(
-      `https://service.bitbrew.com/auth/logout?redirect_uri=https://service.bitbrew.com/auth/login?redirect_uri=${currentUrl}`,
-    );
+  async function logIn(token) {
+    setToken(token);
+    try {
+      const user = await viewSelf();
+      setAuth(user);
+    } catch {
+      logOut(window.location.href);
+    }
   }
 
   async function logInWithSilentRefresh() {
@@ -61,7 +67,7 @@ export default function App() {
       const token = await silentRefresh();
       logIn(token);
     } catch {
-      logInWithRedirect();
+      logOut(window.location.href);
     }
   }
 
@@ -79,15 +85,6 @@ export default function App() {
     } else {
       logInWithSilentRefresh();
     }
-  }
-
-  function logOut() {
-    setToken(null);
-    setAuth(null);
-    const rootUrl = window.location.origin;
-    navigate(
-      `https://service.bitbrew.com/auth/logout?redirect_uri=https://service.bitbrew.com/auth/login?redirect_uri=${rootUrl}`,
-    );
   }
 
   function openDrawer(component) {
@@ -189,8 +186,8 @@ export default function App() {
     <AppContext.Provider
       value={{
         auth,
-        logIn,
         logOut,
+        logIn,
         openDrawer,
         closeDrawer,
         openDialog,

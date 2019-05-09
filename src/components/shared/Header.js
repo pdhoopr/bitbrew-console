@@ -1,4 +1,3 @@
-import jwtDecode from "jwt-decode";
 import PropTypes from "prop-types";
 import React, { useContext } from "react";
 import styled from "styled-components";
@@ -12,6 +11,7 @@ import {
   MenuItem,
 } from "../../design-system";
 import AppContext from "../AppContext";
+import Gravatar from "./Gravatar";
 import Name from "./Name";
 
 const Wrapper = styled.header`
@@ -88,6 +88,10 @@ const UnnamedBreadcrumb = styled(Name)`
   color: var(--color-medium-dark-gray);
 `;
 
+const LogOutButton = styled(MenuItem)`
+  min-width: calc(var(--size-72) * 2);
+`;
+
 export default function Header({ breadcrumbs, children }) {
   const { auth, logOut } = useContext(AppContext);
 
@@ -119,8 +123,8 @@ export default function Header({ breadcrumbs, children }) {
             ))}
           </Breadcrumbs>
         )}
-        <Menu heading={jwtDecode(auth).email}>
-          <MenuItem onClick={logOut}>Log out</MenuItem>
+        <Menu heading={<Gravatar email={auth.email} />} title="Profile">
+          <LogOutButton onClick={logOut}>Log out</LogOutButton>
         </Menu>
       </Actions>
       {children}
