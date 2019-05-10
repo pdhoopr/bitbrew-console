@@ -8,7 +8,7 @@ const Wrapper = styled.img`
   vertical-align: middle;
 `;
 
-export default function Gravatar({ email, name, size }) {
+export default function Gravatar({ className, email, name, size }) {
   const hash = md5(email);
   const retinaSize = size * 2;
   return (
@@ -17,17 +17,20 @@ export default function Gravatar({ email, name, size }) {
       alt={name}
       height={size}
       width={size}
+      className={className}
     />
   );
 }
 
 Gravatar.propTypes = {
+  className: PropTypes.string,
   email: PropTypes.string.isRequired,
   name: PropTypes.string,
   size: PropTypes.number,
 };
 
 Gravatar.defaultProps = {
+  className: null,
   name: "",
   size: 32,
 };

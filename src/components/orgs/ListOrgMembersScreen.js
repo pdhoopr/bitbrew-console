@@ -1,13 +1,19 @@
 import PropTypes from "prop-types";
 import React from "react";
+import styled from "styled-components";
 import { listOrgMembers } from "../../api";
 import { TableCell, TableRow } from "../../design-system";
 import { capitalize } from "../../utils";
+import Gravatar from "../shared/Gravatar";
 import ListScreen from "../shared/ListScreen";
 import PaginatedTable from "../shared/PaginatedTable";
 import { orgMemberType } from "../shared/resourceTypes";
 import usePagination from "../shared/usePagination";
 import useResource from "../shared/useResource";
+
+const Photo = styled(Gravatar)`
+  margin-right: var(--size-24);
+`;
 
 export default function ListOrgMembersScreen({ orgId }) {
   const [members, setMembers] = useResource(orgMemberType, []);
@@ -29,7 +35,10 @@ export default function ListOrgMembersScreen({ orgId }) {
       >
         {members.map(member => (
           <TableRow key={member.id}>
-            <TableCell>{member.name}</TableCell>
+            <TableCell>
+              <Photo email={member.email} size={24} />
+              {member.name}
+            </TableCell>
             <TableCell>{member.email}</TableCell>
             <TableCell>{capitalize(member.role)}</TableCell>
           </TableRow>
