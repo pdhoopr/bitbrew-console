@@ -6,6 +6,7 @@ module.exports = function buildBabelPreset() {
       [
         "@babel/preset-env",
         {
+          corejs: 3,
           modules: false,
           useBuiltIns: "usage",
         },

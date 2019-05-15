@@ -35,8 +35,8 @@ export default function Menu({ children, className, heading, title }) {
   const menuButtonRef = useRef(null);
   const menuButtonIdRef = useRef(generateId(`${Menu.name}__button`));
   const menuIdRef = useRef(generateId(`${Menu.name}__items`));
-  const menuItemRefs = useRef([]);
 
+  const [menuItemRefs, setMenuItemRefs] = useState([]);
   const [isOpen, setOpen] = useState(false);
 
   const closeOnEscOrTab = useCallback(event => {
@@ -70,42 +70,45 @@ export default function Menu({ children, className, heading, title }) {
     setOpen(false);
   }
 
-  async function focusOnSomeKeyPresses(event) {
+  async function manageMenuFocus(event) {
     const isEnd = event.keyCode === 35;
     const isHome = event.keyCode === 36;
     const isUp = event.keyCode === 38;
     const isDown = event.keyCode === 40;
     if (isEnd || isHome || isUp || isDown) {
       event.preventDefault();
-      const { index } = event.currentTarget.dataset;
-      const firstItemIndex = 0;
-      const lastItemIndex = menuItemRefs.current.length - 1;
-      let itemIndexToFocus;
+      const { order } = event.currentTarget.dataset;
+      const firstIndex = 0;
+      const lastIndex = menuItemRefs.length - 1;
+      let focusIndex;
       if (isEnd) {
-        itemIndexToFocus = lastItemIndex;
+        focusIndex = lastIndex;
       } else if (isHome) {
-        itemIndexToFocus = firstItemIndex;
+        focusIndex = firstIndex;
       } else if (isUp) {
-        const itemIndex = Number(index || firstItemIndex);
-        const isFirstItem = itemIndex === firstItemIndex;
-        itemIndexToFocus = isFirstItem ? lastItemIndex : itemIndex - 1;
+        const currentIndex = order == null ? firstIndex : Number(order);
+        focusIndex = currentIndex === firstIndex ? lastIndex : currentIndex - 1;
       } else {
-        const itemIndex = Number(index || lastItemIndex);
-        const isLastItem = itemIndex === lastItemIndex;
-        itemIndexToFocus = isLastItem ? firstItemIndex : itemIndex + 1;
+        const currentIndex = order == null ? lastIndex : Number(order);
+        focusIndex = currentIndex === lastIndex ? firstIndex : currentIndex + 1;
       }
       if (!isOpen) {
         openMenu();
         await wait();
       }
-      menuItemRefs.current[itemIndexToFocus].current.focus();
+      menuItemRefs[focusIndex].current.focus();
     }
   }
 
   useEffect(() => {
-    menuItemRefs.current = React.Children.map(children, React.createRef);
+    setMenuItemRefs(
+      React.Children.toArray(children)
+        .filter(child => child.props.tabIndex !== null)
+        .map(React.createRef),
+    );
   }, [children]);
 
+  let menuItemOrder = -1;
   return (
     <Wrapper ref={wrapperRef} className={className}>
       <Button
@@ -117,12 +120,13 @@ export default function Menu({ children, className, heading, title }) {
             openMenu();
           }
         }}
-        onKeyDown={focusOnSomeKeyPresses}
+        onKeyDown={manageMenuFocus}
         title={title}
         id={menuButtonIdRef.current}
         aria-controls={menuIdRef.current}
         aria-expanded={isOpen}
         aria-haspopup
+        aria-label={title}
       >
         {heading}
         <Icon aria-hidden />
@@ -133,20 +137,28 @@ export default function Menu({ children, className, heading, title }) {
         aria-labelledby={menuButtonIdRef.current}
         role="menu"
       >
-        {React.Children.map(children, (menuItem, index) =>
-          React.cloneElement(menuItem, {
-            ref: menuItemRefs.current[index],
-            tabIndex: -1,
-            "data-index": index,
-            onClick() {
-              closeMenu();
-              menuButtonRef.current.focus();
-              menuItem.props.onClick();
-            },
-            onKeyDown: focusOnSomeKeyPresses,
-            role: "menuitem",
-          }),
-        )}
+        {React.Children.map(children, menuItem => {
+          const skipFocus = menuItem.props.tabIndex === null;
+          if (!skipFocus) {
+            menuItemOrder += 1;
+          }
+          return skipFocus
+            ? menuItem
+            : React.cloneElement(menuItem, {
+                ref: menuItemRefs[menuItemOrder],
+                tabIndex: -1,
+                "data-order": menuItemOrder,
+                onClick() {
+                  closeMenu();
+                  menuButtonRef.current.focus();
+                  if (menuItem.props.onClick) {
+                    menuItem.props.onClick();
+                  }
+                },
+                onKeyDown: manageMenuFocus,
+                role: "menuitem",
+              });
+        })}
       </Items>
     </Wrapper>
   );

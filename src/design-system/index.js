@@ -23,6 +23,7 @@ export { default as CloseIcon } from "./icons/CloseIcon";
 export { default as EmptyIcon } from "./icons/EmptyIcon";
 export { default as ErrorIcon } from "./icons/ErrorIcon";
 export { default as ExpandIcon } from "./icons/ExpandIcon";
+export { default as Gravatar } from "./icons/Gravatar";
 export { default as LogoIcon } from "./icons/LogoIcon";
 export { default as NavigateFirstIcon } from "./icons/NavigateFirstIcon";
 export { default as NavigateLastIcon } from "./icons/NavigateLastIcon";

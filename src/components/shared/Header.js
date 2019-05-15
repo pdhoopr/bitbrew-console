@@ -4,14 +4,15 @@ import styled from "styled-components";
 import {
   BlockLink,
   getNavLinkProps,
+  Gravatar,
   Heading3,
   IconLink,
   LogoIcon,
   Menu,
   MenuItem,
+  Text,
 } from "../../design-system";
 import AppContext from "../AppContext";
-import Gravatar from "./Gravatar";
 import Name from "./Name";
 
 const Wrapper = styled.header`
@@ -88,8 +89,10 @@ const UnnamedBreadcrumb = styled(Name)`
   color: var(--color-medium-dark-gray);
 `;
 
-const LogOutButton = styled(MenuItem)`
-  min-width: calc(var(--size-72) * 2);
+const Profile = styled.div`
+  border-bottom: var(--border-divider);
+  margin-bottom: var(--size-8);
+  padding: var(--size-4) var(--size-16) var(--size-12);
 `;
 
 export default function Header({ breadcrumbs, children }) {
@@ -123,8 +126,15 @@ export default function Header({ breadcrumbs, children }) {
             ))}
           </Breadcrumbs>
         )}
-        <Menu heading={<Gravatar email={auth.email} />} title="Profile">
-          <LogOutButton onClick={logOut}>Log out</LogOutButton>
+        <Menu
+          heading={<Gravatar email={auth.email} />}
+          title={`Account: ${auth.name} (${auth.email})`}
+        >
+          <Profile tabIndex={null}>
+            <Text as="strong">{auth.name}</Text>
+            <Text gray>{auth.email}</Text>
+          </Profile>
+          <MenuItem onClick={logOut}>Log out</MenuItem>
         </Menu>
       </Actions>
       {children}

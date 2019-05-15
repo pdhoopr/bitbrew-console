@@ -65,7 +65,9 @@ module.exports = {
         from: paths.webLoginCssFile,
         to: paths.distCssFolder,
         async transform(css) {
-          const result = await postcss([autoprefixer]).process(css);
+          const result = await postcss([autoprefixer]).process(css, {
+            from: undefined,
+          });
           return result.css;
         },
       },

@@ -1,0 +1,70 @@
+{
+  "extends": ["airbnb", "prettier", "prettier/react"],
+  "parser": "babel-eslint",
+  "plugins": ["compat", "react-hooks"],
+  "env": {
+    "browser": true
+  },
+  "settings": {
+    "polyfills": ["URLSearchParams"]
+  },
+  "rules": {
+    "compat/compat": "error",
+    "jsx-a11y/anchor-has-content": [
+      "error",
+      {
+        "components": ["BlockLink", "IconLink", "Link", "NavLink"]
+      }
+    ],
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": ["BlockLink", "IconLink", "Link", "NavLink"],
+        "specialLink": ["to"],
+        "aspects": ["invalidHref", "noHref", "preferButton"]
+      }
+    ],
+    "jsx-a11y/heading-has-content": [
+      "error",
+      {
+        "components": [
+          "Heading",
+          "Heading1",
+          "Heading2",
+          "Heading3",
+          "Subheading",
+          "Text"
+        ]
+      }
+    ],
+    "react/forbid-prop-types": [
+      "error",
+      {
+        "forbid": ["any"],
+        "checkContextTypes": true,
+        "checkChildContextTypes": true
+      }
+    ],
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [".js"]
+      }
+    ],
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error"
+  },
+  "overrides": [
+    {
+      "files": ["config/**/*.js"],
+      "rules": {
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": true
+          }
+        ]
+      }
+    }
+  ]
+}

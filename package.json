@@ -1,9 +1,9 @@
 {
   "private": true,
   "name": "bitbrew-console",
-  "version": "0.0.0",
-  "homepage": "https://github.com/BitBrew/console#readme",
+  "version": "1.0.0-dev",
   "description": "Console for BitBrew's second-generation connected vehicle platform.",
+  "homepage": "https://master.console.bitbrew.com",
   "bugs": {
     "url": "https://github.com/BitBrew/console/issues"
   },
@@ -25,6 +25,7 @@
     "@babel/polyfill": "^7.4.4",
     "@reach/router": "^1.2.1",
     "axios": "^0.18.0",
+    "core-js": "^3.0.1",
     "jwt-decode": "^2.2.0",
     "md5": "^2.2.1",
     "prop-types": "^15.7.2",
@@ -42,7 +43,7 @@
     "@svgr/webpack": "^4.2.0",
     "autoprefixer": "^9.5.1",
     "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.0.5",
+    "babel-loader": "^8.0.6",
     "babel-plugin-styled-components": "^1.10.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "case-sensitive-paths-webpack-plugin": "^2.2.0",
@@ -66,219 +67,18 @@
     "lint-staged": "^8.1.6",
     "npm-run-all": "^4.1.5",
     "postcss": "^7.0.16",
-    "prettier": "^1.17.0",
+    "prettier": "^1.17.1",
     "stylelint": "^10.0.1",
     "stylelint-config-prettier": "^5.1.0",
     "stylelint-config-standard": "^18.3.0",
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-no-unsupported-browser-features": "^3.0.2",
     "stylelint-order": "^3.0.0",
-    "stylelint-processor-styled-components": "^1.6.0",
+    "stylelint-processor-styled-components": "^1.7.0",
     "terser-webpack-plugin": "^1.2.3",
     "thread-loader": "^2.1.2",
     "webpack": "^4.31.0",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.3.1"
-  },
-  "browserslist": [
-    "last 3 Chrome versions",
-    "last 3 ChromeAndroid versions",
-    "last 3 Edge versions",
-    "last 3 Firefox versions",
-    "last 3 FirefoxAndroid versions",
-    "Firefox ESR",
-    "last 3 Opera versions",
-    "last 3 OperaMobile versions",
-    "last 3 Safari versions",
-    "last 3 iOS versions",
-    "not dead"
-  ],
-  "babel": {
-    "presets": [
-      "./config/babel.js"
-    ]
-  },
-  "eslintConfig": {
-    "root": true,
-    "settings": {
-      "polyfills": [
-        "URLSearchParams"
-      ]
-    },
-    "plugins": [
-      "compat",
-      "react-hooks"
-    ],
-    "extends": [
-      "airbnb",
-      "prettier",
-      "prettier/react"
-    ],
-    "parser": "babel-eslint",
-    "parserOptions": {
-      "ecmaVersion": 2018,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "jsx": true
-      }
-    },
-    "env": {
-      "browser": true,
-      "es6": true,
-      "node": true
-    },
-    "rules": {
-      "compat/compat": "error",
-      "jsx-a11y/anchor-has-content": [
-        "error",
-        {
-          "components": [
-            "BlockLink",
-            "IconLink",
-            "Link",
-            "NavLink"
-          ]
-        }
-      ],
-      "jsx-a11y/anchor-is-valid": [
-        "error",
-        {
-          "components": [
-            "BlockLink",
-            "IconLink",
-            "Link",
-            "NavLink"
-          ],
-          "specialLink": [
-            "to"
-          ],
-          "aspects": [
-            "invalidHref",
-            "noHref",
-            "preferButton"
-          ]
-        }
-      ],
-      "jsx-a11y/heading-has-content": [
-        "error",
-        {
-          "components": [
-            "Heading",
-            "Heading1",
-            "Heading2",
-            "Heading3",
-            "Subheading",
-            "Text"
-          ]
-        }
-      ],
-      "react/forbid-prop-types": [
-        "error",
-        {
-          "forbid": [
-            "any"
-          ],
-          "checkContextTypes": true,
-          "checkChildContextTypes": true
-        }
-      ],
-      "react/jsx-filename-extension": [
-        "error",
-        {
-          "extensions": [
-            ".js"
-          ]
-        }
-      ],
-      "react-hooks/exhaustive-deps": "warn",
-      "react-hooks/rules-of-hooks": "error"
-    },
-    "overrides": [
-      {
-        "files": [
-          "config/**/*.js"
-        ],
-        "rules": {
-          "import/no-extraneous-dependencies": [
-            "error",
-            {
-              "devDependencies": true
-            }
-          ]
-        }
-      }
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "**/*.{css,html,js,json,md}": [
-      "prettier --write",
-      "git add"
-    ],
-    "**/*.js": [
-      "eslint",
-      "stylelint"
-    ]
-  },
-  "prettier": {
-    "trailingComma": "all"
-  },
-  "stylelint": {
-    "plugins": [
-      "stylelint-no-unsupported-browser-features",
-      "stylelint-order"
-    ],
-    "extends": [
-      "stylelint-config-standard",
-      "stylelint-config-styled-components",
-      "stylelint-config-prettier"
-    ],
-    "processors": [
-      "stylelint-processor-styled-components"
-    ],
-    "rules": {
-      "max-nesting-depth": [
-        3,
-        {
-          "ignoreAtRules": [
-            "media"
-          ]
-        }
-      ],
-      "order/order": [
-        "dollar-variables",
-        "custom-properties",
-        "declarations",
-        "at-rules",
-        "rules"
-      ],
-      "plugin/no-unsupported-browser-features": [
-        true,
-        {
-          "ignore": [
-            "css-appearance",
-            "css-resize",
-            "multicolumn",
-            "text-size-adjust",
-            "viewport-units"
-          ]
-        }
-      ],
-      "rule-empty-line-before": [
-        "always-multi-line",
-        {
-          "except": [
-            "first-nested"
-          ],
-          "ignore": [
-            "after-comment"
-          ]
-        }
-      ]
-    }
   }
 }

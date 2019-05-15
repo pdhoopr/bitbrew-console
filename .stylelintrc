@@ -1,0 +1,43 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-styled-components",
+    "stylelint-config-prettier"
+  ],
+  "processors": ["stylelint-processor-styled-components"],
+  "plugins": ["stylelint-no-unsupported-browser-features", "stylelint-order"],
+  "rules": {
+    "max-nesting-depth": [
+      3,
+      {
+        "ignoreAtRules": ["media"]
+      }
+    ],
+    "order/order": [
+      "dollar-variables",
+      "custom-properties",
+      "declarations",
+      "at-rules",
+      "rules"
+    ],
+    "plugin/no-unsupported-browser-features": [
+      true,
+      {
+        "ignore": [
+          "css-appearance",
+          "css-resize",
+          "multicolumn",
+          "text-size-adjust",
+          "viewport-units"
+        ]
+      }
+    ],
+    "rule-empty-line-before": [
+      "always-multi-line",
+      {
+        "except": ["first-nested"],
+        "ignore": ["after-comment"]
+      }
+    ]
+  }
+}
