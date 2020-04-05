@@ -38,7 +38,7 @@ Additional libraries are used as necessary but aren't listed here to keep the le
 
 ## Development Workflow
 
-Before you can start developing, you'll need to run `git clone git@github.com:BitBrew/console.git` to copy the repository to your computer.
+Before you can start developing, you'll need to run `git clone git@github.com:pdhoopr/bitbrew-console.git` to copy the repository to your computer.
 
 After cloning your repo, you'll want to navigate into the repository folder and run `yarn install` to download the project's dependencies.
 
